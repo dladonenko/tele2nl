@@ -1,0 +1,12 @@
+<?php echo $this->getChildHtml('checkoutCallout') ?>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/opcheckout.js') ?>"></script>
+<script type="text/javascript">countryRegions = <?php echo $this->helper('directory')->getRegionJson() ?></script>
+<?php echo Mage::getSingleton('core/layout')
+                            ->createBlock('core/template')
+                            ->setTemplate('tele4G/checkout/onepage/steps.phtml')                            
+                            ->toHtml();?>
+<div id="checkoutSteps" class="wrapper-grey border">
+    <?php echo $this->getChildHtml('step1') ?>
+</div>
+    
+

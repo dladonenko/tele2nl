@@ -1,0 +1,118 @@
+<?php
+
+$subscriptions = $this->getSubscriptions();
+
+//$bindPeriods = $this->getAllBindPeriods();
+
+//foreach ($this->_bindings as $s => $bindings) {
+//    echo "{$s} <pre>";
+//    foreach ($bindings as $binding) {
+//        print_r($binding->getData());
+//    }
+//    echo "</pre>";
+//}
+
+$aBindPeriod = $this->getBindPeriod();
+
+?>
+<script type="text/javascript">
+
+	var firstStepTemplate = '<div id="option-{{id}}" class="option-box">'+
+		'<span class="right"><?php echo $this->jsQuoteEscape($this->getDeleteButtonHtml()) ?></span>'+
+		'<input type="hidden" id="manage_option-{{id}}_option_id" name="manage[options][{{id}}][option_id]" value="{{option_id}}" />'+
+		'<input type="hidden" id="manage_option-{{id}}_is_delete" name="manage[options][{{id}}][is_delete]" value="" />'+
+		'<table cellspacing="0" class="form-list" id="table_subscription-{{id}}">'+
+			'<tr>'+
+				'<td class="label"><label for="manage_subscription-{{id}}"><?php echo Mage::helper('catalog')->__('Subscription') ?></label></td>'+
+				'<td class="value">'+
+				'<select id="manage_subscription-{{id}}" name="manage[options][{{id}}][subscription]">'+
+					<?php foreach ($subscriptions as $subscription): ?>
+					'<option value="<?php echo $subscription->getId()?>"><?php echo $subscription->getName() ?></option>'+
+					<?php endforeach; ?>
+				'</select>'+
+				'</td>'+
+			'</tr>'+
+			'<tr>'+
+				'<td class="label"><label for="manage_bind_period-{{id}}"><?php echo Mage::helper('catalog')->__('Bind Period') ?></label></td>'+
+				'<td class="value">'+
+						'<select id="manage_bind_period-{{id}}" name="manage[options][{{id}}][bindperiod]">'+
+							<?php foreach ($aBindPeriod as $period): ?>
+							'<option value="<?php echo $period['label']; ?>"><?php echo $period['label']; ?></option>'+
+							<?php endforeach; ?>
+						'</select>'+
+				'</td>'+
+			'</tr>'+
+			'<tr>'+
+				'<td class="label"><label for="manage_discount-{{id}}"><?php echo Mage::helper('catalog')->__('Discount') ?></label></td>'+
+				'<td class="value"><input type="text" class="input-text" title="Discount" value="" name="manage[options][{{id}}][discount]" id="manage_discount-{{id}}"></td>'+
+			'</tr>'+
+			'</table></div>';
+
+	var productOption = {
+		div : $('product_options_container_top'),
+		templateSyntax : /(^|.|\r|\n)({{(\w+)}})/,
+		templateText : firstStepTemplate,
+		itemCount : 1,
+		add : function(data) {
+			this.template = new Template(this.templateText, this.templateSyntax);
+
+			if(!data.id){
+				data = {};
+				data.id  = this.itemCount;
+				data.subscription_id = '';
+				data.bind_period = '';
+				data.option_id = '';
+				data.discount = '';
+			} else {
+				this.itemCount = data.item_count;
+			}
+			Element.insert(this.div, {'after':this.template.evaluate(data)});
+			this.itemCount++;
+
+			if (data.subscription_id) {
+				$A($('manage_subscription-'+data.id).options).each(function(option){
+					if (option.value==data.subscription_id) option.selected = true;
+				});
+			}
+
+			if (data.bind_period) {
+				$A($('manage_bind_period-'+data.id).options).each(function(option){
+					if (option.value==data.bind_period) option.selected = true;
+				});
+			}
+
+			if (data.discount) {
+				$('manage_discount-'+data.id+'').value = data.discount;
+			}
+			this.bindRemoveButtons();
+		},
+		remove :function(event){
+			var element = $(Event.findElement(event, 'div'));
+				if(element){
+					$('manage_'+element.readAttribute('id')+'_'+'is_delete').value = '1';
+					element.addClassName('no-display');
+					element.addClassName('ignore-validate');
+					element.hide();
+					//element.remove();
+				}
+		},
+		bindRemoveButtons : function(){
+			var buttons = $$('div.product-custom-options .delete-product-option');
+			for(var i=0;i<buttons.length;i++){
+				if(!$(buttons[i]).binded){
+					$(buttons[i]).binded = true;
+					Event.observe(buttons[i], 'click', this.remove.bind(this));
+				}
+			}
+		}
+	}
+
+	if($('add_new_defined_option')){
+		Event.observe('add_new_defined_option', 'click', productOption.add.bind(productOption));
+	}
+
+	<?php foreach ($this->getOptionValues() as $_value): ?>
+		productOption.add(<?php echo $_value->toJson() ?>);
+	<?php endforeach; ?>
+	productOption.bindRemoveButtons();
+</script>

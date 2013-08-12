@@ -1,0 +1,267 @@
+<script type="text/javascript">
+    //<![CDATA[
+    var canAddToCartExist = false;
+    var canAddToCartNew = false;
+    var productAddToCartForm = new VarienForm('product_addtocart_form');
+    productAddToCartForm.submit = function(button, url) {
+        if (this.validator.validate()) {
+
+            var is_exist = jQuery('#radioActivationTypeExist');
+            if (is_exist.is(":checked")) {
+                jQuery("#newnumber").remove();
+            }
+            var is_new = jQuery('#radioActivationTypeNew');
+            if (is_new.is(":checked")) {
+                jQuery("#numberfield").remove();
+            }
+
+
+            var form = this.form;
+            var oldUrl = form.action;
+
+            if (url) {
+                form.action = url;
+            }
+            var e = null;
+            try {
+                this.form.submit();
+            } catch (e) {
+            }
+            this.form.action = oldUrl;
+            if (e) {
+                throw e;
+            }
+
+            if (button && button != 'undefined') {
+                button.disabled = true;
+            }
+        }
+    }.bind(productAddToCartForm);
+    //]]>
+</script>
+<script type="text/javascript">
+    //<![CDATA[
+    function sendsms()
+    {
+        var field = jQuery('#numberfield');
+        var cont = jQuery('.telephone-number');
+        var subId = jQuery('#subscriptionPostId').val(); // for post type only
+        var errorContainer = jQuery('#advice-validate-phonenumber-numberfield');
+        var numberErrorMsg = '<?php echo $this->__('Du glömde att fylla i ditt mobilnummer!');?>';
+
+        var numberfield = field.val();
+        if(numberfield.length !== 0 && numberfield !== field.attr('placeholder')){
+            numberfield = numberfield.replace(/[-\s]/g,"");
+            numberfield = numberfield.replace(/\s+/g, "");
+            var phoneRegExp = /^[0-3]7[\d]{8}$/;
+            if (phoneRegExp.test(numberfield) && (numberfield.length == 10)) {
+                jQuery.post('<?php echo $this->getUrl('sS4Integration/index/sendsms'); ?>', {number:numberfield, subid:subId},
+                    function(data) {
+                        if(data == 'error'){
+                            cont.addClass('error');
+                            errorContainer.show().css('opacity',100);
+                            jQuery('.code-number').css("display", "none");
+                            errorContainer.html('<?php echo $this->__('Detta telefonnummer existerar redan för en annan telefon i varukorgen') ?>')
+                        } else if (data) {
+                            cont.removeClass('error');
+                            jQuery('.code-number').css("display", "inline");
+                            errorContainer.html('<?php echo $this->__('Ett sms har skickats iväg') ?>')
+                        } else {
+                            cont.addClass('error');
+                            errorContainer.html('<?php echo $this->__('Du har skrivit in ett ogiltigt mobilnummer! Ex. 070-000 00 00') ?>')
+                        }
+                    },
+                    'json'
+                );
+            } else {
+                cont.addClass('error');
+                errorContainer.html('<?php echo $this->__('Du har skrivit in ett ogiltigt mobilnummer! Ex. 070-000 00 00') ?>')
+            }
+        } else {
+            if(!jQuery('*:contains(" ' + numberErrorMsg + '")').length){
+                cont.addClass('error');
+                errorContainer.html(numberErrorMsg);
+            }
+        }
+        return false;
+    }
+
+    function validatenumber()
+    {
+        var field = jQuery('#numberfield');
+        var cont = jQuery('.telephone-number');
+        var subId = jQuery('#product_addtocart_form input[id*="subscriptionPostId"]').attr('value');
+        var errorContainer = jQuery('#advice-validate-phonenumber-numberfield');
+        var numberErrorMsg = '<?php echo $this->__('Du glömde att fylla i ditt mobilnummer!');?>';
+
+        var numberfield = field.val();
+        if(numberfield.length !== 0 && numberfield !== field.attr('placeholder')){
+            numberfield = numberfield.replace(/[-\s]/g,"");
+            numberfield = numberfield.replace(/\s+/g, "");
+            var phoneRegExp = /^[0-3]7[\d]{8}$/;
+            if (phoneRegExp.test(numberfield) && (numberfield.length == 10)) {
+                jQuery.post('<?php echo $this->getUrl('sS4Integration/index/validatenumber'); ?>', {number:numberfield, subid:subId},
+                    function(data) {
+                        if(data.result == 'Ok') {
+                            errorContainer.html(data.type);
+                            jQuery('#addToCartButton').removeAttr('disabled');
+                        } else {
+                            cont.addClass('error');
+                            errorContainer.html('<?php echo $this->__('Du har skrivit in ett ogiltigt mobilnummer! Ex. 070-000 00 00') ?>');
+                        }
+                    },
+                    'json'
+                );
+            } else {
+                cont.addClass('error');
+                errorContainer.html('<?php echo $this->__('Du har skrivit in ett ogiltigt mobilnummer! Ex. 070-000 00 00') ?>')
+            }
+        } else {
+            if(!jQuery('*:contains(" ' + numberErrorMsg + '")').length){
+                cont.addClass('error');
+                errorContainer.html(numberErrorMsg);
+            }
+        }
+        return false;
+    }
+
+    function validatecode()
+    {
+        var numberfield = jQuery('#numberfield').val();
+        var codefield = jQuery('#codefield').val();
+        var cont = jQuery('.code-number');
+        var errorContainer = jQuery('.code-number .row-fluid .help-block:first');
+        var smsErrorMsg = '<?php echo $this->__('Du har glömt att skriva i SMS-koden!') ?>';
+        var subId = jQuery('#subscriptionPostId').val(); // for post type only
+        if (codefield.length == 4) {
+            jQuery.post('<?php echo $this->getUrl('sS4Integration/index/validatecode'); ?>', {number:numberfield, code:codefield, subid:subId},
+                function(data) {
+                    if (data.error) {
+                        cont.addClass('error');
+                        errorContainer.html(data.error);
+                        jQuery('.container-nano-sim-type').data('result',0).hide();
+                    } else {
+                        if (data.result) {
+                            if (data.type.toLowerCase() == "none")
+                            {
+                                jQuery('.telephone-number').addClass('error');
+                                errorContainer.html("Tyvärr kan inte valt nummer flyttas");
+                                jQuery('#addToCartButton').attr('disabled', 'disabled');
+                                jQuery('.container-nano-sim-type').hide();
+                            } else {
+                                if (data.type.toLowerCase() == "prolong") {
+                                    jQuery('.container-nano-sim-type').data('result',1).show();
+                                } else {
+                                    jQuery('.container-nano-sim-type').data('result',0).hide();
+                                }
+                                cont.removeClass('error');
+                                errorContainer.html(data.result);
+                                canAddToCartExist = true;
+                                jQuery('#addToCartButton').removeAttr('disabled');
+                            }
+                        }
+                    }
+                },
+                'json'
+            );
+        } else {
+            if(!jQuery('*:contains(" ' + smsErrorMsg + '")').length){
+                jQuery(".validation-advice").hide();
+                cont.addClass('error');
+                errorContainer.html(smsErrorMsg);
+            }
+        }
+        return false;
+    }
+
+
+    jQuery('#addToCartButton').attr('disabled', 'disabled');
+
+    jQuery('[name=radioActivationType]').change(function(){
+        if (jQuery('#radioActivationTypeExist').is(':checked') && !canAddToCartExist) {
+            jQuery('#addToCartButton').attr('disabled', 'disabled');
+        } else if (jQuery('#radioActivationTypeExist').is(':checked') && canAddToCartExist) {
+            jQuery('#addToCartButton').removeAttr('disabled');
+        }
+        if(jQuery('#radioActivationTypeNew').is(':checked') && !canAddToCartNew) {
+            jQuery('#addToCartButton').attr('disabled', 'disabled');
+        } else if (jQuery('#radioActivationTypeNew').is(':checked') && canAddToCartNew) {
+            jQuery('#addToCartButton').removeAttr('disabled');
+
+        }
+    });
+
+
+    jQuery('input[name="radioActivationType"]').change(function(e){
+        if (jQuery(this).attr('id') == 'radioActivationTypeNew') {
+            if (!jQuery('a[data-toggle="tab"][href="#prepaid"]').parent().hasClass('active')) {
+                jQuery('#ActivationTypeNew').show();
+                //jQuery('#newnumber').selectorize();
+            }
+            jQuery('#ActivationTypeExist').hide();
+            jQuery('.container-nano-sim-type').hide();
+        } else if (jQuery(this).attr('id') == 'radioActivationTypeExist') {
+            jQuery('#ActivationTypeExist').show();
+            jQuery('#ActivationTypeNew').hide();
+            if (jQuery('.container-nano-sim-type').data('result') == 1) {
+                jQuery('.container-nano-sim-type').show();
+            }
+        }
+    });
+
+    // Init custom select UI on Prepaid tab when it shown
+    jQuery('a[data-toggle="tab"][href="#prepaid"]').on('shown', function() {
+        jQuery('#ActivationTypeNew').hide();
+        jQuery('#newnumber option:selected').removeAttr('selected');
+        jQuery('#newnumber option:first').attr('selected','selected');
+    });
+    jQuery('a[data-toggle="tab"][href="#postpaid"]').on('shown', function() {
+        if (jQuery('#radioActivationTypeNew:checked').length) {
+            jQuery('#ActivationTypeNew').show();
+            var selectNumber = jQuery('#newnumber').parent('.selectorize').find('.select .selected').text();
+            jQuery('#newnumber option:contains('+selectNumber+')').attr('selected','selected');
+        }
+    });
+    //]]>
+
+    jQuery('#ajax_loader').show();
+    jQuery('#newnumber').hide();
+    jQuery.post('<?php echo $this->getUrl('sS4Integration/index/availablePhoneNumbers'); ?>',
+        function(data) {
+            if (data.status == "OK") {
+                jQuery('#ajax_loader').hide();
+                jQuery.each(data.response, function(key, value) {
+                    jQuery('#newnumber')
+                        .append(jQuery('<option></option>')
+                        .attr("value",value)
+                        .text(value));
+                    if (key == 0) {
+                        jQuery('#newnumber option:eq(0)').attr('selected', 'selected');
+                    }
+                });
+                jQuery('#newnumber').selectorize();
+                if(jQuery('#radioActivationTypeNew').is(':checked')) {
+                    jQuery('#addToCartButton').removeAttr('disabled');
+                }
+                canAddToCartNew = true;
+            } else {
+                jQuery('#ajax_loader').hide();
+                jQuery('#ActivationTypeNew').append(data.error_message);
+            }
+        },
+        'json'
+    );
+    jQuery(document).ready(function() {
+        jQuery('#confirm_number').attr('disabled', 'disabled');
+        jQuery.post('<?php echo $this->getUrl('tele4G_nocache/'); ?>',
+            function(data) {
+                jQuery('#confirm_number').removeAttr('disabled');
+                if (data && data.action) {
+                    jQuery('#confirm_number').removeAttr('onclick');
+                    jQuery('#confirm_number').attr('onclick', data.action);
+                }
+            },
+            'json'
+        );
+    });
+</script>

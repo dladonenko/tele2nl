@@ -1,0 +1,94 @@
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = $this->getProduct(); ?>
+<?php $tele4G_cart = Mage::getModel('tele4G_checkout/cart'); ?>
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/modules/productView.js')?>"></script>
+
+<div id="breadcrumbs" class="container">
+    <ul class="breadcrumb">
+        <li><a href="<?php echo Mage::getStoreConfig("tele4G/variables/tele4G_main_page")?>"><?php echo $this->__('Hem') ?></a><span class="divider">›</span></li>
+        <li><a href="<?php echo $this->getUrl('/') ?>"><?php echo $this->__('Mobiltelefoner') ?></a><span class="divider">›</span></li>
+        <li class="active"><?php echo $_product->getName() ?></li>
+    </ul>
+</div>
+<div class="wrapper-grey after-breadcrumbs">
+    <script type="text/javascript">
+        var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+    </script>
+    <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+
+        <input type="hidden" value="MINI_REGULAR" name="sim_type" />
+        <input type="hidden" name="radioActivationType" value="new" />
+
+        <div class="container">
+            <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+            <div class="row-fluid">
+                <div class="span4">
+                    <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+                    <div class="short-description">
+                        <?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
+                    </div>
+                    <div class="usp">
+                        <?php echo $_helper->productAttribute($_product, nl2br($_product->getUsp()), 'usp'); ?>
+                    </div>
+                    <hr />
+                    <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+                </div>
+                <div class="span4 sim-only product-images">
+                    <?php echo $this->getChildHtml('media') ?>
+                </div>
+                <div class="span4 sim-only">
+                    <div class="box subscription-selector">
+                        <div class="row-fluid">
+                            <div class="span8">
+                                <h3 class="nomargin-top"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h3>
+                            </div>
+                            <div class="span4">
+                                <?php /* <a href="#" class="btn-link"><?php echo $this->__('Läs mer') ?></a> */ ?>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12 price">
+                                <div class="price-monthly"><span id="post-price-monthly"><?php echo $this->helper('core')->currency($_product->getMonthlyPrice());?></span></div>
+                            </div>
+                        </div>
+                        <?php /*
+                        <div class="row-fluid">
+                            <h5>
+                                <?php echo $this->__('Bindingstid:') ?>
+                                <span class="regular"><?php echo $this->__('0 mån (3 mån upsägning)') ?></span>
+                            </h5>
+                        </div>
+                        */ ?>
+                        <?php echo $this->getChildHtml('product_options_wrapper'); ?>
+                    </div>
+
+                    <div class="row-fluid margin-top">
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" <?php echo (($tele4G_cart->showAddToCartButton($_product) ? "" : 'disabled="disabled"')); ?>  class="btn btn-success btn-large pull-right" onclick="productAddToCartForm.submit(this)"><?php echo $this->__('Add to Cart') ?></button>
+                    </div>
+
+                    <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+                    <input type="hidden" name="related_product" id="related-products-field" value="" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="container box">
+        <h2><?php print $this->__('Översikt');?></h2>
+        <?php echo $_product->getDescription();?>
+    </div>
+</div>
+
+<?php echo $this->getChildHtml('add_subs_mbb'); ?>
+
+<script type="text/javascript">
+    (function($){
+        tele4g.stockLevel.init('.stock-status', {
+            msgDays: "<?php echo $this->__('dagar') ?>",
+            msgWeeks: "<?php echo $this->__('veckor') ?>",
+            msgNotAvailable: "<?php echo $this->__('N/A') ?>",
+        });
+        tele4g.stockLevel.updateExpectedDeliveryTime(1, 0);
+    })(jQuery);
+</script>

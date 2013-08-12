@@ -1,0 +1,78 @@
+<?php
+/**
+ *
+ * @category    design
+ * @package     default_tele2
+ */
+?>
+<?php 
+    $freeGift = $this->getFreeGift();
+    $bindings = explode(',', $freeGift->getConditionBindingPeriod());
+    $subscriptProducts = array();
+    $subscriptionId = $freeGift->getConditionSubscriptionId();
+    $bindingPeriods = Mage::helper('tele2_freeGift')->getBindingPeriods($subscriptionId, true);
+?>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('tele2_freeGift')->__('Conditions') ?></h4>
+    </div>
+    <fieldset>
+
+        <legend><?php echo Mage::helper('tele2_freeGift')->__('Conditions') ?></legend>
+        <table cellspacing="0" class="form-list" id="table_subscription_standalone">
+
+        <tr>
+            <td class="label"><label for="condition_subscription_id"><?php echo Mage::helper('tele2_subscription')->__('Subscription') ?></label></td>
+            <td class="value"><select id="condition_subscription_id" name="data[condition_subscription_id]" class="select">
+                <?php foreach (Mage::helper('tele2_freeGift')->getSubscriptionAsOptions(true) as $option): ?>
+                    <option value="<?php echo $option['value'] ?>"<?php if($subscriptionId == $option['value']):?> selected="selected"<?php endif; ?>><?php echo $option['label'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </tr>
+
+        <tr>
+            <td class="label"><label for="condition_binding_period"><?php echo Mage::helper('tele2_subscription')->__('Binding period') ?></label></td>
+            <td class="value"><select id="condition_binding_period" multiple="multiple" name="data[condition_binding_period][]" class="select multiselect" size="3"<?php if(!$subscriptionId): ?> disabled="disabled"<?php endif;?>>
+                <?php if(count($bindingPeriods) > 0): foreach ($bindingPeriods as $option): ?>
+                    <option value="<?php echo $option['value'] ?>"<?php if (in_array((string)$option['value'], $bindings)): ?> selected="selected"<?php endif; ?>><?php echo $option['label'] ?></option>
+                <?php endforeach; endif; ?>
+            </select>
+        </tr>
+
+        <tr>
+            <td class="label"><label for="condition_device_id"><?php echo Mage::helper('tele2_subscription')->__('Device') ?></label></td>
+            <td class="value"><select id="condition_device_id" name="data[condition_device_id]" class="select">
+                <option value="0">Please select</option>
+                <?php foreach ($this->getDevices() as $option): ?>
+                    <option value="<?php echo $option['value'] ?>"<?php if($freeGift->getConditionDeviceId() == $option['value']):?> selected="selected"<?php endif; ?>><?php echo $option['label'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </tr>
+
+        </table>
+    </fieldset>
+</div>
+<script>
+    jQuery('select[id=condition_subscription_id]').change(function(e){
+        var subscriptionId = jQuery(this).val();
+        if (subscriptionId) {
+            var bind_el = jQuery('select[id=condition_binding_period]');
+            jQuery(bind_el).attr('disabled', 'disabled');
+            jQuery(bind_el).empty();
+            jQuery.get('<?php echo $this->getUrl('*/*/binding'); ?>', {subscription_id:subscriptionId, isAjax:true},
+                    function(data) {
+                        if (!data.error) {
+                            jQuery.each(data.binding, function(index) {
+                                jQuery(bind_el).append('<option value="' + data.binding[index].value + '">' + data.binding[index].label + '</option>');
+                            });
+                            jQuery(bind_el).removeAttr('disabled');
+                        } else if (data.error) {
+                            jQuery('#ssn_name').text('');
+                        }
+                    },
+                    'json'
+            );
+        }
+    });
+</script>

@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Branko Ajzele <branko@inchoo.net>
+ * @copyright Adform 
+ */
+-->
+<config>
+    <modules>
+        <Adform_Track>
+            <version>2.0.0</version>
+        </Adform_Track>
+    </modules>
+    <global>
+        <models>
+            <adform_track>
+                <class>Adform_Track_Model</class>
+                <resourceModel>adform_track_mysql4</resourceModel>
+            </adform_track>
+            <adform_track_mysql4>
+                <class>Adform_Track_Model_Mysql4</class>
+                <entities>
+                    <feed>
+                        <table>adform_track_xml_product_feed</table>
+                    </feed>
+                </entities>
+            </adform_track_mysql4>
+        </models>
+        <resources>
+            <adform_track_setup>
+                <setup>
+                    <module>Adform_Track</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>                
+            </adform_track_setup>
+        </resources>         
+        <blocks>
+            <adform_track>
+                <class>Adform_Track_Block</class>
+            </adform_track>
+        </blocks>  
+        <helpers>
+            <adform_track>
+                <class>Adform_Track_Helper</class>
+            </adform_track>
+        </helpers>          
+    </global>
+    <adminhtml>
+        <events>
+            <adminhtml_block_html_before>
+                <observers>
+                    <adform_track_injectGridFeedGenerateAction>
+                        <class>adform_track/observer</class>
+                        <method>injectProductGridFeedGenerateAction</method>
+                    </adform_track_injectGridFeedGenerateAction>                 
+                </observers>                
+            </adminhtml_block_html_before>                    
+            
+        </events>
+
+    </adminhtml>
+    
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <adform_track before="Mage_Adminhtml">Adform_Track_Adminhtml</adform_track>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>    
+    
+    <frontend>
+        <routers>
+            <adform_track>
+                <use>standard</use>
+                <args>
+                    <module>Adform_Track</module>
+                    <frontName>adform</frontName>
+                </args>
+            </adform_track>
+        </routers>        
+        
+        
+        <events>
+            <controller_action_postdispatch_checkout_cart_add>
+                <observers>
+                    <adform_track_record_last_added_product>
+                        <class>adform_track/observer</class>
+                        <method>recordLastAddedProduct</method>
+                    </adform_track_record_last_added_product>
+                </observers>                
+            </controller_action_postdispatch_checkout_cart_add>           
+            <core_block_abstract_to_html_before>
+                <observers>
+                    <adform_track_inject_external_js>
+                        <class>adform_track/observer</class>
+                        <method>injectExternalJs</method>
+                    </adform_track_inject_external_js>
+                    <adform_track_inject_tracking_logic_js>
+                        <class>adform_track/observer</class>
+                        <method>injectTrackingLogicJs</method>
+                    </adform_track_inject_tracking_logic_js>                   
+                </observers>                
+            </core_block_abstract_to_html_before>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <adform_track_inject_checkout_first_step_tracking_logic_js>
+                        <class>adform_track/observer</class>
+                        <method>injectCheckoutFirstStepTrackingLogicJs</method>
+                    </adform_track_inject_checkout_first_step_tracking_logic_js>
+                    <adform_track_inject_shipping_info_logic_js>
+                        <class>adform_track/observer</class>
+                        <method>injectShippingInfoTrackingLogicJs</method>
+                    </adform_track_inject_shipping_info_logic_js>                     
+                </observers>                
+            </core_block_abstract_to_html_after>        
+                                    
+            <controller_action_postdispatch_checkout_onepage_saveBilling>
+                <observers>
+                    <adform_track_inject_saveBilling_tracking_logic_js>
+                        <class>adform_track/observer</class>
+                        <method>injectSaveBillingTrackingLogicJs</method>
+                    </adform_track_inject_saveBilling_tracking_logic_js>
+                </observers>                 
+            </controller_action_postdispatch_checkout_onepage_saveBilling>
+            
+            <controller_action_postdispatch_checkout_onepage_saveShipping>
+                <observers>
+                    <adform_track_inject_saveShipping_tracking_logic_js>
+                        <class>adform_track/observer</class>
+                        <method>injectSaveShippingTrackingLogicJs</method>
+                    </adform_track_inject_saveShipping_tracking_logic_js>
+                </observers>                 
+            </controller_action_postdispatch_checkout_onepage_saveShipping> 
+            
+            <controller_action_postdispatch_checkout_onepage_saveShippingMethod>
+                <observers>
+                    <adform_track_inject_saveShippingMethod_tracking_logic_js>
+                        <class>adform_track/observer</class>
+                        <method>injectSaveShippingMethodTrackingLogicJs</method>
+                    </adform_track_inject_saveShippingMethod_tracking_logic_js>
+                </observers>                 
+            </controller_action_postdispatch_checkout_onepage_saveShippingMethod>
+            
+            <controller_action_postdispatch_checkout_onepage_savePayment>
+                <observers>
+                    <adform_track_inject_savePayment_tracking_logic_js>
+                        <class>adform_track/observer</class>
+                        <method>injectSavePaymentTrackingLogicJs</method>
+                    </adform_track_inject_savePayment_tracking_logic_js>
+                </observers>                 
+            </controller_action_postdispatch_checkout_onepage_savePayment>
+            
+        </events>
+    </frontend>   
+    <default>
+        <adform_track>
+            <settings>
+                <active><![CDATA[0]]></active>
+                <!-- campaign_id></campaign_id -->
+                <use_customer_age_info><![CDATA[0]]></use_customer_age_info>
+                <use_customer_gender_info><![CDATA[0]]></use_customer_gender_info>
+                <js_lib_url><![CDATA[http://track.adform.net/serving/scripts/trackpoint/]]></js_lib_url>
+                <js_secure_lib_url><![CDATA[https://track.adform.net/serving/scripts/trackpoint/]]></js_secure_lib_url>
+                <track_point_img_url><![CDATA[http://track.adform.net/Serving/TrackPoint/]]></track_point_img_url>
+                <track_point_img_secure_url><![CDATA[https://track.adform.net/Serving/TrackPoint/]]></track_point_img_secure_url>
+                <divider_char><![CDATA[|]]></divider_char>
+                <encrypt_decrypt_webservice_url><![CDATA[http://api.adform.com/external/clientIDdecoder.php]]></encrypt_decrypt_webservice_url>
+                <encrypt_decrypt_webservice_secure_url><![CDATA[https://api.adform.com/external/clientIDdecoder.php]]></encrypt_decrypt_webservice_secure_url>
+                <product_page_tracking_level><![CDATA[category]]></product_page_tracking_level>
+                <oldsolution_enabled>1</oldsolution_enabled>
+            </settings>
+            <feed>
+                <image_width><![CDATA[150]]></image_width>
+                <image_height><![CDATA[150]]></image_height>
+                <ppf><![CDATA[1000]]></ppf>
+                <file_refresh_interval><![CDATA[60]]></file_refresh_interval>
+            </feed>            
+        </adform_track>
+    </default>
+</config>

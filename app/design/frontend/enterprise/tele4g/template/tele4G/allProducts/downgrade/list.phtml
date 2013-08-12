@@ -1,0 +1,20 @@
+<?php // $_deviceSubscriptionCollection = $this->getDeviceSubscriptionByCode(); ?>
+<?php // $_subscriptionCollection = $this->getSubscriptionByCode(); ?>
+
+<?php $_collection = $this->getDowngrade(); ?>
+
+<div class="wrapper-grey">
+    <div class="container web-shop">
+        <h1><?php echo $this->__('Mobiltelefoner') ?></h1>
+        <?php foreach ($_collection->getDeviceSubscriptionCollection() as $_product): ?>
+            <div><a href="/<?php echo $_product->getUrlPath(); ?>"><?php echo $_product->getName(); ?></a></div>
+        <?php endforeach; ?>
+    </div>
+    
+    <div class="container web-shop">
+        <h1><?php echo $this->__('Subscriptions') ?></h1>
+        <?php foreach ($_collection->getSubscriptionCollection() as $_product): ?>
+            <div><a href="/<?php echo $_product->getUrlPath(); ?>"><?php echo $_product->getName(); ?></a></div>
+        <?php endforeach; ?>
+    </div>
+</div>

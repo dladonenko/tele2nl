@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Tele2_Install>
+      <version>0.1.0</version>
+    </Tele2_Install>
+  </modules>
+  <global>
+    <remote_addr_headers>
+        <header1>HTTP_X_REAL_IP</header1>
+        <header2>HTTP_X_FORWARDED_FOR</header2>
+    </remote_addr_headers>
+    <helpers>
+        <tele2_install>
+            <class>Tele2_Install_Helper</class>
+        </tele2_install>
+    </helpers>
+  </global>
+</config> 

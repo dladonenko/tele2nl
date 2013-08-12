@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tele4G_WidgetTest>
+            <version>0.0.1</version>
+        </Tele4G_WidgetTest>
+    </modules>
+    <global>
+        <helpers>
+            <widgettest>
+                <class>Tele4G_WidgetTest_Helper</class>
+            </widgettest>
+        </helpers>
+        <blocks>
+             <widgettest>
+                <class>Tele4G_WidgetTest_Block</class>
+             </widgettest>
+        </blocks>
+        <models>
+             <widgettest>
+                <class>Tele4G_WidgetTest_Model</class>
+             </widgettest>
+        </models>
+    </global>
+</config>

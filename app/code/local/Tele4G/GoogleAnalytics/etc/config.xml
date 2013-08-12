@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento Enterprise Edition
+ *
+ * @category    Tele4G
+ * @package     Tele4G_GoogleAnalytics
+ */
+-->
+<config>
+    <modules>
+        <Tele4G_GoogleAnalytics>
+            <version>0.0.0.1</version>
+        </Tele4G_GoogleAnalytics>
+    </modules>
+    <global>
+        <blocks>
+            <tele4G_googleanalytics>
+                <class>Tele4G_GoogleAnalytics_Block</class>
+            </tele4G_googleanalytics>
+        </blocks>
+        <helpers>
+            <tele4G_googleanalytics>
+                <class>Tele4G_GoogleAnalytics_Helper</class>
+            </tele4G_googleanalytics>
+        </helpers>
+    </global>
+    <frontend>
+        <translate>
+            <modules>
+                <Tele4G_GoogleAnalytics>
+                    <files>
+                        <default>Tele4G_GoogleAnalytics.csv</default>
+                    </files>
+                </Tele4G_GoogleAnalytics>
+            </modules>
+        </translate>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Tele4G_GoogleAnalytics>
+                    <files>
+                        <default>Tele4G_GoogleAnalytics.csv</default>
+                    </files>
+                </Tele4G_GoogleAnalytics>
+            </modules>
+        </translate>
+    </adminhtml>
+    <default>
+        <google>
+            <analytics>
+                <domain>comviq.se</domain>
+            </analytics>
+        </google>
+    </default>
+</config>

@@ -1,0 +1,141 @@
+<div id="breadcrumbs" class="container">
+    <ul class="breadcrumb">
+        <li><a href="<?php echo Mage::getStoreConfig("tele4G/variables/tele4G_main_page")?>"><?php echo $this->__('Hem') ?></a> <span class="divider">›</span></li>
+        <li class="active"><?php echo $this->__('Avsluta köp') ?> <span class="divider">›</span></li>
+        <li class="active"><?php echo $this->__('Orderbekräftelse') ?></li>
+    </ul>
+</div>
+
+<div class="container web-shop">
+    <div class="row-fluid margin">
+        <?php // [TODO]: remove || 1 ?>
+        <?php if ($this->getCanViewOrder() && $this->getCanPrintOrder() || 1) :?>
+            <div class="buttons-title pull-right">
+                <a href="<?php echo $this->getPrintUrl(); ?>" class="btn btn-large" target="_blank"><?php echo $this->__('Visa kvitto') ?></a>
+            </div>
+        <?php endif;?>
+        <h1><?php echo $this->__('Tack för att du väljer Comviq!') ?></h1>
+    </div>
+</div>
+
+<div class="container">
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <p><?php echo $this->__('Hoppas du kommer att trivas med ditt köp. Besök Mitt konto för att se din beställning, administrera dina uppgifter och tjänster samt se din aktuella samtal-, SMS- och dataförbrukning. Om du inte redan har ett konto sedan tidigare så har ett konto skapats till dig automatiskt. Du får ett separat email om detta.'); ?></p>
+    <br />
+</div>
+
+<?php if ($this->getOrderId()):?>
+    <?php // [TODO]: remove || 1 ?>
+    <?php if ($this->getCanViewOrder() || 1) :?>
+        <?php $order = $this->getOrder(); ?>
+        <?php $isTogo = false; ?>
+        <?php if ($order->getShippingMethod() == Mage::getModel("tele4G_togo/togo")->getShippingMethodName()): ?>
+            <?php $isTogo = true; ?>
+            <?php $order->applyTogoStoreInfo(); ?>
+        <?php endif; ?>
+        <?php $offerData = unserialize($order->getOfferData()); ?>
+        <?php $sExpectedDeliveryTime = Mage::helper('tele4G_checkout')->getExpectedDeliveryTimeFromOrder($order); ?>
+        <div class="wrapper-paper-brown">
+            <div class="jagged-border-top"></div>
+            <div class="container web-shop">
+                <h2><strong><?php print $this->__('Leveransadress:');?></strong></h2>
+                <p><strong>
+                    <?php echo $this->__('Vi har skickat ett mail med en bekräftelse på adressen') ?>
+                    <a href="mailto:<?php echo $order->getBillingAddress()->getEmail(); ?>"><?php echo $order->getBillingAddress()->getEmail(); ?></a>
+                </strong></p>
+                <p>
+                <?php if ($isTogo): ?>
+                    <?php echo $order->getToGoCity(); ?><br />
+                    <?php echo $order->getToGoType(); ?>
+                    <?php echo Mage::helper("tele4G_checkout")->__("på"); ?>
+                    <?php echo $order->getToGoReseller(); ?><br />
+                    <?php echo Mage::helper('tele4G_checkout')->__("Öppet mellan:"); ?> <?php echo $order->getOpenClose(); ?><br />
+                    <a href="<?php echo $order->getGoogleMapUrl(); ?>" target="_blank">Karta</a>
+                <?php else: ?>
+                    <?php $_userInfo = $order->getBillingAddress(); ?>
+                    <?php echo $_userInfo->getData('firstname'); ?> <?php echo $_userInfo->getData('lastname'); ?><br />
+                    <?php echo $_userInfo->getData('street'); ?><br />
+                    <?php echo $_userInfo->getData('city'); ?>
+                <?php endif; ?>
+                </p>
+            </div>
+            <div class="jagged-border-bottom"></div>
+        </div>
+        
+        <div class="container web-shop">
+            <br /><br />            
+            <p><strong><?php echo $this->__('Ordernummer:') ?></strong> <?php echo $this->getOrderId(); ?></p>
+            <p><strong><?php echo $this->__('Orderdatum:') ?></strong> <?php echo $order->getCreatedAt(); ?></p>
+            <?php /*
+            <br /><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam incidunt ipsum fuga facilis consectetur nisi enim nostrum esse distinctio labore voluptate quaerat minus suscipit accusantium numquam aperiam aspernatur optio quam.</p>
+            */ ?>
+            <hr />
+            <strong><?php echo $this->__('Leveransinformation') ?></strong><br />
+            <?php if ($isTogo): ?>
+                <p>
+                    <?php echo $this->__('Observera att det du beställt ligger reserverat åt dig i 24 timmar från det att du gjorde din beställning. Ta med ID-handling till kassan när du ska hämta ut din vara.');?>
+                </p>
+                <?php $productFmcg = Mage::getModel("tele4G_checkout/cart")->hasQuoteFmcg(true, $order); ?>
+                <?php if ($productFmcg && strtolower($offerData[$productFmcg->getOfferId()]['type']) == 'port'):?>
+                    <p>
+                        <?php echo $this->__('Vi kontaktar nu din nuvarande operatörer för bekräftelse.') ?>
+                    </p>
+                    <p>
+                       <?php echo $this->__('<strong>OBS!</strong> Gå <strong>inte</strong> till butik förrän du fått ett bekräftelse-sms. En bekräftelse för flytt av nummer tar vanligtvis ett par minuter. Om du inte fått ditt sms inom en timme, kontakta kundtjänst som ger vidare instruktioner.');?>
+                    </p>
+                <?php endif; ?>
+            <?php else: ?>
+                <p>
+                    <?php echo $this->__('Din vara är nu på väg och levereras inom %s. I de fall den aktuella varan inte finns på lager eller har råkat ut för leveransförseningar kan det dock dröja lite längre. Vi kontaktar dig i fall detta skulle ske.', $sExpectedDeliveryTime);?>
+                    <br />
+                    <?php echo $this->__('Du kan alltid se aktuell orderstatus via Mitt Konto på comviq.se'); ?>
+                </p>
+
+                <br /><strong><?php echo $this->__('Ångerrätt') ?></strong><br />
+                <p><?php echo $this->__('Enligt Distans- och hemförsäljningslagen har en konsument som köper en vara på distans rätt att ångra köpet inom 14 dagar. För att Kund skall kunna utnyttja ångerrätten krävs att varan återsänds i väsentligen oförändrat skick, att tjänsten inte har påbörjats och att ånger meddelas till Comviq inom ångerperioden. Kunden står för returkostnad och eftersom Kunden ansvarar för varan råder Comviq Kund att skicka den som rekommenderad försändelse. Läs gärna mer om ångerrätt under våra villkor.');?></p>
+            <?php endif; ?>
+            <br /><strong><?php echo $this->__('Våra villkor') ?></strong><br />
+            <p>
+            <?php if ($isTogo): ?>
+                <?php if (Mage::getModel('tele4G_checkout/cart')->hasPostSubscription($order)): ?>
+                    <a href="https://www.comviq.se/ComviqAbonnemangsvillkor"><strong><?php echo $this->__('Allmänna villkor Comviq Fastpris Abonnemang');?></strong></a><br />
+                <?php endif; ?>
+            <?php else: ?>
+                <?php if (Mage::getModel('tele4G_checkout/cart')->hasPostSubscription($order)): ?>
+                    <a href="https://www.comviq.se/ComviqAbonnemangsvillkor"><strong><?php echo $this->__('Allmänna villkor Comviq Fastpris Abonnemang');?></strong></a><br />
+                <?php endif; ?>
+                <?php if (Mage::getModel('tele4G_checkout/cart')->hasPreSubscription($order)): ?>
+                    <a href="https://www.comviq.se/ComviqAllmannaVillkorKontant"><strong><?php echo $this->__('Allmänna villkor Comviq Kontantkort');?></strong></a><br />
+                <?php endif; ?>
+                    <a href="https://www.comviq.se/ComviqKopOchLeveransvillkor"><strong><?php echo $this->__('Köp- och leveransinformation');?></strong></a><br />
+                    <a href="https://www.comviq.se/Konsumentkreditinformation"><strong><?php echo $this->__('Standardiserad Europeiska Konsumentkreditinformation');?></strong></a><br />
+                <?php if ($order->getPayment()->getMethodInstance()->getCode() == 'tele4G_invoice' && $order->getShippingMethod() == 'flatrate_flatrate'): ?>
+                    <a href="/docs/terms_and_conditions_comviq_overdraft.pdf"><strong><?php echo $this->__('Fakturavillkor');?></strong></a><br />
+                <?php endif; ?>
+                <?php if (Mage::getModel('tele4G_checkout/cart')->hasSfaSubscription($order)): ?>
+                    <a href="https://www.comviq.se/ComviqKopevillkorMinimitankning24Manader"><strong><?php echo $this->__('Villkor för minimitankning 24 mån');?></strong></a><br />
+                <?php endif; ?>
+                <?php if (Mage::getModel('tele4G_checkout/cart')->isOrderHasAddon($order)): ?>
+                    <a href="/docs/purchasing_conditions_comviq_plus_package.pdf"><strong><?php echo $this->__('Villkor för Comviq pluspaket');?></strong></a><br />
+                <?php endif; ?>
+                <?php if (Mage::getModel('tele4G_checkout/cart')->hasInsurance($order)): ?>
+                    <a href="https://www.comviq.se/getattachment.ashx?id=928"><strong><?php echo $this->__('Fullständiga försäkringsvillkor Comviq Produktförsäkrin');?></strong></a><br />
+                <?php endif; ?>
+            <?php endif; ?>
+            </p>
+
+            <br /><strong><?php echo $this->__('Kontakta kundservice') ?></strong><br />
+            <p><?php echo $this->__('Vi svarar på frågor 8-22 varje dag på vår chatt på comviq.se och på Facebook. Du hittar oss på'); ?> <a href="http://facebook.com/Comviq" target="_blank">facebook.com/Comviq</a></p>
+            
+            <p><?php echo $this->__('Har du frågor om kontantkort eller mobilt bredband kan du ringa +46(0)772 - 21 21 21 mellan kl 9 och 17 på vardagar.'); ?></p>
+            
+            <p><?php echo $this->__('Du kan alltid logga in på Mitt konto på'); ?> <a href="http://www.comviq.se">www.comviq.se</a> <?php echo $this->__('för att följa din order och skicka meddelanden till vår kundservice.'); ?></p>
+        </div>
+    <?php  else :?>
+    <?php endif;?>
+<?php endif;?>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        jQuery.post('<?php echo $this->getUrl('checkout/tele4G/check'); ?>');
+    })
+</script>

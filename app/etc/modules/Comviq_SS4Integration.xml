@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Comviq_SS4Integration>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Comviq_SS4Integration>
+    </modules>
+</config>

@@ -1,0 +1,194 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<?php $_order = $this->getOrder() ?>
+<?php $isTogo = false; ?>
+<?php if ($_order->getShippingMethod() == Mage::getModel("tele4G_togo/togo")->getShippingMethodName()): ?>
+    <?php $isTogo = true; ?>
+    <?php $_order->applyTogoStoreInfo($_order); ?>
+<?php endif; ?>
+
+<div class="container web-shop">
+    <h1><?php echo $this->__('Tack för att du väljer Comviq!') ?></h1>
+    <p><?php echo $this->__('Hoppas du kommer att trivas med ditt köp. Besök Mitt konto för att se din beställning, administrera dina uppgifter och tjänster samt se din aktuella samtal-, SMS- och dataförbrukning. Om du inte redan har ett konto sedan tidigare så har ett konto skapats till dig automatiskt. Du får ett separat email om detta.'); ?></p>
+    <hr />
+
+    <p><strong>
+        <?php echo $this->__('Ett bekräftelsemail har skickats till dig på adressen') ?>
+        <a href="mailto:<?php echo $_order->getBillingAddress()->getEmail(); ?>"><?php echo $_order->getBillingAddress()->getEmail(); ?></a>
+    </strong></p>
+    <hr />
+
+    <p>
+        <strong><?php echo $this->__('Leveransadress') ?></strong><br />
+        <?php if ($isTogo): ?>
+            <?php echo $_order->getToGoCity(); ?><br />
+            <?php 
+                switch ($_order->getToGoType()) {
+                    case "PRESSBYRAN": echo "Pressbyrån"; break;
+                    case "SEVEN_ELEVEN": echo "7-Eleven"; break;
+                }
+            ?>
+            <?php echo Mage::helper("tele4G_checkout")->__("på"); ?>
+            <?php echo $_order->getToGoReseller(); ?><br />
+            <?php echo Mage::helper('tele4G_checkout')->__("Öppet mellan:"); ?> <?php echo $_order->getOpenClose(); ?><br />
+            <a href="<?php echo $_order->getGoogleMapUrl(); ?>" target="_blank">Karta</a>
+        <?php else: ?>
+            <?php echo $_order->getBillingAddress()->getName(); ?>  <br />
+            <?php echo $_order->getBillingAddress()->getStreet(1); ?> <?php echo $_order->getBillingAddress()->getStreet(2); ?> <br />
+            <?php echo $_order->getBillingAddress()->getPostcode(); ?> <?php echo $_order->getBillingAddress()->getCity(); ?>
+        <?php endif; ?>
+    </p>
+     <?php if (!$isTogo): ?>
+    <p>
+        <strong><?php echo $this->__('Leveranstid') ?></strong><br />
+        <?php $_items = $_order->getItemsCollection(); ?>
+        <?php $_count = $_items->count(); ?>
+        <?php $sExpectedDeliveryTime = Mage::helper('tele4G_checkout')->getExpectedDeliveryTimeFromOrder($_order); ?>
+        <?php echo $this->__($sExpectedDeliveryTime); ?>
+    </p>
+    <?php endif; ?>
+    <hr />
+    
+    <p><strong><?php echo $this->__('Ordernummer:') ?></strong> <?php echo $_order->getRealOrderId(); ?></p>
+    <p><strong><?php echo $this->__('Orderdatum:') ?></strong> <?php echo Mage::helper('core')->formatDate($_order->getCreatedAtStoreDate(), 'short'); ?></p>
+    <hr />
+    
+    <table class="table table-cart border-bottom">
+        <colgroup>
+            <col class="column-image" />
+            <col />
+            <col class="column-price" />
+        </colgroup>
+        <?php $_items = $_order->getItemsCollection(); ?>
+        <?php $_count = $_items->count(); ?>
+        <?php foreach ($_items as $_item): ?>
+            <?php if ($_item->getParentItem()) continue; ?>
+            <tbody>
+                <?php echo $this->getItemHtml($_item) ?>
+            </tbody>
+        <?php endforeach; ?>
+    </table>
+    <div class="wrapper-paper-brown" style="background: none;">
+        <div class="jagged-border-top"></div>
+        <div class="cart-total">
+            <?php echo $this->getChildHtml('order_totals') ?>
+        </div>
+        <div class="jagged-border-bottom"></div>
+    </div>
+    <br /><br />
+    <strong><?php echo $this->__('Leveransinformation') ?></strong><br />
+    <?php if ($isTogo): ?>
+        <p>
+            <?php echo $this->__('Observera att det du beställt ligger reserverat åt dig i 24 timmar från det att du gjorde din beställning. Ta med ID-handling till kassan när du ska hämta ut din vara.');?>
+        </p>
+    <?php else: ?>
+        <p>
+            <?php echo $this->__('Din vara är nu på väg och levereras inom %s. I de fall den aktuella varan inte finns på lager eller har råkat ut för leveransförseningar kan det dock dröja lite längre. Vi kontaktar dig i fall detta skulle ske.', $sExpectedDeliveryTime);?>
+            <br />
+            <?php echo $this->__('Du kan alltid se aktuell orderstatus via Mitt Konto på comviq.se'); ?>
+        </p>
+        <br /><strong><?php echo $this->__('Ångerrätt') ?></strong><br />
+        <p><?php echo $this->__('Enligt Distans- och hemförsäljningslagen har en konsument som köper en vara på distans rätt att ångra köpet inom 14 dagar. För att Kund skall kunna utnyttja ångerrätten krävs att varan återsänds i väsentligen oförändrat skick, att tjänsten inte har påbörjats och att ånger meddelas till Comviq inom ångerperioden. Kunden står för returkostnad och eftersom Kunden ansvarar för varan råder Comviq Kund att skicka den som rekommenderad försändelse. Läs gärna mer om ångerrätt under våra villkor.');?></p>
+    <?php endif; ?>
+    <br /><strong><?php echo $this->__('Kontakta kundservice') ?></strong><br />
+    <p><?php echo $this->__('Vi svarar på frågor 8-22 varje dag på vår chatt på comviq.se och på Facebook. Du hittar oss på'); ?> <a href="http://facebook.com/Comviq" target="_blank">facebook.com/Comviq</a></p>
+    
+    <p><?php echo $this->__('Har du frågor om kontantkort eller mobilt bredband kan du ringa +46(0)772 - 21 21 21 mellan kl 9 och 17 på vardagar.'); ?></p>
+    
+    <p><?php echo $this->__('Du kan alltid logga in på Mitt konto på'); ?> <a href="http://www.comviq.se">www.comviq.se</a> <?php echo $this->__('för att följa din order och skicka meddelanden till vår kundservice.'); ?></p>
+    <br /><br /><br />
+</div>
+<script type="text/javascript">window.print();</script>
+
+
+
+
+
+
+
+<?php /*
+<?php $_order = $this->getOrder() ?>
+<h1><?php echo $this->__('Order #%s', $_order->getRealOrderId()) ?></h1>
+<p class="order-date"><?php echo $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></p>
+<div class="col2-set">
+    <?php if (!$_order->getIsVirtual()): ?>
+    <div class="col-1">
+        <h2><?php echo $this->__('Shipping Address') ?></h2>
+        <address><?php echo $_order->getShippingAddress()->format('html') ?></address>
+    </div>
+    <div class="col-2">
+    <?php else: ?>
+    <div class="col-1">
+    <?php endif; ?>
+        <h2><?php echo $this->__('Billing Address') ?></h2>
+        <address><?php echo $_order->getBillingAddress()->format('html') ?></address>
+    </div>
+<?php if (!$_order->getIsVirtual()): ?>
+</div>
+<div class="col2-set">
+    <div class="col-1">
+        <h2><?php echo $this->__('Shipping Method') ?></h2>
+         <?php echo $_order->getShippingDescription() ?>
+    </div>
+<?php endif; ?>
+    <div class="col-2">
+        <h2><?php echo $this->__('Payment Method') ?></h2>
+        <?php echo $this->getPaymentInfoHtml() ?>
+    </div>
+</div>
+<h2><?php echo $this->__('Items Ordered') ?></h2>
+<table class="data-table" id="my-orders-table">
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th><?php echo $this->__('Product Name') ?></th>
+            <th><?php echo $this->__('SKU') ?></th>
+            <th class="a-right"><?php echo $this->__('Price') ?></th>
+            <th class="a-center"><?php echo $this->__('Qty') ?></th>
+            <th class="a-right"><?php echo $this->__('Subtotal') ?></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <?php echo $this->getChildHtml('order_totals') ?>
+    </tfoot>
+    <?php $_items = $_order->getItemsCollection(); ?>
+    <?php $_count = $_items->count(); ?>
+    <?php foreach ($_items as $_item): ?>
+    <?php if ($_item->getParentItem()) continue; ?>
+    <tbody>
+        <?php echo $this->getItemHtml($_item) ?>
+    </tbody>
+        <?php endforeach; ?>
+</table>
+<script type="text/javascript">decorateTable('my-orders-table', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>
+<script type="text/javascript">window.print();</script>
+*/ ?>

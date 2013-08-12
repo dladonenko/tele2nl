@@ -1,0 +1,31 @@
+body.tele4g-allproducts-index #deviceList .products-column .product-item {
+    position: relative;
+}
+body.tele4g-allproducts-index #deviceList .products-column .product-item .inner {
+    left:0;
+}
+body.tele4g-allproducts-index .tab-content {
+    overflow: hidden;
+}
+body.tele4g-allproducts-index .web-shop .colors li.color {
+    float:left;
+}
+body.tele4g-allproducts-index .web-shop .color-chooser .pull-left {
+    float: none;
+}
+body.tele4g-allproducts-index .web-shop .color-chooser .colors {
+    display:inline;
+}
+body.tele4g-allproducts-index .nav.nav-tabs {
+    width:100%;
+    margin-top:-50px;
+}
+#checkoutSteps input[type='text'] {
+    height:auto;
+}
+#checkoutSteps input[type='text'].span.input-vert-large {
+    height:auto;
+}
+#breadcrumbs ul li {
+    float:left;
+}

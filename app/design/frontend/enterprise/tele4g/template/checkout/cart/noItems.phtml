@@ -1,0 +1,49 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<?php echo $this->getChildHtml('downgrade_popup') ?>
+
+<div id="breadcrumbs" class="container">
+    <ul class="breadcrumb">
+        <li><a href="<?php echo Mage::getStoreConfig("tele4G/variables/tele4G_main_page")?>"><?php echo $this->__('Hem') ?></a> <span class="divider">›</span></li>
+        <li class="active"><?php echo $this->__('Varukorg') ?></li>
+    </ul>
+</div>
+<div class="container">
+        
+</div>
+<div class="container web-shop">
+    <div class="row-fluid margin">
+        <h1><?php echo $this->__('Varukorgen är tom') ?></h1>
+    </div>
+</div>
+
+<div class="container">
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <p><?php echo $this->__('Du har inga varor i varukorgen.') ?></p>
+    <p><?php echo $this->__('Klicka <a href="%s">här</a> för att fortsätta handla.', $this->getContinueShoppingUrl()) ?></p>
+</div>

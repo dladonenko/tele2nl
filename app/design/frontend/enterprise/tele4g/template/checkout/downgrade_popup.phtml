@@ -1,0 +1,134 @@
+<?php $_tele4G_downgrade = Mage::getModel('tele4G_subscription/downgrade'); ?>
+<?php $session = Mage::getSingleton('checkout/session'); ?>
+<?php if ($session->getShowDowngradePopup()): ?>
+<?php $subscription_filter = $session->getDeviceSubscriptionFilter(); ?>
+<?php $subscription = $_tele4G_downgrade->getDowngradeSubscriptionSimOnly(); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/additional.css')?>" media="all" />
+
+<div class="overlay"></div>
+<!-- here ends our overlay -->
+
+<!-- here comes our popup -->
+<div class="popup">
+    <div class="popup_title wrapper-grey border-bottom">
+        <h1><?php echo $this->__("Begränsat godkännande vid vår kreditupplysning") ?></h1>
+        <!--<button class="close" data-close="article-info" data-close-effect="slide" onclick="closePopup(); return false;"></button>-->
+    </div>
+
+    <div class="info">
+        <?php if (isset($subscription['error_message'])) {
+            echo $subscription['error_message'];
+        } ?>
+    </div>
+
+    <table class="table table-cart">
+        <colgroup>
+            <col width="95">
+            <col>
+            <col width="150" class="right">
+        </colgroup>
+        <tbody>
+        <?php if (isset($subscription['product_ids']) && $subscription['product_ids'] > 0): ?>
+            <?php foreach ($subscription['product_ids'] as $product_id => $subscription_id): ?>
+                <?php $_product = Mage::getModel('catalog/product')->load($product_id); ?>
+                <?php $_subscription = Mage::getModel('tele2_subscription/mobile')->load($subscription_id); //@todo need to be refactored, move from template load the model in looping ?>
+
+                <form action="<?php echo $this->helper('checkout/cart')->getAddUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+                    <?php
+                    $options = $_product->getOptions();
+                    foreach ($options as $option) {
+                        if ($option->getDefaultTitle() == 'subscriptions') {
+                            foreach ($option->getValues() as $value)
+                            {
+                                $sku = $value->getSku();
+                                if (preg_match("%subscr-".$subscription_id."-(\d+)%", $sku, $m)): ?>
+                                    <input type="hidden" name="options[<?php echo $option->getId(); ?>]" value="<?php echo $value->getId(); ?>" />
+                                    <?php
+                                    break;
+                                endif;
+                            }
+                            break;
+                        }
+                    }
+
+                    foreach ($_product->getTypeInstance()->getUsedProducts() as $associatedProduct)
+                    {
+                        if ($associatedProduct['variant_master']) {
+                            $masterProduct = $associatedProduct;
+                            $colorAttributeId = Mage::getModel('eav/entity_attribute')->loadByCode('catalog_product', 'color')->getId();
+                            ?>
+                            <input type="hidden" name="super_attribute[<?php echo $colorAttributeId; ?>]" value="<?php echo $masterProduct->getColor(); ?>" />
+                            <?php
+                            break;
+                        }
+                    }
+                    ?>
+                    <input type="hidden" name="expectedDeliveryTime" id="expectedDeliveryTime" value="1 - 3 days">
+                    <input type="hidden" name="radioActivationType" value="<?php echo (isset($deviceSubscription['activationType']['type']) ? strtolower($deviceSubscription['activationType']['type']) : "" ) ?>" />
+                    <input type="hidden" name="newnumber" value="<?php echo (isset($deviceSubscription['activationType']['number']) ? $deviceSubscription['activationType']['number'] : "" ) ?>" />
+                    <tr class="border-top">
+                        <td><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->keepFrame(false)->resize(84, 84); ?> " width="84" height="84"></td>
+                        <td>
+                            <h4><?php echo $_product->getName();?></h4>
+                            <p><?php echo $_product->getShortDescription(); ?></p>
+                            <strong class="cart-price-monthly"><?php echo $_subscription->getName(); ?> <?php echo $this->helper('checkout')->formatPrice($_product->getPrice()) ?></strong>
+                        </td>
+                        <td class="right">
+                            <button type="button" title="<?php echo $this->__('Add to Cart') ?>"  class="btn btn-success btn-large pull-right" onclick="setLocation('<?php echo $_product->getProductUrl() ?>')"><?php echo $this->__('Add to Cart') ?></button>
+                        </td>
+                    </tr>
+                </form>
+            <?php endforeach; ?>
+        <?php endif ;?>
+        <?php if ($subscription): ?>
+            <?php foreach ($subscription['subscription'] as $items): ?>
+                <tr class="border-top">
+                    <td><img src="<?php echo $this->helper('catalog/image')->init($items, 'small_image')->keepFrame(false)->resize(84, 84); ?> " width="84" height="84"></td>
+                    <td>
+                        <h4><?php echo $items->getName() ?></h4>
+                        <p><?php echo $items->getShortDescription() ?></p>
+                        <strong class="cart-price-monthly"><?php echo $this->helper('checkout')->formatPrice($items->getMonthlyPrice()) ?><?php echo ((isset($subscription_filter)) && $subscription_filter['error_code'] == "CREDIT_CONTROL_REJECTED_LIMITED_APPROVAL_LEVEL_0_NOT_SUFFICIENT" || $subscription_filter['error_code'] == "CREDIT_CONTROL_REJECTED_LIMITED_APPROVAL_LEVEL_1_NOT_SUFFICIENT")? $this->__('/mån') : "" ?></strong>
+                    </td>
+                    <td class="right">
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>"  class="btn btn-success btn-large pull-right" data-prodid="<?php echo $items->getId();?>" onclick="replaceCartItem(this)"><?php echo $this->__('Add to Cart') ?></button>
+                        <span id="ajax_loader_downgrade" style="display:none;width:20px;"><img style="margin:10px 10px 0 0;" src="<?php echo $this->getSkinUrl('images/ajax-loader.gif')?>"/></span>
+                    </td>
+                </tr>
+            <?php endforeach ;?>
+        <?php endif ;?>
+        </tbody>
+    </table>
+    <div style="text-align: center"><a class="btn btn-small" href="#" onclick="closePopup(); return false;"><?php echo $this->__("Nej tack - Gå vidare") ?></a></div>
+</div>
+
+<script>
+    function closePopup()
+    {
+        jQuery('.overlay').remove();
+        jQuery('.popup').remove();
+        jQuery.post('<?php echo $this->getUrl('checkout/tele4G/cancelDowngrade') ?>', function(data) {
+            setLocation('/');
+        });
+    }
+
+    function replaceCartItem(button)
+    {
+        var id = jQuery(button).data('prodid');
+        if (id) {
+            var ajaxLoadId = '#ajax_loader_downgrade';
+            jQuery(ajaxLoadId).show();
+            jQuery(button).attr('disabled','disabled');
+            jQuery.post('<?php echo $this->getUrl('checkout/tele4G/replaceProduct') ?>', {id:id}, function(data) {
+                var data = jQuery.parseJSON(data);
+                if (data.redirect && data.message == 'ok') {
+                    jQuery(ajaxLoadId).hide();
+                    setLocation(data.redirect);
+                } else {
+                    jQuery(button).removeAttr('disabled');
+                }
+            });
+        }
+    }
+</script>
+<?php endif; ?>
+<?php $session->unsShowDowngradePopup(); ?>

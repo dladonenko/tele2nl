@@ -1,0 +1,57 @@
+<script type="text/javascript">
+//<![CDATA[
+    function hideRowArrayElements(arr)
+    {
+        for (var a = 0; a < arr.length; a++) {
+            $(arr[a]).up(1).hide();
+        }
+    }
+
+    function showRowArrayElements(arr)
+    {
+        for (var a = 0; a < arr.length; a++) {
+            $(arr[a]).up(1).show();
+        }
+    }
+
+    var websiteRestrictions = Class.create();
+    websiteRestrictions.prototype = {
+        initialize: function()
+        {
+            this.restrictionModeId = 'general_restriction_mode';
+            if (!$(this.restrictionModeId)) {
+                return;
+            }
+
+            this.onlyCookieElements = ['general_restriction_cookie_name',
+                'general_restriction_cookie_value','general_restriction_cookie_check_value'];
+            this.onlyRequestElements = ['general_restriction_request_attribute',
+                'general_restriction_request_service_username','general_restriction_request_service_password',
+                'general_restriction_request_service_wsdl', 'general_restriction_request_session_variable',
+                'general_restriction_request_service_referal_url'];
+            this.onlyReferrerElements = ['general_restriction_referrer_url', 'general_restriction_referrer_session_variable'];
+
+            this.setFormValues();
+            Event.observe($(this.restrictionModeId), 'change', this.setFormValues.bind(this));
+        },
+        setFormValues: function()
+        {
+            if ($F(this.restrictionModeId) == '<?php echo Tele2_WebsiteRestriction_Model_Mode::ALLOW_COOKIE ?>') {
+                hideRowArrayElements(this.onlyRequestElements);
+                showRowArrayElements(this.onlyCookieElements);
+            } else if ($F(this.restrictionModeId) == '<?php echo Tele2_WebsiteRestriction_Model_Mode::ALLOW_URL_REQUEST ?>') {
+                hideRowArrayElements(this.onlyCookieElements);
+                showRowArrayElements(this.onlyRequestElements);
+            } else if ($F(this.restrictionModeId) == '<?php echo Tele2_WebsiteRestriction_Model_Mode::ALLOW_REFERRER_URL ?>') {
+                hideRowArrayElements(this.onlyCookieElements);
+                hideRowArrayElements(this.onlyRequestElements);
+                showRowArrayElements(this.onlyReferrerElements);
+            } else {
+                hideRowArrayElements(this.onlyCookieElements);
+                hideRowArrayElements(this.onlyRequestElements);
+                hideRowArrayElements(this.onlyReferrerElements);
+            }
+        }
+    };
+    xml = new websiteRestrictions();    //]]>
+</script>

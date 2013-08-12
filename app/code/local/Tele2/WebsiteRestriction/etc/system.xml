@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <general>
+            <groups>
+                <restriction>
+                    <fields>
+                        <mode>
+                            <source_model>tele2_websiterestriction/system_config_source_modes</source_model>
+                        </mode>
+                        <cms_page translate="label">
+                            <source_model>tele2_websiterestriction/system_config_source_landing</source_model>
+                        </cms_page>
+                        <cookie_name translate="label comment">
+                            <sort_order>60</sort_order>
+                            <label>Cookie Name</label>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </cookie_name>
+                        <cookie_value translate="label comment">
+                            <sort_order>70</sort_order>
+                            <label>Cookie Value</label>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </cookie_value>
+                        <cookie_check_value translate="label comment">
+                            <sort_order>80</sort_order>
+                            <label>Cookie Check Value</label>
+                            <comment>Does it need to check cookie value</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </cookie_check_value>
+                        <request_attribute>
+                            <sort_order>90</sort_order>
+                            <label>Request Attribute</label>
+                            <comment>URI attribute for Authentication</comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </request_attribute>
+                        <request_service_wsdl>
+                            <sort_order>100</sort_order>
+                            <label>Request Service WSDL</label>
+                            <comment>Service URI for Authentication</comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </request_service_wsdl>
+                        <request_service_username>
+                            <sort_order>110</sort_order>
+                            <label>Request Service Username</label>
+                            <comment>Service Username for Authentication</comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </request_service_username>
+                        <request_service_password>
+                            <sort_order>120</sort_order>
+                            <label>Request Service Password</label>
+                            <comment>Service Password for Authentication</comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </request_service_password>
+                        <request_session_variable>
+                            <sort_order>130</sort_order>
+                            <label>Request Session Variable</label>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </request_session_variable>
+                        <request_service_referal_url>
+                            <sort_order>140</sort_order>
+                            <label>Request Session Referal URL</label>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </request_service_referal_url>
+                        <referrer_session_variable>
+                            <sort_order>130</sort_order>
+                            <label>Referrer Session Variable</label>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </referrer_session_variable>
+                        <referrer_url>
+                            <sort_order>140</sort_order>
+                            <label>Referrer URL</label>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>enterprise_websiterestriction/system_config_backend_active</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </referrer_url>
+                    </fields>
+                </restriction>
+            </groups>
+        </general>
+    </sections>
+</config>

@@ -1,0 +1,14 @@
+
+<?php $_product = $this->getProduct() ?>
+<div class="entry-edit">
+	<div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('catalog')->__('Subscriptions') ?></h4>
+		<div class="right"><?php echo $this->getAddButtonHtml() ?></div>
+    </div>
+	<div id="product_options_container" class="box">
+		<div class="entry-edit custom-options product-custom-options">
+			<div id="product_options_container_top"></div>
+			<?php echo $this->getSubscriptionBoxHtml() ?>
+		</div>
+    </div>
+</div>

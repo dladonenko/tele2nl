@@ -1,0 +1,121 @@
+<?php if ($this->getIsDongle()) { return; } ?>
+<script>
+    <?php
+    $subscriptions = $this->getPrePostSubscription();
+    if (isset($subscriptions['post'])) {
+
+        echo "var bindingTimesPost = [];\n";
+        echo "var bindingPricesPost = [];\n";
+        echo "var bindingLtcPost = [];\n";
+        echo "var bindingValueIdsPost = [];\n";
+        echo "var bindMonthlyPrices = [];\n";
+
+        foreach ($subscriptions['post'] as $subId => $post) {
+            echo "bindingTimesPost[" . $subId . "] = [" . implode(', ', $post['bind_period']) . "];\n";
+        }
+
+        foreach ($subscriptions['post'] as $subId => $post) {
+            echo "bindingPricesPost[" . $subId . "] = [];\n";
+            foreach ($post['bind_price'] as $bt=>$price) {
+                echo "bindingPricesPost[" . $subId . "][" . $bt . "] = " . $price . ";\n";
+            }
+        }
+
+        foreach ($subscriptions['post'] as $subId => $post) {
+            echo "bindingValueIdsPost[" . $subId . "] = [];\n";
+            foreach ($post['value_ids'] as $bt=>$valueId) {
+                echo "bindingValueIdsPost[" . $subId . "][" . $bt . "] = " . $valueId . ";\n";
+            }
+        }
+
+        foreach ($subscriptions['post'] as $subId => $post) {
+            echo "bindingLtcPost[" . $subId . "] = [];\n";
+            foreach ($post['least_total_cost'] as $bt=>$ltc) {
+                echo "bindingLtcPost[" . $subId . "][" . $bt . "] = " . $ltc . ";\n";
+            }
+        }
+
+        foreach ($subscriptions['post'] as $subId => $post) {
+            echo "bindMonthlyPrices[" . $subId . "] = [];\n";
+            foreach ($post['bind_monthly_prices'] as $key=>$value) {
+                echo "bindMonthlyPrices[" . $subId . "][" . $key . "] = " . $value. ";\n";
+            }
+        }
+    }
+
+    ?>
+
+    <?php if (isset($subscriptions['post'])): ?>
+    function loadBindPeriodsPost()
+    {
+        <?php if (isset($subscriptions['post'])): ?>
+        <?php if( sizeof($subscriptions['post']) == 1 ): ?>
+            var subId = jQuery(':radio[name=subscription_post]:checked').val();
+            <?php else: ?>
+            var subId = jQuery('#subscription_post').val();
+            <?php endif; ?>
+        <?php endif; ?>
+
+        var binding = jQuery('#radioBindingPeriodPost');
+
+        //var radioHtml = '<div class="span4"><label><input type="radio" class="radio product-custom-option" id="options_<?php echo $subscriptions['option_id'] ?>" onClick="opConfig.reloadPrice();" checked="checked" name="options[<?php echo $subscriptions['option_id'] ?>]" value="" /> 0 mån</label></div>';
+        var radioHtml = '';
+        for (var i in bindingTimesPost[subId]) {
+            if (!bindingTimesPost[subId].hasOwnProperty(i)) continue;
+            var bt = bindingTimesPost[subId][i];
+            var bt2 = bindingPricesPost[subId][bt];
+
+            if (typeof(bt) != 'number')
+                continue;
+
+            radioHtml += '<div class="span4"><label><input type="radio" class="radio product-custom-option" id="options_<?php echo $subscriptions['option_id'] ?>_' + bt + '" onClick="opConfig.reloadPrice(); reloadMtkPrice(' + bindingLtcPost[subId][bt] + '); reloadSubscriptionBindMonthlyPrice(' + bindMonthlyPrices[subId][bt] + ');" name="options[<?php echo $subscriptions['option_id'] ?>]" price="' + bindingPricesPost[subId][bt] + '" value="' + bindingValueIdsPost[subId][bt] + '" data-bt="' + bt + '" subid="'+subId+'" /> ' + bt + ' mån</label></div>';
+        }
+        binding.html(radioHtml);
+        binding.find(':radio').ezMark();
+
+        <?php if (isset($subscriptions['post'])): ?>
+        <?php if( sizeof($subscriptions['post']) == 1 ): ?>
+            var option = jQuery(':radio[name=subscription_post]:checked').data('monthly-price');
+            <?php else: ?>
+            var option = jQuery('#subscription_post > option:selected').data('monthly-price');
+            <?php endif; ?>
+        <?php endif; ?>
+
+        jQuery('#post-price-monthly').html(option);
+
+        // select max bind time by default
+        var maxBt = Math.max.apply(Math, bindingTimesPost[subId]);
+        radio_post = jQuery('#radioBindingPeriodPost input:radio[id*="options_<?php echo $subscriptions['option_id'] ?>_'+ maxBt + '"]').attr('id');
+        if (jQuery('div#postpaid').hasClass('active')) {
+            jQuery('#radioBindingPeriodPost .tele4G-radio > input:radio[data-bt="' + maxBt + '"]')
+                .attr('checked', 'checked').trigger('click')
+                .parent().addClass('selected');
+        }
+    }
+        <?php else: ?>
+    var radio_post = '';
+        <?php endif; ?>
+
+    function reloadMtkPrice(least_total_cost)
+    {
+        jQuery('.mtk_price').html(least_total_cost);
+    }
+
+    function reloadSubscriptionBindMonthlyPrice(bindMonthlyPrice)
+    {
+        jQuery('#post-price-monthly').html(bindMonthlyPrice.toFixed());
+    }
+
+    var radio_pre = '<?php echo Mage::helper('tele4G_catalog')->getDefaultPreOption($subscriptions); ?>';
+    jQuery(document).ready(function(){
+    <?php if (isset($subscriptions['post'])): ?>setTimeout(function(){loadBindPeriodsPost()},0);<?php endif; ?>
+
+        if (jQuery('#prepaid').hasClass('active')) {
+            jQuery('#'+radio_pre)
+                .attr('checked', 'checked')
+                .parent('.tele4G-radio').addClass('selected');
+        }
+
+    });
+
+</script>

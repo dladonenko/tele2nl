@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <tele4G translate="label" module="tele4G_sS4Integration">
+            <label>Tele4G</label>
+            <sort_order>100</sort_order>
+        </tele4G>
+    </tabs>
+    <sections>
+        <tele4G translate="label" module="tele4G_sS4Integration">
+            <label>SS4 Integration</label>
+            <class>separator-top</class>
+            <tab>tele4G</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <ss4 translate="label" module="tele4G_sS4Integration">
+                    <label>SS4 Integration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <wsdl translate="label">
+                            <label>Wsdl</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </wsdl>
+                        <wsdl_log translate="label">
+                            <label>Wsdl For Logs</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </wsdl_log>
+                        <selling_reseller_number translate="label">
+                            <label>Reseller Number for CuSe Agent</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </selling_reseller_number>
+                        <use_from_cookie translate="label">
+                            <label>Use CuSe Reseller Number from cookie</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </use_from_cookie>
+                        <regular_customer_number translate="label">
+                            <label>Reseller Number for Regular Customer Number</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </regular_customer_number>
+                    </fields>
+                </ss4>
+                <variables translate="label" module="tele4G_sS4Integration">
+                    <label>Variables</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <domain_cookie translate="label">
+                            <label>Domain for cookie</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </domain_cookie>
+                        <alternative_vat_rate translate="label">
+                            <label>Alternative VAT rate</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </alternative_vat_rate>
+                        <alternative_vat_rate_for_insurance translate="label">
+                            <label>Alternative VAT rate for insurance</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </alternative_vat_rate_for_insurance>
+                        <tele4G_main_page translate="label">
+                            <label>Tele4G main page</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </tele4G_main_page>
+                        <tele4G_mbb_page translate="label">
+                            <label>Tele4G mbb page</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </tele4G_mbb_page>
+                    </fields>
+                </variables>
+                <downgrade translate="label" module="tele4G_sS4Integration">
+                    <label>Downgrade</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <downgrade_error translate="label">
+                            <label>Test mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>tele4G_subscription/downgrade_errors</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </downgrade_error>
+                    </fields>
+                </downgrade>
+            </groups>
+        </tele4G>
+    </sections>
+</config>

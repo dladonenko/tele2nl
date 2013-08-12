@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tele2_PageCache />
+    </modules>
+    <global>
+        <models>
+            <tele2_pagecache>
+                <class>Tele2_PageCache_Model</class>
+            </tele2_pagecache>
+            <!-- enterprise_pagecache>
+                <rewrite>
+                    <processor>Tele2_PageCache_Model_Processor</processor>
+                </rewrite>
+            </enterprise_pagecache -->
+        </models>
+    </global>
+    <crontab>
+        <jobs>
+            <clean_cache>
+                <schedule>
+                    <cron_expr>10 */4 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>tele2_pagecache/observer::cleanCache</model>
+                </run>
+            </clean_cache>
+            <clean_all_cache>
+                <schedule>
+                    <cron_expr>10 01 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>tele2_pagecache/observer::cleanCacheAll</model>
+                </run>
+            </clean_all_cache>
+        </jobs>
+    </crontab>    
+</config>

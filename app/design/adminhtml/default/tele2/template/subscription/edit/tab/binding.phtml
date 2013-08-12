@@ -1,0 +1,27 @@
+<?php $subscr = $this->getSubscription(); ?>
+
+
+<?php if(is_array($subscr->getBindings())): ?>
+<table border=1>
+<tr> <td> remove </td> <td> Article Id </td> <td> Period, month </td> <td> Monthly price With VAT </td> <td> Monthly price Without VAT </td> </tr>
+<?php foreach ($subscr->getBindings() as $binding): ?>
+<tr>
+  <td> <input type='checkbox' name="remove_binding[<?php echo $binding->getId()?>]" /> </td>
+  <td> <?php echo $binding->getArticleId()  ?> </td>
+  <td> <?php echo $binding->getTime() ?> </td>
+  <td> <?php echo $binding->getMonthlyPriceWithVat() ?> </td>
+  <td> <?php echo $binding->getMonthlyPriceWithoutVat() ?> </td>
+</tr>
+
+<?php endforeach; ?>
+</table>
+<?php endif; ?>
+
+<br />
+<table border="0">
+    <tr><th colspan="2"><h2>New Binidng Time</h2></th></tr>
+    <tr><td>Binding Time:</td><td><input type="text" name="new_binding[time]"></td></tr>
+    <tr><td>Article Id:</td><td><input type="text" name="new_binding[article_id]"></td></tr>
+    <tr><td>Monthly Price With VAT:</td><td><input type="text" name="new_binding[monthly_price_with_vat]"></td></tr>
+    <tr><td>Monthly Price Without VAT:</td><td><input type="text" name="new_binding[monthly_price_without_vat]"></td></tr>
+</table>

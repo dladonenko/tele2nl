@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+
+    <modules>
+        <Lanot_FileManager>
+            <version>1.0.1.4</version>
+        </Lanot_FileManager>
+    </modules>
+
+    <global>
+        <helpers>
+            <lanot_filemanager>
+                <class>Lanot_FileManager_Helper</class>
+            </lanot_filemanager>
+        </helpers>
+
+        <blocks>
+            <lanot_filemanager>
+                <class>Lanot_FileManager_Block</class>
+            </lanot_filemanager>
+            <adminhtml>
+                <rewrite>
+                    <catalog_product_edit_tabs>Lanot_FileManager_Block_Adminhtml_Catalog_Product_Edit_Tabs</catalog_product_edit_tabs>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+
+        <models>
+            <lanot_filemanager>
+                <class>Lanot_FileManager_Model</class>
+                <resourceModel>lanot_filemanager_resource</resourceModel>
+            </lanot_filemanager>
+            <lanot_filemanager_resource>
+                <class>Lanot_FileManager_Model_Resource</class>
+                <entities>
+                    <file_storage>
+                        <table>lanot_file_storage</table>
+                    </file_storage>
+                    <file_product>
+                        <table>lanot_file_product</table>
+                    </file_product>
+                </entities>
+            </lanot_filemanager_resource>
+        </models>
+
+        <resources>
+            <lanot_filemanager_setup>
+                <setup>
+                    <module>Lanot_FileManager</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </lanot_filemanager_setup>
+        </resources>
+
+    </global>
+
+    <adminhtml>
+        <events>
+            <catalog_product_save_commit_after>
+                <observers>
+                    <lanot_filemanager>
+                        <class>lanot_filemanager/observer</class>
+                        <method>catalogProductSaveCommitAfter</method>
+                    </lanot_filemanager>
+                </observers>
+            </catalog_product_save_commit_after>
+        </events>
+        <layout>
+            <updates>
+                <lanot_filemanager>
+                    <file>lanot_filemanager.xml</file>
+                </lanot_filemanager>
+            </updates>
+        </layout>
+    </adminhtml>
+
+    <admin>
+        <routers>
+            <lanot_filemanager>
+                <use>admin</use>
+                <args>
+                    <module>Lanot_FileManager</module>
+                    <frontName>lanot_filemanager</frontName>
+                </args>
+            </lanot_filemanager>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <lanot_filemanager>
+            <browser>
+                <dirs>
+                    <exclude/>
+                    <include/>
+                </dirs>
+                <extensions>
+                    <image_allowed>
+                        <jpg>1</jpg>
+                        <jpeg>1</jpeg>
+                        <png>1</png>
+                        <gif>1</gif>
+                    </image_allowed>
+
+                    <media_allowed>
+                        <flv>1</flv>
+                        <swf>1</swf>
+                        <avi>1</avi>
+                        <mov>1</mov>
+                        <rm>1</rm>
+                        <wmv>1</wmv>
+                    </media_allowed>
+                    <allowed/> <!-- all extensions are allowed -->
+                </extensions>
+                <resize_width>100</resize_width>
+                <resize_height>75</resize_height>
+            </browser>
+        </lanot_filemanager>
+    </adminhtml>
+
+    <frontend>
+        <layout>
+            <updates>
+                <lanot_filemanager>
+                    <file>lanot_filemanager.xml</file>
+                </lanot_filemanager>
+            </updates>
+        </layout>
+    </frontend>
+    <default>
+        <lanot_filemanager>
+            <view>
+                <root_directory>media</root_directory>
+            </view>
+        </lanot_filemanager>
+    </default>
+
+</config>

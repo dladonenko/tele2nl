@@ -1,0 +1,60 @@
+<?php if ($this->isReadonly()):?>
+<?php $_readonly = ' disabled="disabled" ';?>
+<?php else: ?>
+<?php $_readonly = '';?>
+<?php endif; ?>
+<table cellspacing="0" class="form-list" id="table_cataloginventory">
+    <tr>
+        <td class="label"><label><?php echo Mage::helper('catalog')->__('Virtual stock') ?></label></td>
+        <td class="value" colspan="2">
+            <table cellspacing="5" class="form-list" id="table_virtualstock">
+                <tr>
+                    <th></th>
+                    <th><label><?php echo Mage::helper('catalog')->__('Date') ?></label></th>
+                    <th><label><?php echo Mage::helper('catalog')->__('Amount') ?></label></th>
+                    <th><label><?php echo Mage::helper('catalog')->__('Left') ?></label></th>
+                    <th><label><?php echo Mage::helper('catalog')->__('Sold') ?></label></th>
+                </tr>
+                <?php
+                $virtualStockModel = Mage::getModel('tele2_cataloginventory/virtualstock');
+                $virtualStock = $virtualStockModel->getVirtualStock($this->getProduct()->getId());
+                for ($i=1;$i<=$virtualStockModel->getVirtualStockCountLevels();$i++) :
+                    if (!isset($virtualStock[$i])) {
+                        $virtualStock[$i] = new Varien_Object();
+                    }
+                    ?>
+                    <tr>
+                        <td><?php echo $i; ?></td>
+                        <td nowrap><input type="text" name="virtual_stock[<?php echo $i; ?>][expected_date]" id="virtual_stock_<?php echo $i; ?>_expected_date" value="<?php echo $virtualStock[$i]->getExpectedDate(); ?>" class="input-text" style="width:110px !important;" <?php echo $_readonly;?> />&nbsp;<img src="<?php echo Mage::getDesign()->getSkinUrl('images/grid-cal.gif'); ?>" alt="" class="v-middle" id="virtual_stock_<?php echo $i; ?>_trig" title="<?php echo $this->htmlEscape(Mage::helper('adminhtml')->__('Select Date')) ?>" style="" />
+                            <script type="text/javascript">
+                                //<![CDATA[
+                                Calendar.setup({
+                                    inputField: "virtual_stock_<?php echo $i; ?>_expected_date",
+                                    ifFormat: "%Y-%m-%d",
+                                    showsTime: false,
+                                    button: "virtual_stock_<?php echo $i; ?>_trig",
+                                    align: "Bl",
+                                    singleClick : true
+                                });
+                                //]]>
+                            </script>&nbsp;</td>
+                        <td><input type="text" class="input-text validate-digits" id="virtual_stock_<?php echo $i; ?>_amount" name="virtual_stock[<?php echo $i; ?>][amount]" value="<?php echo $virtualStock[$i]->getAmount(); ?>" style="width:50px;" <?php echo $_readonly;?> /></td>
+                        <td><input type="text" class="input-text validate-digits" id="virtual_stock_<?php echo $i; ?>_left" name="virtual_stock[<?php echo $i; ?>][left]" value="<?php echo $virtualStock[$i]->getLeft(); ?>" style="width:50px;"  disabled="disabled" /></td>
+                        <td><input type="text" class="input-text" name="virtual_stock[<?php echo $i; ?>][sold]" value="<?php echo ($virtualStock[$i]->getAmount()) ? (int)($virtualStock[$i]->getAmount() - $virtualStock[$i]->getLeft()) : ""; ?>" style="width:50px;" disabled="disabled" /></td>
+                    </tr>
+                    <?php endfor; ?>
+                <tr>
+                    <td colspan="4"><button id="reset_virtual_stock_button" title="<?php echo Mage::helper('catalog')->__('Reset virtual stock') ?>" type="button" class="scalable " style="margin-top:5px;float:right;"><span><span><span><?php echo Mage::helper('catalog')->__('Reset virtual stock') ?></span></span></span></button></td>
+                    <td></td>
+                </tr>
+            </table>
+            <script type="text/javascript">
+                jQuery(document).ready(function(){
+                    jQuery('#table_virtualstock #reset_virtual_stock_button').click(function(){
+                        jQuery('#table_virtualstock input[name^="virtual_stock"]').val("");
+                    });
+                });
+            </script>
+        </td>
+    </tr>
+</table>

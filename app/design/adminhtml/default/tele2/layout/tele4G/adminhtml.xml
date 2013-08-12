@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_sales_order_index>
+        <reference name="content">
+            <remove name="sales_order.grid.container" />
+            <block type="tele4G_sales/adminhtml_sales_order" name="sales_order.grid_comviq.container"></block>
+        </reference>
+    </adminhtml_sales_order_index>
+    <adminhtml_sales_order_grid>
+        <remove name="sales_order.grid" />
+        <update handle="formkey"/>
+        <block type="tele4G_sales/adminhtml_sales_order_grid" name="sales_order.grid_comviq" output="toHtml"></block>
+    </adminhtml_sales_order_grid>
+</layout>

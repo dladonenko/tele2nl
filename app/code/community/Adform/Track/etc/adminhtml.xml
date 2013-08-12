@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Branko Ajzele <branko@inchoo.net>
+ * @copyright Adform 
+ */
+-->
+<config>
+    <menu>
+        <catalog>
+            <children>
+                <adform_track translate="title" module="adform_track">
+                    <title>Adform XML Product Feed</title>
+                    <sort_order>21</sort_order>
+                    <action>adminhtml/adform_feed/index</action>
+                </adform_track>
+            </children>
+        </catalog>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <adform_track translate="title" module="adform_track">
+                                        <title>Adform Track Section</title>
+                                    </adform_track>
+                                </children>
+                            </config>
+                        </children>                      
+                    </system>
+                    <catalog>
+                        <children>
+                            <adform_track translate="title" module="adform_track">
+                                <title>Adform XML Product Feed</title>
+                                <sort_order>21</sort_order>
+                            </adform_track>
+                        </children>
+                    </catalog>                    
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

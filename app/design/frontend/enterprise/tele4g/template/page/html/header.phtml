@@ -1,0 +1,73 @@
+<!-- Globalmenu and header.phtml are generated from header.htm -->
+<div class="container web-shop">
+    <table>
+        <tr>
+            <td style="width: 140px;">
+                <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo">
+                    <img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" />
+                </a>
+            </td>
+            <td><?php echo $this->getChildHtml('header_block') ?></td>
+        </tr>
+    </table>
+    <?php echo $this->getChildHtml('store_language') ?>
+</div>
+
+<?php $storeCode = Mage::app()->getStore()->getCode(); ?>
+<?php $category = Mage::getModel('catalog/category')->loadByAttribute('code', 'cms'); ?>
+<?php if ($category): ?>
+<div id="header" class="navbar navbar-fixed-top" role="banner">
+    <div class="navbar-inner">
+        <div class="container">
+            <ul class="nav" role="navigation">
+                <li class="divider-vertical"></li>
+                <?php if ($category->getIncludeInMenu()): ?>
+                <?php $main_category = Mage::getModel('catalog/category')->getCategories($category->getId()); ?>
+                <?php foreach ($main_category as $category): ?>
+                <li class="dropdown voice">
+                    <?php $subcategorys = Mage::getModel('catalog/category')->getCategories($category->getId()); ?>
+                    <a class="dropdown-toggle" href="/<?php echo $category->getRequestPath(); ?>">
+                        <?php echo $category->getName(); ?>
+                        <?php if (count($subcategorys->getNodes())): ?>
+                            <b class="caret"></b>
+                        <?php endif; ?>
+                    </a>
+                    <?php if (count($subcategorys->getNodes())): ?>
+                        <div class="dropdown-menu row-fluid">
+                            <div class="inner-row">
+                                <?php foreach ($subcategorys as $subcategory): ?>
+                                <?php if ($subcategory->getIncludeInMenu()): ?>
+                                <div class="span3">
+                                    <div class="sub-menu">
+                                        <div class="list-header">
+                                            <a href="/<?php echo $subcategory->getRequestPath(); ?>"><h3><?php echo $subcategory->getName() ?></h3></a> 
+                                        </div>
+                                        <ul>
+                                            <?php $subcategorys = Mage::getModel('catalog/category')->getCategories($subcategory->getId()); ?>
+                                            <?php foreach ($subcategorys as $subcategory): ?>
+                                            <?php if ($subcategory->getIncludeInMenu()): ?>
+                                            <li><a href="/<?php echo $subcategory->getRequestPath(); ?>"><?php echo $subcategory->getName() ?></a></li>
+                                            <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </li>
+                <li class="divider-vertical"></li>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </ul>
+        </div>
+        <div class="cart">
+            <div>
+                <a href="/<?php echo ($storeCode == Mage_Core_Model_Store::DEFAULT_CODE) ? '' : $storeCode.'/' ; ?>checkout/cart/" class="items">Du har <span id="cart-status-number"></span>&nbsp;i din varukorg &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

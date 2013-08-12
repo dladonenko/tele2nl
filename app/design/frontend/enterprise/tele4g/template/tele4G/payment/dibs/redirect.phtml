@@ -1,0 +1,23 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head><body>
+
+<div style="text-align: center; height: 400px; vertical-align: middle; padding-top: 140px;">
+    <div style="font-family: Arial; font-size: 11px; margin-bottom: 20px;"><?php echo $this->__('You will be redirected to DIBS Payment Service in a few seconds.') ?></div>
+    <img style="border: 0px;" src="<?php echo $this->getSkinUrl('images/loading.gif') ?>">
+</div>
+
+<?php
+    $model = $this->getModel();
+    $formfields = $this->getCheckoutFormFields();
+?>    
+<form action="<?php echo $this->getActionUrl(); ?>" method="GET" name="dibs_checkout" id="dibs_checkout">
+<?php foreach ($formfields as $field => $value): ?>
+    <input type="hidden" name="<?php echo $field; ?>" id="<?php echo $field; ?>" value="<?php echo $value; ?>" />
+<?php endforeach; ?>
+</form>
+
+    <script type="text/javascript">
+        var t = setTimeout('document.getElementById("dibs_checkout").submit()',500);
+    </script>
+</body></html>

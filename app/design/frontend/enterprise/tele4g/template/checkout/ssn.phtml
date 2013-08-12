@@ -1,0 +1,131 @@
+<div class="wrapper-grey border">
+    <div class="container pad-bot">
+        <h2 class="sub-step-head clearfix"><span class="sub-step-nbr">1</span><span class="text">Fyll i dina uppgifter</span></h2>
+        <div class="row">
+            <div class="span3">
+                <label for="social-number">Personnummer</label>
+                <input class="input-vert-large span" type="text" id="social-number" placeholder="ÅÅÅÅMMDD-XXXX">
+            </div>
+            <div class="span3">
+                <div class="user-info-wrap">
+                    <div id="ssn_name"></div>
+                    <div id="ssn_street"></div>
+                    <div id="ssn_city"></div>
+                </div>
+            </div>
+            <div class="span3">
+                <label for="e-mail">E-post</label>
+                <input class="input-vert-large span" type="text" id="e-mail" placeholder="E-post">
+            </div>
+            <div class="span3">
+                <label for="repeat-email">Upprepa e-post</label>
+                <input class="input-vert-large span" type="text" id="repeat-email" placeholder="Upprepa e-post">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container pad-bot">
+    <h2 class="sub-step-head clearfix"><span class="sub-step-nbr">4</span><span class="text">Aviasering</span></h2>
+    <div class="row">
+        <div class="span3">
+            <label for="sms-notif">SMS-avisering
+            </label>
+            <input class="input-vert-large span" type="text" id="sms-notif" value="070-487 38 21">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        var isLoadSSN = false;
+        jQuery('#social-number').change(function(){
+            if (!isLoadSSN) {
+                jQuery('#ssn_name').text('');
+                jQuery('#ssn_street').text('');
+                jQuery('#ssn_city').text('');
+                var ssnNumber = jQuery(this);
+                ssnNumberVal = ssnNumber.val().replace(/[-\s]/g,"");
+                if (ssnNumberVal.match(/^[\d]{12}$/)) {
+                    var userInfoWrap = jQuery('.user-info-wrap').eq(0);
+                    userInfoWrap.css({'background':'url(<?php echo $this->getSkinUrl() ?>images/ajax-loader.gif) center center no-repeat','height':'50px'});
+                    jQuery.post('<?php echo $this->getUrl('checkout/ssn'); ?>', {ssnNumber:ssnNumberVal},
+                            function(data) {
+                                userInfoWrap.css({'background':'none','height':'auto'});
+                                if (!data.error) {
+                                    jQuery('#ssn_name').text(data.first_name +' '+ data.last_name);
+                                    jQuery('#ssn_street').text(data.address_street);
+                                    jQuery('#ssn_city').text(data.address_postal_code +' '+ data.address_city);
+                                    ssnNumber.css('background-color','green');
+                                    //isLoadSSN = true;
+                                } else if (data.error == 145) {
+                                    jQuery('#ssn_name').html('<span style="color:red"><?php echo $this->__("SSN is invalid!"); ?></span>');
+                                    jQuery('#ssn_street').text('');
+                                    jQuery('#ssn_city').text('');
+                                    ssnNumber.css('background-color','red');
+                                } else {
+                                    jQuery('#ssn_name').html('<span style="color:red"><?php echo $this->__("Error!"); ?></span>');
+                                    jQuery('#ssn_street').text('');
+                                    jQuery('#ssn_city').text('');
+                                    ssnNumber.css('background-color','red');
+                                }
+                            },
+                            'json'
+                    );
+                } else {
+                    ssnNumber.css('background-color','red');
+                }
+            }
+        });
+
+        jQuery('#e-mail').keyup(function(){
+            var emailRepeat = jQuery('#repeat-email');
+            var email = jQuery('#e-mail');
+            var emailVal = email.val();
+            if (checkEmail(emailVal)){
+                email.css('background-color','green');
+                emailRepeat.css('background-color','red');
+            } else {
+                email.css('background-color','red');
+            }
+        });
+        jQuery('#repeat-email').keyup(function(){
+            var emailRepeat = jQuery('#repeat-email');
+            var emailRepeatVal = emailRepeat.val();
+            if (checkEmail(emailRepeatVal)){
+                if (emailRepeatVal == jQuery('#e-mail').val()) {
+                    emailRepeat.css('background-color','green');
+                } else {
+                    emailRepeat.css('background-color','red');
+                }
+            } else {
+                emailRepeat.css('background-color','red');
+            }
+        });
+
+        function checkEmail(val) {
+            if (val.match(/^([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*@([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*\.(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]){2,})$/i)) {
+                return true;
+            }
+            return false;
+        }
+
+        function checkPhone(val) {
+            val = val.replace(/[-\s]/g,"");
+            if (val.match(/^07[\d]{8}$/)) {
+                return true;
+            }
+            return false;
+        }
+
+        jQuery('#sms-notif').keyup(function(){
+            var number = jQuery(this).val();
+            if (checkPhone(number)) {
+                jQuery(this).css('background-color','green');
+            } else {
+                jQuery(this).css('background-color','red');
+            }
+        });
+
+    });
+</script>

@@ -1,0 +1,50 @@
+<?php
+/**
+ *
+ * @category    design
+ * @package     default_tele2
+ */
+?>
+<?php 
+    $freeGift = $this->getFreeGift();
+    $actionProductIds = explode(',', $this->_getFreeGift()->getActionProductId());
+?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('tele2_freeGift')->__('Gifts') ?></h4>
+    </div>
+    <fieldset>
+
+        <legend><?php echo Mage::helper('tele2_freeGift')->__('Gifts') ?></legend>
+        <table cellspacing="0" class="form-list" id="table_subscription_standalone">
+
+        <tr>
+            <td class="label"><label for="action_addon_id"><?php echo Mage::helper('tele2_subscription')->__('Addon') ?></label></td>
+            <td class="value"><select id="action_addon_id" name="data[action_addon_id][]" class="select multiselect" multiple="multiple" size="10" style="width: 600px;">
+                <?php foreach ($this->getAddons() as $option): ?>
+                <option value="<?php echo $option['value'] ?>"<?php if(in_array($option['value'], $actionProductIds)):?> selected="selected"<?php endif; ?>><?php echo $option['label'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </tr>
+
+        <tr>
+            <td class="label"><label for="action_accessory_id"><?php echo Mage::helper('tele2_subscription')->__('Accessory') ?></label></td>
+            <td class="value"><select id="action_accessory_id" name="data[action_accessory_id][]" class="select multiselect" multiple="multiple" size="10" style="width: 600px;">
+                <?php foreach ($this->getAccessories() as $option): ?>
+                <option value="<?php echo $option['value'] ?>"<?php if(in_array($option['value'], $actionProductIds)):?> selected="selected"<?php endif; ?>><?php echo $option['label'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </tr>
+
+        <tr>
+            <td class="label"><label for="action_device_id"><?php echo Mage::helper('tele2_subscription')->__('Device') ?></label></td>
+            <td class="value"><select id="action_device_id" name="data[action_device_id][]" class="select multiselect" multiple="multiple" size="10" style="width: 600px;">
+                <?php foreach ($this->getDevices() as $option): ?>
+                <option value="<?php echo $option['value'] ?>"<?php if(in_array($option['value'], $actionProductIds)):?> selected="selected"<?php endif; ?>><?php echo $option['label'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </tr>
+
+        </table>
+    </fieldset>
+</div>

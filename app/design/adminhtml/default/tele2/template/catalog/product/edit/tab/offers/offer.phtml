@@ -1,0 +1,70 @@
+<style>
+    table.offers{
+        border:solid 1px #000;
+        border-collapse:collapse;
+        width:100%;
+    }
+    table.offers td, table.offers th{
+        border:solid 1px #000;
+        text-align: center;
+        padding:3px;
+    }
+    table.offers td a.colorlink{
+        display:inline-block;
+        width:15px;
+        height:15px;
+        border:solid 1px #000;
+    }
+</style>
+<table class="offers">
+    <tr>
+    <th width="10%"><?php echo Mage::helper('tele2_subscription')->__('Subscription'); ?></th>
+    <th width="10%"><?php echo Mage::helper('tele2_subscription')->__('Subscription Type'); ?></th>
+    <th width="10%"><?php echo Mage::helper('tele2_subscription')->__('Binding Time'); ?></th>
+    <th width="50%"><?php echo Mage::helper('tele2_subscription')->__('Offer URL'); ?></th>
+    </tr>
+<?php
+$offers = $this->getOffers();
+$product = $this->getProduct();
+$colors = $product->getColorLables();
+$productOfferUrl = $product->getProductOfferUrl();
+$stores = $this->getStores();
+if ($product && count($offers) && is_array($stores) && count($stores)) {
+    foreach ($stores as $store) {
+        $storeHeader = $store['name'] . ' ' . Mage::helper('tele2_subscription')->__('Store Offers');
+        echo '<tr><th colspan="4" style="text-align: left;">' . $storeHeader . '</th></tr>';
+
+        foreach ($offers as $offer) {
+            if ($offer->getType1() == '1') {
+                $subscriptionType = 'PRE';
+                $subscriptionTypeUrl = Tele2_Subscription_Model_Mobile::SUBSCRIPTION_TYPE_PRE;
+            } else {
+                $subscriptionType = 'POST';
+                $subscriptionTypeUrl = Tele2_Subscription_Model_Mobile::SUBSCRIPTION_TYPE_POST;
+            }
+
+            $url = $store['url'] . $productOfferUrl . '?subscriptionType=' . $subscriptionTypeUrl
+                . '&s=' . $offer->getSubscriptionId() . '&b=' . $offer->getBindingTime();
+            $colorLinks = '';
+            if (is_array($colors)) {
+                foreach ($colors as $color) {
+                    $color = strtolower($color);
+                    $colorLinks .= ' <a class="colorlink" target="_blank" style="background-color:'
+                        . $color . ';" href="' . $url . '#' . $color . '" title="' . $color . '"></a>';
+                }
+            }
+            echo '<tr>';
+            echo '<td style="text-align: left;">' . $offer->getName() . '</td>';
+            echo '<td>' . $subscriptionType . '</td>';
+            echo '<td>' . $offer->getBindingTime() . '</td>';
+            echo '<td><a target="_blank" href="' . $url . '">' . $url . '</a>' . $colorLinks . '</td>';
+            echo '</tr>';
+        }
+    }
+} else {
+    echo '<tr><th colspan="4" style="text-align: left;">'
+        . Mage::helper('tele2_subscription')->__('No Offers')
+        . '</th></tr>';
+}
+?>
+</table>

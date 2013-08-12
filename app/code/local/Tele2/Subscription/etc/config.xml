@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento Enterprise Edition
+ *
+ * @category    Tele2
+ * @package     Tele2_Subscription
+ */
+-->
+<config>
+    <modules>
+        <Tele2_Subscription>
+            <version>0.0.19</version>
+        </Tele2_Subscription>
+    </modules>
+    <global>
+        <models>
+            <tele2_subscription>
+                <class>Tele2_Subscription_Model</class>
+                <resourceModel>tele2_subscription_resource</resourceModel>
+            </tele2_subscription>
+            <tele2_subscription_resource>
+                <class>Tele2_Subscription_Model_Resource</class>
+                <entities>
+                    <addonrelation>
+                        <table>tele2_addon_relation</table>
+                    </addonrelation>
+                    <configrelation>
+                        <table>tele2_config_relation</table>
+                    </configrelation>
+                    <binding>
+                        <table>tele2_binding</table>
+                    </binding>
+                    <group>
+                        <table>tele2_subscription_group</table>
+                    </group>
+                    <subscription>
+                        <table>tele2_abstract_subscription</table>
+                    </subscription>
+                    <subscription_attributes>
+                        <table>tele2_abstract_subscription_attributes</table>
+                    </subscription_attributes>
+                    <subscription_mobile>
+                        <table>tele2_mobile_subscription</table>
+                    </subscription_mobile>
+                    <subscription_mobile_attributes>
+                        <table>tele2_mobile_subscription_attributes</table>
+                    </subscription_mobile_attributes>
+                    <subscription_config>
+                        <table>tele2_subscription_config</table>
+                    </subscription_config>
+                    <relation>
+                        <table>tele2_relation</table>
+                    </relation>
+                </entities>
+            </tele2_subscription_resource>
+        </models>
+        <blocks>
+            <tele2_subscription>
+                <class>Tele2_Subscription_Block</class>
+            </tele2_subscription>
+        </blocks>
+        <helpers>
+            <tele2_subscription>
+                <class>Tele2_Subscription_Helper</class>
+            </tele2_subscription>
+        </helpers>
+        <resources>
+            <tele2_subscription_setup>
+                <setup>
+                    <module>Tele2_Subscription</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </tele2_subscription_setup>
+        </resources>
+        <events>
+            <catalog_product_save_after>
+                <observers>
+                    <subscription>
+                        <class>tele2_subscription/observer</class>
+                        <method>saveProductSubscriptionData</method>
+                    </subscription>
+                </observers>
+            </catalog_product_save_after>
+        </events>
+    </global>
+    <adminhtml>
+        <menu>
+            <telco_freegift>
+                <children>
+                    <subscriptions translate="title" module="tele2_subscription">
+                        <title>Manage Mobile Subscriptions</title>
+                        <action>adminhtml/subscription/mobile/</action>
+                        <sort_order>10</sort_order>
+                    </subscriptions>
+                    <subscription_configs translate="title" module="tele2_subscription">
+                        <title>Manage Subscription Configs</title>
+                        <action>adminhtml/subscription/config/</action>
+                        <sort_order>20</sort_order>
+                    </subscription_configs>
+                    <subscription_products translate="title" module="catalog">
+                            <title>Manage Subscription Products</title>
+                            <action>adminhtml/catalog_subscription/</action>
+                            <sort_order>30</sort_order>
+                    </subscription_products>
+                    <subscription_groups translate="title" module="tele2_subscription">
+                        <title>Manage Subscription Groups</title>
+                        <action>adminhtml/groups/group/</action>
+                        <sort_order>40</sort_order>
+                    </subscription_groups>
+                </children>
+            </telco_freegift>
+        </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <catalog>
+                            <children>
+                                <subscriptions>
+                                    <title>Subscriptions</title>
+                                </subscriptions>
+                                <subscription_products>
+                                    <title>Subscription Products</title>
+                                </subscription_products>
+                            </children>
+                        </catalog>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <events>
+                    <file>tele2/subscription.xml</file>
+                </events>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Tele2_Subscription>
+                    <files>
+                        <default>Tele2_Subscription.csv</default>
+                    </files>
+                </Tele2_Subscription>
+            </modules>
+        </translate>
+    </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Tele2_Subscription before="Mage_Adminhtml">Tele2_Subscription_Adminhtml</Tele2_Subscription>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+</config>

@@ -1,0 +1,40 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ * Down Payment
+ *
+ * @category    design
+ * @package     comviq_default
+ */
+?>
+<?php $_code=$this->getMethodCode() ?>
+<?php if (count($this->getOptions())): ?>
+    <?php foreach($this->getOptions() as $option): ?>
+        <div class="row-fluid">
+            <div class="span1"></div>
+            <div class="span7">
+                <label for="<?php echo $_code.'_'.$option->pClassiD ?>" class="radio ctm-radio clearfix">
+                    <input type="radio" class="radio" id="<?php echo $_code.'_'.$option->pClassiD ?>" name="payment[option]" value="<?php echo $option->pClassiD ?>"
+                        <?php if($option->isAccount): ?> checked="checked"<?php endif ?> />
+                    <?php if($option->isAccount): ?><?php echo $this->__('Klarna Konto') ?><?php endif ?>
+                    <?php echo $option->months ?> <?php echo $this->__('mån') ?>
+                </label>
+            </div>
+            <div class="span4"><?php echo $option->monthlyCost ?> <?php echo $this->__('kr/mån'); ?></div>
+        </div>
+    <?php endforeach; ?>
+    <?php //echo $this->getChildHtml() ?>
+    
+    <script>
+        // prevent IE7-8 from triggering change event on every click
+        initCheckedState('#checkout_step_six :radio[name="payment\[option\]"]');
+        jQuery('#checkout_step_six :radio[name="payment\[option\]"]').change(function(e){
+            if (this.checked == this.previousCheckedState) {
+                initCheckedState('#checkout_step_six :radio[name="payment\[option\]"]');
+            } else {
+                initCheckedState('#checkout_step_six :radio[name="payment\[option\]"]');
+                stepSix(this);
+            }
+        });
+    </script>
+<?php endif; ?>

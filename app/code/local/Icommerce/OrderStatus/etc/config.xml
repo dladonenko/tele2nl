@@ -1,0 +1,75 @@
+<?xml version="1.0" ?><config>
+    <modules>
+        <Icommerce_OrderStatus>
+            <version>0.1.16</version>
+            <depends>
+                <Mage_Payment/>
+            </depends>
+        </Icommerce_OrderStatus>
+    </modules>
+    <global>
+        <models>
+            <orderstatus>
+                <class>Icommerce_OrderStatus_Model</class>
+            </orderstatus>
+        </models>
+    	<helpers>
+    		<orderstatus>
+    			<class>Icommerce_OrderStatus_Helper</class>
+    		</orderstatus>
+    	</helpers>
+        <sales>
+            <order>
+                <statuses>
+                    <pay_pending translate="label"><label>Pending Third Party Payment</label></pay_pending>
+                    <captured translate="label"><label>Payment Captured</label></captured>
+                    <reserved translate="label"><label>Payment Reserved</label></reserved>
+                    <pay_failed translate="label"><label>Payment Failed</label></pay_failed>
+                    <pay_aborted translate="label"><label>Payment Aborted</label></pay_aborted>
+                    <holded_prepayment translate="label"><label>On Hold - Prepayment</label></holded_prepayment>
+                    <holded_supplier translate="label"><label>On Hold - Await Delivery</label></holded_supplier>                    
+                </statuses>
+                <states>
+                    <new>
+                        <statuses>
+                            <reserved/>
+                        </statuses>
+                    </new>                
+                    <pending_payment>
+                        <statuses>
+                            <pay_pending/>
+                        </statuses>
+                    </pending_payment>                
+                    <processing>
+                        <statuses>
+                            <captured/>
+                        </statuses>
+                    </processing>
+                    <holded>
+                        <statuses>
+                            <holded_prepayment/>
+                            <holded_supplier/>
+                        </statuses>
+                    </holded>
+                    <canceled>
+                        <statuses>
+                            <pay_failed/>
+                            <pay_aborted/>
+                        </statuses>
+                    </canceled>
+                </states>
+            </order>
+        </sales>
+    </global>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Icommerce_OrderStatus>
+                    <files>
+                        <default>Icommerce_OrderStatus.csv</default>
+                    </files>
+                </Icommerce_OrderStatus>
+            </modules>
+        </translate>
+    </adminhtml>
+ </config>

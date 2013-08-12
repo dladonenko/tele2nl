@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions>
+    <types>
+        <schema>
+            <complexType name="catalogProductRequestAttributes">
+                <all>
+                    <element name="subscriptions" type="typens:ArrayOfString" minOccurs="0"/>
+                    <element name="associated" type="typens:ArrayOfString" minOccurs="0"/>
+                </all>
+            </complexType>
+            <complexType name="catalogProductReturnEntity">
+                <all>
+                    <element name="subscriptions" type="typens:Object" minOccurs="0"/>
+                    <element name="associated" type="typens:Object" minOccurs="0"/>
+                </all>
+            </complexType>
+        </schema>
+    </types>
+</definitions>

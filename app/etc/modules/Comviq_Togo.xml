@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Comviq_Togo>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Comviq_Togo>
+    </modules>
+</config>

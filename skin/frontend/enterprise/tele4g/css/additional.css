@@ -1,0 +1,67 @@
+.popup {
+	position: fixed;
+	width: 858px;
+	top: 40%;
+	left:25%;
+	background: #fff;
+	z-index: 1101;
+	padding: 0px 30px 10px 30px;
+}
+
+.popup .close {
+	position: absolute;
+	top: 25px;
+	right: 30px;
+}
+
+.popup-header {}
+.popup-content { margin: 10px 0; }
+.popup-footer {}
+
+.popup .info {
+	padding: 15px 0px 15px 0px;
+}
+
+.popup-overlay,
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1100;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	height: 100%;
+}
+
+.popup table {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.popup h1 {
+	margin: 0px;
+	padding: 15px 30px 15px 30px;
+}
+
+.popup .popup_title {
+	margin: 0px -30px 0px -30px;
+}
+
+.border-top { border-top: 1px dashed gainsboro; }
+
+
+
+
+#popup-fmcg {
+	display: none;
+	width: 450px;
+	padding: 15px 30px;
+}
+#popup-fmcg .logo-togo {
+	float: left;
+	margin-right: 10px;
+}
+#popup-fmcg .btn span {
+	color: #ffed00;
+}

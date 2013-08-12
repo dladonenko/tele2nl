@@ -1,0 +1,158 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<?php
+/**
+ * Shopping cart template
+ *
+ * @see Mage_Checkout_Block_Cart
+ */
+?>
+
+<?php echo $this->getChildHtml('downgrade_popup') ?>
+
+<div id="breadcrumbs" class="container">
+    <ul class="breadcrumb">
+        <li><a href="<?php echo Mage::getStoreConfig("tele4G/variables/tele4G_main_page")?>"><?php echo $this->__('Hem') ?></a><span class="divider">›</span></li>
+        <li class="active"><?php echo $this->__('Varukorg') ?></li>
+    </ul>
+</div>
+    
+<form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+<?php $productFMCG = Mage::getModel('tele4G_checkout/cart')->hasQuoteFmcg(true); ?>
+<?php if ($productFMCG && $productFMCG->getId() && !Mage::getModel('tele4G_checkout/cart')->getIsFmcgOnly()): ?>
+    <div class="container web-shop">
+        <h1><?php echo $this->__('Min varukorg') ?></h1>
+        <div class="togo_cart">
+            <p><?php echo $this->__("Du har valt att hämta ut din %s direkt via To Go och behöver därför ta bort dina övriga varor från varukorgen.", $productFMCG->getName()); ?></p>
+            <p><?php echo $this->__("Gör ett av följande val:"); ?></p>
+            <label for="togo_remove"><input type="radio" name="togo" id="togo_remove" value="<?php echo $this->getUrl('checkout/tele4G/removeNotFMCG') ?>" checked="checked" /><?php echo $this->__("Handla To Go"); ?></label>
+            <div class="description"><?php echo $this->__("Jag vill hämta ut min %s direkt. Övriga varor i korgen tas bort.", $productFMCG->getName()); ?></div>
+            <label for="togo_skip"><input type="radio" name="togo" id="togo_skip" value="<?php echo $this->getUrl('checkout/tele4G') ?>" /><?php echo $this->__("Skicka med post"); ?></label>
+            <div class="description"><?php echo $this->__("Jag vill få alla produkter nedan skickade till mig per post."); ?></div>
+            <button class="btn btn-success btn-large" onclick="window.location.href=jQuery('.togo_cart input:radio:checked').val();" type="button"><?php echo $this->__("Gå vidare"); ?></button>
+        </div>
+    </div>
+<?php else: ?>
+    <div class="container web-shop">
+        <div class="row-fluid margin">
+            <div class="buttons-title pull-right">
+                <button type="button" class="btn-link" onclick="window.location.href='<?php echo Mage::getBaseUrl(); ?>';"><?php echo $this->__('Handla vidare') ?></button>
+                <?php if(!$this->hasError()): ?>
+                    <?php foreach ($this->getMethods('top_methods') as $method): ?>
+                        <?php if ($methodHtml = $this->getMethodHtml($method)): ?>
+                            <?php echo $methodHtml; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+            <h1><?php echo $this->__('Min varukorg') ?></h1>
+        </div>
+    </div>
+ <?php endif;?>
+
+<div class="container"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<?php echo $this->getChildHtml('form_before') ?>
+
+<div class="wrapper-grey border-top">
+    <div class="container web-shop">
+        <table class="table table-cart border-bottom">
+            <colgroup>
+                <col class="column-image" />
+                <col />
+                <col class="column-price" />
+                <?php $mergedCells = ($this->helper('tax')->displayCartBothPrices() ? 2 : 1); ?>
+            </colgroup>
+
+            <tbody>
+                <?php foreach($this->getItems() as $_item): ?>
+                    <?php $aOfferIds[] = $_item->getOfferId(); ?>
+                <?php endforeach ?>
+                <?php
+                $aOfferIds = array_unique($aOfferIds);
+                foreach($aOfferIds as $offer_id): ?>
+                    <?php foreach($this->getItems() as $_item): ?>
+                        <?php if ($_item->getOfferId() == $offer_id): ?>
+                            <?php echo $this->getItemHtml($_item) ?>
+                        <?php endif; ?>
+                    <?php endforeach ?>
+                    <tr>
+                        <td colspan="3">
+                            <div class="cart-total">
+                                <p><small>
+                                    <?php /* <a href="#"><?php echo $this->__('Lägg till Pluspaket') ?></a><br /> */ ?>
+                                    <?php $mtc = Mage::helper('tele4G_checkout')->getLeastTotalCostByOfferId($offer_id, $this->getItems()); ?>    
+                                    <?php if ($mtc > 0): ?>
+                                        <?php $ltc = $this->helper('core')->currency($mtc); ?>
+                                        <?php echo $this->__('Minsta totalkostnad under bindningstiden är') ?>
+                                        <?php echo $ltc ?><br />
+                                    <?php endif; ?>
+                                    <?php $deleteUrl = $this->getUrl(
+                                                                        'checkout/cart/delete_offer',
+                                                                        array(
+                                                                            'offer_id'=>$offer_id,
+                                                                            Mage_Core_Controller_Front_Action::PARAM_NAME_URL_ENCODED => $this->helper('core/url')->getEncodedUrl()
+                                                                        )
+                                                                    );?>
+                                    <a href="<?php print $deleteUrl?>"><i class="icon-delete"></i><strong><?php echo $this->__('Ta bort denna beställning') ?></strong></a>
+                                </small></p>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>    
+</div>
+</form>
+
+<div class="wrapper-paper-brown">
+    <div class="jagged-border-top"></div>
+    <div class="container web-shop cart-total">
+        <?php echo $this->getChildHtml('coupon') ?>
+        <?php echo $this->getChildHtml('gift_coupon') ?>
+
+        <?php echo $this->getChildHtml('totals'); ?>
+        <?php echo $this->getChildHtml('monthly_price'); ?>
+    </div>
+    <div class="jagged-border-bottom"></div>
+</div>
+<div class="wrapper-grey border-bottom">
+    <div class="container">
+        <div class="row-fluid buttons-bar">
+            <div class="pull-right">
+                <button type="button" class="btn-link" onclick="window.location.href='<?php echo Mage::getBaseUrl(); ?>';"><?php echo $this->__('Handla vidare') ?></button>
+                <?php if(!$this->hasError()): ?>
+                    <?php foreach ($this->getMethods('top_methods') as $method): ?>
+                        <?php if ($methodHtml = $this->getMethodHtml($method)): ?>
+                            <?php echo $methodHtml; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

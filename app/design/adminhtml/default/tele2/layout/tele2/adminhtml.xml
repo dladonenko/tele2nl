@@ -1,0 +1,679 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_catalog_device_index>
+        <referense name="head">
+            <action method="setTitle" translate="title"><title>Catalog</title></action>
+        </referense>
+        <reference name="menu">
+            <action method="setActive"><menupath>catalog/device</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="tele2_adminhtml/catalog_device" name="products_list">
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_catalog_device_index>
+    <adminhtml_catalog_device_edit>
+        <update handle="adminhtml_catalog_product_edit"/>
+    </adminhtml_catalog_device_edit>
+    <adminhtml_catalog_device_new>
+        <update handle="adminhtml_catalog_product_new"/>
+    </adminhtml_catalog_device_new>
+
+    <adminhtml_catalog_deviceconf_index>
+        <referense name="head">
+            <action method="setTitle" translate="title"><title>Catalog</title></action>
+        </referense>
+        <reference name="menu">
+            <action method="setActive"><menupath>catalog/deviceconf</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="tele2_adminhtml/catalog_deviceconf" name="products_list">
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_catalog_deviceconf_index>
+    <adminhtml_catalog_deviceconf_edit>
+        <update handle="adminhtml_catalog_product_edit"/>
+        <reference name="product_tabs">
+            <action method="addTab"><name>offers</name><block>tele2_adminhtml/catalog_product_edit_tab_offers</block></action>
+        </reference>
+    </adminhtml_catalog_deviceconf_edit>
+    <adminhtml_catalog_deviceconf_new>
+        <update handle="adminhtml_catalog_product_new"/>
+    </adminhtml_catalog_deviceconf_new>
+
+    <adminhtml_catalog_dongle_index>
+        <referense name="head">
+            <action method="setTitle" translate="title"><title>Catalog</title></action>
+        </referense>
+        <reference name="menu">
+            <action method="setActive"><menupath>catalog/dongle</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="tele2_adminhtml/catalog_dongle" name="products_list">
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_catalog_dongle_index>
+    <adminhtml_catalog_dongle_edit>
+        <update handle="adminhtml_catalog_product_edit"/>
+    </adminhtml_catalog_dongle_edit>
+    <adminhtml_catalog_dongle_new>
+        <update handle="adminhtml_catalog_product_new"/>
+    </adminhtml_catalog_dongle_new>
+
+    <adminhtml_catalog_subscription_index>
+        <referense name="head">
+            <action method="setTitle" translate="title"><title>Catalog</title></action>
+        </referense>
+        <reference name="menu">
+            <action method="setActive"><menupath>catalog/subscription</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="tele2_adminhtml/catalog_subscription" name="products_list">
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_catalog_subscription_index>
+    <adminhtml_catalog_subscription_edit>
+        <update handle="adminhtml_catalog_product_edit"/>
+    </adminhtml_catalog_subscription_edit>
+    <adminhtml_catalog_subscription_new>
+        <update handle="adminhtml_catalog_product_new"/>
+    </adminhtml_catalog_subscription_new>
+
+    <adminhtml_catalog_addon_index>
+        <referense name="head">
+            <action method="setTitle" translate="title"><title>Catalog</title></action>
+        </referense>
+        <reference name="menu">
+            <action method="setActive"><menupath>catalog/addon</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="tele2_adminhtml/catalog_addon" name="products_list">
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_catalog_addon_index>
+    <adminhtml_catalog_addon_edit>
+        <update handle="adminhtml_catalog_product_edit"/>
+    </adminhtml_catalog_addon_edit>
+    <adminhtml_catalog_addon_new>
+        <update handle="adminhtml_catalog_product_new"/>
+    </adminhtml_catalog_addon_new>
+
+    <adminhtml_catalog_accessory_index>
+        <referense name="head">
+            <action method="setTitle" translate="title"><title>Catalog</title></action>
+        </referense>
+        <reference name="menu">
+            <action method="setActive"><menupath>catalog/accessory</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="tele2_adminhtml/catalog_accessory" name="products_list">
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_catalog_accessory_index>
+    <adminhtml_catalog_accessory_edit>
+        <update handle="adminhtml_catalog_product_edit"/>
+    </adminhtml_catalog_accessory_edit>
+    <adminhtml_catalog_accessory_new>
+        <update handle="adminhtml_catalog_product_new"/>
+    </adminhtml_catalog_accessory_new>
+
+    <adminhtml_catalog_insurance_index>
+        <referense name="head">
+            <action method="setTitle" translate="title"><title>Catalog</title></action>
+        </referense>
+        <reference name="menu">
+            <action method="setActive"><menupath>catalog/insurance</menupath></action>
+        </reference>
+        <reference name="content">
+            <block type="tele2_adminhtml/catalog_insurance" name="products_list">
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_catalog_insurance_index>
+    <adminhtml_catalog_insurance_edit>
+        <update handle="adminhtml_catalog_product_edit"/>
+    </adminhtml_catalog_insurance_edit>
+    <adminhtml_catalog_insurance_new>
+        <update handle="adminhtml_catalog_product_new"/>
+    </adminhtml_catalog_insurance_new>
+
+    <adminhtml_catalog_device_taggrid>
+        <update handle="adminhtml_catalog_product_taggrid"/>
+    </adminhtml_catalog_device_taggrid>
+    <adminhtml_catalog_deviceconf_taggrid>
+        <update handle="adminhtml_catalog_product_taggrid"/>
+    </adminhtml_catalog_deviceconf_taggrid>
+    <adminhtml_catalog_dongle_taggrid>
+        <update handle="adminhtml_catalog_product_taggrid"/>
+    </adminhtml_catalog_dongle_taggrid>
+    <adminhtml_catalog_subscription_taggrid>
+        <update handle="adminhtml_catalog_product_taggrid"/>
+    </adminhtml_catalog_subscription_taggrid>
+    <adminhtml_catalog_addon_taggrid>
+        <update handle="adminhtml_catalog_product_taggrid"/>
+    </adminhtml_catalog_addon_taggrid>
+    <adminhtml_catalog_accessory_taggrid>
+        <update handle="adminhtml_catalog_product_taggrid"/>
+    </adminhtml_catalog_accessory_taggrid>
+    <adminhtml_catalog_insurance_taggrid>
+        <update handle="adminhtml_catalog_product_taggrid"/>
+    </adminhtml_catalog_insurance_taggrid>
+
+
+    <adminhtml_catalog_device_tagcustomergrid>
+        <update handle="adminhtml_catalog_product_tagcustomergrid"/>
+    </adminhtml_catalog_device_tagcustomergrid>
+    <adminhtml_catalog_deviceconf_tagcustomergrid>
+        <update handle="adminhtml_catalog_product_tagcustomergrid"/>
+    </adminhtml_catalog_deviceconf_tagcustomergrid>
+    <adminhtml_catalog_dongle_tagcustomergrid>
+        <update handle="adminhtml_catalog_product_tagcustomergrid"/>
+    </adminhtml_catalog_dongle_tagcustomergrid>
+    <adminhtml_catalog_subscription_tagcustomergrid>
+        <update handle="adminhtml_catalog_product_tagcustomergrid"/>
+    </adminhtml_catalog_subscription_tagcustomergrid>
+    <adminhtml_catalog_addon_tagcustomergrid>
+        <update handle="adminhtml_catalog_product_tagcustomergrid"/>
+    </adminhtml_catalog_addon_tagcustomergrid>
+    <adminhtml_catalog_accessory_tagcustomergrid>
+        <update handle="adminhtml_catalog_product_tagcustomergrid"/>
+    </adminhtml_catalog_accessory_tagcustomergrid>
+    <adminhtml_catalog_insurance_tagcustomergrid>
+        <update handle="adminhtml_catalog_product_tagcustomergrid"/>
+    </adminhtml_catalog_insurance_tagcustomergrid>
+
+
+    <adminhtml_catalog_device_options>
+        <update handle="adminhtml_catalog_product_options"/>
+    </adminhtml_catalog_device_options>
+    <adminhtml_catalog_deviceconf_options>
+        <update handle="adminhtml_catalog_product_options"/>
+    </adminhtml_catalog_deviceconf_options>
+    <adminhtml_catalog_dongle_options>
+        <update handle="adminhtml_catalog_product_options"/>
+    </adminhtml_catalog_dongle_options>
+    <adminhtml_catalog_subscription_options>
+        <update handle="adminhtml_catalog_product_options"/>
+    </adminhtml_catalog_subscription_options>
+    <adminhtml_catalog_addon_options>
+        <update handle="adminhtml_catalog_product_options"/>
+    </adminhtml_catalog_addon_options>
+    <adminhtml_catalog_accessory_options>
+        <update handle="adminhtml_catalog_product_options"/>
+    </adminhtml_catalog_accessory_options>
+    <adminhtml_catalog_insurance_options>
+        <update handle="adminhtml_catalog_product_options"/>
+    </adminhtml_catalog_insurance_options>
+
+
+    <adminhtml_catalog_device_related>
+        <update handle="adminhtml_catalog_product_related"/>
+    </adminhtml_catalog_device_related>
+    <adminhtml_catalog_deviceconf_related>
+        <update handle="adminhtml_catalog_product_related"/>
+    </adminhtml_catalog_deviceconf_related>
+    <adminhtml_catalog_dongle_related>
+        <update handle="adminhtml_catalog_product_related"/>
+    </adminhtml_catalog_dongle_related>
+    <adminhtml_catalog_subscription_related>
+        <update handle="adminhtml_catalog_product_related"/>
+    </adminhtml_catalog_subscription_related>
+    <adminhtml_catalog_addon_related>
+        <update handle="adminhtml_catalog_product_related"/>
+    </adminhtml_catalog_addon_related>
+    <adminhtml_catalog_accessory_related>
+        <update handle="adminhtml_catalog_product_related"/>
+    </adminhtml_catalog_accessory_related>
+    <adminhtml_catalog_insurance_related>
+        <update handle="adminhtml_catalog_product_related"/>
+    </adminhtml_catalog_insurance_related>
+
+
+    <adminhtml_catalog_device_relatedgrid>
+        <update handle="adminhtml_catalog_product_relatedgrid"/>
+    </adminhtml_catalog_device_relatedgrid>
+    <adminhtml_catalog_deviceconf_relatedgrid>
+        <update handle="adminhtml_catalog_product_relatedgrid"/>
+    </adminhtml_catalog_deviceconf_relatedgrid>
+    <adminhtml_catalog_dongle_relatedgrid>
+        <update handle="adminhtml_catalog_product_relatedgrid"/>
+    </adminhtml_catalog_dongle_relatedgrid>
+    <adminhtml_catalog_subscription_relatedgrid>
+        <update handle="adminhtml_catalog_product_relatedgrid"/>
+    </adminhtml_catalog_subscription_relatedgrid>
+    <adminhtml_catalog_addon_relatedgrid>
+        <update handle="adminhtml_catalog_product_relatedgrid"/>
+    </adminhtml_catalog_addon_relatedgrid>
+    <adminhtml_catalog_accessory_relatedgrid>
+        <update handle="adminhtml_catalog_product_relatedgrid"/>
+    </adminhtml_catalog_accessory_relatedgrid>
+    <adminhtml_catalog_insurance_relatedgrid>
+        <update handle="adminhtml_catalog_product_relatedgrid"/>
+    </adminhtml_catalog_insurance_relatedgrid>
+
+
+    <adminhtml_catalog_device_upsell>
+        <update handle="adminhtml_catalog_product_upsell"/>
+    </adminhtml_catalog_device_upsell>
+    <adminhtml_catalog_deviceconf_upsell>
+        <update handle="adminhtml_catalog_product_upsell"/>
+    </adminhtml_catalog_deviceconf_upsell>
+    <adminhtml_catalog_dongle_upsell>
+        <update handle="adminhtml_catalog_product_upsell"/>
+    </adminhtml_catalog_dongle_upsell>
+    <adminhtml_catalog_subscription_upsell>
+        <update handle="adminhtml_catalog_product_upsell"/>
+    </adminhtml_catalog_subscription_upsell>
+    <adminhtml_catalog_addon_upsell>
+        <update handle="adminhtml_catalog_product_upsell"/>
+    </adminhtml_catalog_addon_upsell>
+    <adminhtml_catalog_accessory_upsell>
+        <update handle="adminhtml_catalog_product_upsell"/>
+    </adminhtml_catalog_accessory_upsell>
+    <adminhtml_catalog_insurance_upsell>
+        <update handle="adminhtml_catalog_product_upsell"/>
+    </adminhtml_catalog_insurance_upsell>
+
+
+    <adminhtml_catalog_device_upsellgrid>
+        <update handle="adminhtml_catalog_product_upsellgrid"/>
+    </adminhtml_catalog_device_upsellgrid>
+    <adminhtml_catalog_deviceconf_upsellgrid>
+        <update handle="adminhtml_catalog_product_upsellgrid"/>
+    </adminhtml_catalog_deviceconf_upsellgrid>
+    <adminhtml_catalog_dongle_upsellgrid>
+        <update handle="adminhtml_catalog_product_upsellgrid"/>
+    </adminhtml_catalog_dongle_upsellgrid>
+    <adminhtml_catalog_subscription_upsellgrid>
+        <update handle="adminhtml_catalog_product_upsellgrid"/>
+    </adminhtml_catalog_subscription_upsellgrid>
+    <adminhtml_catalog_addon_upsellgrid>
+        <update handle="adminhtml_catalog_product_upsellgrid"/>
+    </adminhtml_catalog_addon_upsellgrid>
+    <adminhtml_catalog_accessory_upsellgrid>
+        <update handle="adminhtml_catalog_product_upsellgrid"/>
+    </adminhtml_catalog_accessory_upsellgrid>
+    <adminhtml_catalog_insurance_upsellgrid>
+        <update handle="adminhtml_catalog_product_upsellgrid"/>
+    </adminhtml_catalog_insurance_upsellgrid>
+
+
+    <adminhtml_catalog_device_crosssell>
+        <update handle="adminhtml_catalog_product_crosssell"/>
+    </adminhtml_catalog_device_crosssell>
+    <adminhtml_catalog_deviceconf_crosssell>
+        <update handle="adminhtml_catalog_product_crosssell"/>
+    </adminhtml_catalog_deviceconf_crosssell>
+    <adminhtml_catalog_dongle_crosssell>
+        <update handle="adminhtml_catalog_product_crosssell"/>
+    </adminhtml_catalog_dongle_crosssell>
+    <adminhtml_catalog_subscription_crosssell>
+        <update handle="adminhtml_catalog_product_crosssell"/>
+    </adminhtml_catalog_subscription_crosssell>
+    <adminhtml_catalog_addon_crosssell>
+        <update handle="adminhtml_catalog_product_crosssell"/>
+    </adminhtml_catalog_addon_crosssell>
+    <adminhtml_catalog_accessory_crosssell>
+        <update handle="adminhtml_catalog_product_crosssell"/>
+    </adminhtml_catalog_accessory_crosssell>
+    <adminhtml_catalog_insurance_crosssell>
+        <update handle="adminhtml_catalog_product_crosssell"/>
+    </adminhtml_catalog_insurance_crosssell>
+
+
+    <adminhtml_catalog_device_crosssellgrid>
+        <update handle="adminhtml_catalog_product_crosssellgrid"/>
+    </adminhtml_catalog_device_crosssellgrid>
+    <adminhtml_catalog_deviceconf_crosssellgrid>
+        <update handle="adminhtml_catalog_product_crosssellgrid"/>
+    </adminhtml_catalog_deviceconf_crosssellgrid>
+    <adminhtml_catalog_dongle_crosssellgrid>
+        <update handle="adminhtml_catalog_product_crosssellgrid"/>
+    </adminhtml_catalog_dongle_crosssellgrid>
+    <adminhtml_catalog_subscription_crosssellgrid>
+        <update handle="adminhtml_catalog_product_crosssellgrid"/>
+    </adminhtml_catalog_subscription_crosssellgrid>
+    <adminhtml_catalog_addon_crosssellgrid>
+        <update handle="adminhtml_catalog_product_crosssellgrid"/>
+    </adminhtml_catalog_addon_crosssellgrid>
+    <adminhtml_catalog_accessory_crosssellgrid>
+        <update handle="adminhtml_catalog_product_crosssellgrid"/>
+    </adminhtml_catalog_accessory_crosssellgrid>
+    <adminhtml_catalog_insurance_crosssellgrid>
+        <update handle="adminhtml_catalog_product_crosssellgrid"/>
+    </adminhtml_catalog_insurance_crosssellgrid>
+
+
+    <adminhtml_catalog_device_categories>
+        <update handle="adminhtml_catalog_product_categories"/>
+    </adminhtml_catalog_device_categories>
+    <adminhtml_catalog_deviceconf_categories>
+        <update handle="adminhtml_catalog_product_categories"/>
+    </adminhtml_catalog_deviceconf_categories>
+    <adminhtml_catalog_dongle_categories>
+        <update handle="adminhtml_catalog_product_categories"/>
+    </adminhtml_catalog_dongle_categories>
+    <adminhtml_catalog_subscription_categories>
+        <update handle="adminhtml_catalog_product_categories"/>
+    </adminhtml_catalog_subscription_categories>
+    <adminhtml_catalog_addon_categories>
+        <update handle="adminhtml_catalog_product_categories"/>
+    </adminhtml_catalog_addon_categories>
+    <adminhtml_catalog_accessory_categories>
+        <update handle="adminhtml_catalog_product_categories"/>
+    </adminhtml_catalog_accessory_categories>
+    <adminhtml_catalog_insurance_categories>
+        <update handle="adminhtml_catalog_product_categories"/>
+    </adminhtml_catalog_insurance_categories>
+
+
+    <adminhtml_catalog_device_reviews>
+        <update handle="adminhtml_catalog_product_reviews"/>
+    </adminhtml_catalog_device_reviews>
+    <adminhtml_catalog_deviceconf_reviews>
+        <update handle="adminhtml_catalog_product_reviews"/>
+    </adminhtml_catalog_deviceconf_reviews>
+    <adminhtml_catalog_dongle_reviews>
+        <update handle="adminhtml_catalog_product_reviews"/>
+    </adminhtml_catalog_dongle_reviews>
+    <adminhtml_catalog_subscription_reviews>
+        <update handle="adminhtml_catalog_product_reviews"/>
+    </adminhtml_catalog_subscription_reviews>
+    <adminhtml_catalog_addon_reviews>
+        <update handle="adminhtml_catalog_product_reviews"/>
+    </adminhtml_catalog_addon_reviews>
+    <adminhtml_catalog_accessory_reviews>
+        <update handle="adminhtml_catalog_product_reviews"/>
+    </adminhtml_catalog_accessory_reviews>
+    <adminhtml_catalog_insurance_reviews>
+        <update handle="adminhtml_catalog_product_reviews"/>
+    </adminhtml_catalog_insurance_reviews>
+
+
+    <adminhtml_catalog_device_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_adminhtml/catalog_device_grid" name="admin.product.grid"/>
+        </block>
+    </adminhtml_catalog_device_grid>
+    <adminhtml_catalog_deviceconf_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_adminhtml/catalog_deviceconf_grid" name="admin.product.grid"/>
+        </block>
+    </adminhtml_catalog_deviceconf_grid>
+    <adminhtml_catalog_dongle_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_adminhtml/catalog_dongle_grid" name="admin.product.grid"/>
+        </block>
+    </adminhtml_catalog_dongle_grid>
+    <adminhtml_catalog_subscription_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_adminhtml/catalog_subscription_grid" name="admin.product.grid"/>
+        </block>
+    </adminhtml_catalog_subscription_grid>
+    <adminhtml_catalog_addon_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_adminhtml/catalog_addon_grid" name="admin.product.grid"/>
+        </block>
+    </adminhtml_catalog_addon_grid>
+    <adminhtml_catalog_accessory_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_adminhtml/catalog_accessory_grid" name="admin.product.grid"/>
+        </block>
+    </adminhtml_catalog_accessory_grid>
+    <adminhtml_catalog_insurance_grid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_adminhtml/catalog_accessory_grid" name="admin.product.grid"/>
+        </block>
+    </adminhtml_catalog_insurance_grid>
+
+
+    <adminhtml_catalog_device_superconfig>
+        <update handle="adminhtml_catalog_product_superconfig"/>
+    </adminhtml_catalog_device_superconfig>
+    <adminhtml_catalog_deviceconf_superconfig>
+        <update handle="adminhtml_catalog_product_superconfig"/>
+    </adminhtml_catalog_deviceconf_superconfig>
+    <adminhtml_catalog_dongle_superconfig>
+        <update handle="adminhtml_catalog_product_superconfig"/>
+    </adminhtml_catalog_dongle_superconfig>
+    <adminhtml_catalog_subscription_superconfig>
+        <update handle="adminhtml_catalog_product_superconfig"/>
+    </adminhtml_catalog_subscription_superconfig>
+    <adminhtml_catalog_addon_superconfig>
+        <update handle="adminhtml_catalog_product_superconfig"/>
+    </adminhtml_catalog_addon_superconfig>
+    <adminhtml_catalog_accessory_superconfig>
+        <update handle="adminhtml_catalog_product_superconfig"/>
+    </adminhtml_catalog_accessory_superconfig>
+    <adminhtml_catalog_insurance_superconfig>
+        <update handle="adminhtml_catalog_product_superconfig"/>
+    </adminhtml_catalog_insurance_superconfig>
+
+
+    <adminhtml_catalog_device_alertspricegrid>
+        <update handle="adminhtml_catalog_product_alertspricegrid"/>
+    </adminhtml_catalog_device_alertspricegrid>
+    <adminhtml_catalog_deviceconf_alertspricegrid>
+        <update handle="adminhtml_catalog_product_alertspricegrid"/>
+    </adminhtml_catalog_deviceconf_alertspricegrid>
+    <adminhtml_catalog_dongle_alertspricegrid>
+        <update handle="adminhtml_catalog_product_alertspricegrid"/>
+    </adminhtml_catalog_dongle_alertspricegrid>
+    <adminhtml_catalog_subscription_alertspricegrid>
+        <update handle="adminhtml_catalog_product_alertspricegrid"/>
+    </adminhtml_catalog_subscription_alertspricegrid>
+    <adminhtml_catalog_addon_alertspricegrid>
+        <update handle="adminhtml_catalog_product_alertspricegrid"/>
+    </adminhtml_catalog_addon_alertspricegrid>
+    <adminhtml_catalog_accessory_alertspricegrid>
+        <update handle="adminhtml_catalog_product_alertspricegrid"/>
+    </adminhtml_catalog_accessory_alertspricegrid>
+    <adminhtml_catalog_insurance_alertspricegrid>
+        <update handle="adminhtml_catalog_product_alertspricegrid"/>
+    </adminhtml_catalog_insurance_alertspricegrid>
+
+
+    <adminhtml_catalog_device_alertsstockgrid>
+        <update handle="adminhtml_catalog_product_alertsstockgrid"/>
+    </adminhtml_catalog_device_alertsstockgrid>
+    <adminhtml_catalog_deviceconf_alertsstockgrid>
+        <update handle="adminhtml_catalog_product_alertsstockgrid"/>
+    </adminhtml_catalog_deviceconf_alertsstockgrid>
+    <adminhtml_catalog_dongle_alertsstockgrid>
+        <update handle="adminhtml_catalog_product_alertsstockgrid"/>
+    </adminhtml_catalog_dongle_alertsstockgrid>
+    <adminhtml_catalog_subscription_alertsstockgrid>
+        <update handle="adminhtml_catalog_product_alertsstockgrid"/>
+    </adminhtml_catalog_subscription_alertsstockgrid>
+    <adminhtml_catalog_addon_alertsstockgrid>
+        <update handle="adminhtml_catalog_product_alertsstockgrid"/>
+    </adminhtml_catalog_addon_alertsstockgrid>
+    <adminhtml_catalog_accessory_alertsstockgrid>
+        <update handle="adminhtml_catalog_product_alertsstockgrid"/>
+    </adminhtml_catalog_accessory_alertsstockgrid>
+    <adminhtml_catalog_insurance_alertsstockgrid>
+        <update handle="adminhtml_catalog_product_alertsstockgrid"/>
+    </adminhtml_catalog_insurance_alertsstockgrid>
+
+
+    <adminhtml_catalog_device_grouped>
+        <update handle="adminhtml_catalog_product_grouped"/>
+    </adminhtml_catalog_device_grouped>
+    <adminhtml_catalog_deviceconf_grouped>
+        <update handle="adminhtml_catalog_product_grouped"/>
+    </adminhtml_catalog_deviceconf_grouped>
+    <adminhtml_catalog_dongle_grouped>
+        <update handle="adminhtml_catalog_product_grouped"/>
+    </adminhtml_catalog_dongle_grouped>
+    <adminhtml_catalog_subscription_grouped>
+        <update handle="adminhtml_catalog_product_grouped"/>
+    </adminhtml_catalog_subscription_grouped>
+    <adminhtml_catalog_addon_grouped>
+        <update handle="adminhtml_catalog_product_grouped"/>
+    </adminhtml_catalog_addon_grouped>
+    <adminhtml_catalog_accessory_grouped>
+        <update handle="adminhtml_catalog_product_grouped"/>
+    </adminhtml_catalog_accessory_grouped>
+    <adminhtml_catalog_insurance_grouped>
+        <update handle="adminhtml_catalog_product_grouped"/>
+    </adminhtml_catalog_insurance_grouped>
+
+
+    <adminhtml_catalog_device_supergroup>
+        <update handle="adminhtml_catalog_product_supergroup"/>
+    </adminhtml_catalog_device_supergroup>
+    <adminhtml_catalog_deviceconf_supergroup>
+        <update handle="adminhtml_catalog_product_supergroup"/>
+    </adminhtml_catalog_deviceconf_supergroup>
+    <adminhtml_catalog_dongle_supergroup>
+        <update handle="adminhtml_catalog_product_supergroup"/>
+    </adminhtml_catalog_dongle_supergroup>
+    <adminhtml_catalog_subscription_supergroup>
+        <update handle="adminhtml_catalog_product_supergroup"/>
+    </adminhtml_catalog_subscription_supergroup>
+    <adminhtml_catalog_addon_supergroup>
+        <update handle="adminhtml_catalog_product_supergroup"/>
+    </adminhtml_catalog_addon_supergroup>
+    <adminhtml_catalog_accessory_supergroup>
+        <update handle="adminhtml_catalog_product_supergroup"/>
+    </adminhtml_catalog_accessory_supergroup>
+    <adminhtml_catalog_insurance_supergroup>
+        <update handle="adminhtml_catalog_product_supergroup"/>
+    </adminhtml_catalog_insurance_supergroup>
+
+
+    <adminhtml_catalog_device_supergroupgridonly>
+        <update handle="adminhtml_catalog_product_supergroupgridonly"/>
+    </adminhtml_catalog_device_supergroupgridonly>
+    <adminhtml_catalog_deviceconf_supergroupgridonly>
+        <update handle="adminhtml_catalog_product_supergroupgridonly"/>
+    </adminhtml_catalog_deviceconf_supergroupgridonly>
+    <adminhtml_catalog_dongle_supergroupgridonly>
+        <update handle="adminhtml_catalog_product_supergroupgridonly"/>
+    </adminhtml_catalog_dongle_supergroupgridonly>
+    <adminhtml_catalog_subscription_supergroupgridonly>
+        <update handle="adminhtml_catalog_product_supergroupgridonly"/>
+    </adminhtml_catalog_subscription_supergroupgridonly>
+    <adminhtml_catalog_addon_supergroupgridonly>
+        <update handle="adminhtml_catalog_product_supergroupgridonly"/>
+    </adminhtml_catalog_addon_supergroupgridonly>
+    <adminhtml_catalog_accessory_supergroupgridonly>
+        <update handle="adminhtml_catalog_product_supergroupgridonly"/>
+    </adminhtml_catalog_accessory_supergroupgridonly>
+    <adminhtml_catalog_insurance_supergroupgridonly>
+        <update handle="adminhtml_catalog_product_supergroupgridonly"/>
+    </adminhtml_catalog_insurance_supergroupgridonly>
+
+
+    <adminhtml_catalog_device_configurable_new>
+        <update handle="adminhtml_catalog_product_configurable_new"/>
+    </adminhtml_catalog_device_configurable_new>
+    <adminhtml_catalog_deviceconf_configurable_new>
+        <update handle="adminhtml_catalog_product_configurable_new"/>
+    </adminhtml_catalog_deviceconf_configurable_new>
+    <adminhtml_catalog_dongle_configurable_new>
+        <update handle="adminhtml_catalog_product_configurable_new"/>
+    </adminhtml_catalog_dongle_configurable_new>
+    <adminhtml_catalog_subscription_configurable_new>
+        <update handle="adminhtml_catalog_product_configurable_new"/>
+    </adminhtml_catalog_subscription_configurable_new>
+    <adminhtml_catalog_addon_configurable_new>
+        <update handle="adminhtml_catalog_product_configurable_new"/>
+    </adminhtml_catalog_addon_configurable_new>
+    <adminhtml_catalog_accessory_configurable_new>
+        <update handle="adminhtml_catalog_product_configurable_new"/>
+    </adminhtml_catalog_accessory_configurable_new>
+    <adminhtml_catalog_insurance_configurable_new>
+        <update handle="adminhtml_catalog_product_configurable_new"/>
+    </adminhtml_catalog_insurance_configurable_new>
+
+
+    <adminhtml_catalog_device_configurable>
+        <update handle="adminhtml_catalog_product_configurable"/>
+    </adminhtml_catalog_device_configurable>
+    <adminhtml_catalog_deviceconf_configurable>
+        <update handle="adminhtml_catalog_product_configurable"/>
+    </adminhtml_catalog_deviceconf_configurable>
+    <adminhtml_catalog_dongle_configurable>
+        <update handle="adminhtml_catalog_product_configurable"/>
+    </adminhtml_catalog_dongle_configurable>
+    <adminhtml_catalog_subscription_configurable>
+        <update handle="adminhtml_catalog_product_configurable"/>
+    </adminhtml_catalog_subscription_configurable>
+    <adminhtml_catalog_addon_configurable>
+        <update handle="adminhtml_catalog_product_configurable"/>
+    </adminhtml_catalog_addon_configurable>
+    <adminhtml_catalog_accessory_configurable>
+        <update handle="adminhtml_catalog_product_configurable"/>
+    </adminhtml_catalog_accessory_configurable>
+    <adminhtml_catalog_insurance_configurable>
+        <update handle="adminhtml_catalog_product_configurable"/>
+    </adminhtml_catalog_insurance_configurable>
+
+
+    <adminhtml_catalog_device_action_attribute_edit>
+        <update handle="adminhtml_catalog_product_action_attribute_edit"/>
+    </adminhtml_catalog_device_action_attribute_edit>
+    <adminhtml_catalog_deviceconf_action_attribute_edit>
+        <update handle="adminhtml_catalog_product_action_attribute_edit"/>
+    </adminhtml_catalog_deviceconf_action_attribute_edit>
+    <adminhtml_catalog_dongle_action_attribute_edit>
+        <update handle="adminhtml_catalog_product_action_attribute_edit"/>
+    </adminhtml_catalog_dongle_action_attribute_edit>
+    <adminhtml_catalog_subscription_action_attribute_edit>
+        <update handle="adminhtml_catalog_product_action_attribute_edit"/>
+    </adminhtml_catalog_subscription_action_attribute_edit>
+    <adminhtml_catalog_addon_action_attribute_edit>
+        <update handle="adminhtml_catalog_product_action_attribute_edit"/>
+    </adminhtml_catalog_addon_action_attribute_edit>
+    <adminhtml_catalog_accessory_action_attribute_edit>
+        <update handle="adminhtml_catalog_product_action_attribute_edit"/>
+    </adminhtml_catalog_accessory_action_attribute_edit>
+    <adminhtml_catalog_insurance_action_attribute_edit>
+        <update handle="adminhtml_catalog_product_action_attribute_edit"/>
+    </adminhtml_catalog_insurance_action_attribute_edit>
+
+
+    <adminhtml_catalog_device_attribute_edit>
+        <update handle="adminhtml_catalog_product_attribute_edit"/>
+    </adminhtml_catalog_device_attribute_edit>
+    <adminhtml_catalog_deviceconf_attribute_edit>
+        <update handle="adminhtml_catalog_product_attribute_edit"/>
+    </adminhtml_catalog_deviceconf_attribute_edit>
+    <adminhtml_catalog_dongle_attribute_edit>
+        <update handle="adminhtml_catalog_product_attribute_edit"/>
+    </adminhtml_catalog_dongle_attribute_edit>
+    <adminhtml_catalog_subscription_attribute_edit>
+        <update handle="adminhtml_catalog_product_attribute_edit"/>
+    </adminhtml_catalog_subscription_attribute_edit>
+    <adminhtml_catalog_addon_attribute_edit>
+        <update handle="adminhtml_catalog_product_attribute_edit"/>
+    </adminhtml_catalog_addon_attribute_edit>
+    <adminhtml_catalog_accessory_attribute_edit>
+        <update handle="adminhtml_catalog_product_attribute_edit"/>
+    </adminhtml_catalog_accessory_attribute_edit>
+    <adminhtml_catalog_insurance_attribute_edit>
+        <update handle="adminhtml_catalog_product_attribute_edit"/>
+    </adminhtml_catalog_insurance_attribute_edit>
+
+</layout>

@@ -1,0 +1,36 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * @category    design
+ * @package     tele4G_default
+ */
+?>
+<form class="form-campaign-code form-search" id="gift-coupon-form" action="<?php echo $this->getUrl('checkout/cart/giftCouponPost') ?>" method="post" style="padding-left: 10px;">
+    <fieldset>
+        <label for="gift_coupon_code"><?php echo $this->__('Har du en kampanjkod?') ?></label><br />
+        <input type="hidden" name="remove" id="remove-coupone" value="0" />
+        <input type="text" class="input-large" id="gift_coupon_code" name="gift_coupon_code" value="<?php echo $this->htmlEscape($this->getCouponCode()) ?>" placeholder="<?php echo $this->__('t.ex. COMVIQ23') ?>" />
+        <?php if(!strlen($this->getFreeGiftCouponCode())): ?>
+            <button class="btn" onclick="discountForm.submit(false)" type="button" value="<?php echo $this->__('Apply Coupon') ?>"><?php echo $this->__('OK') ?></button>
+        <?php else: ?>
+            <button class="btn" onclick="discountForm.submit(false)" type="button"><?php echo $this->__('OK') ?></button>
+            <button class="btn" onclick="discountForm.submit(true)" type="button"><?php echo $this->__('Cancel coupon') ?></button>
+        <?php endif;?>
+    </fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+var discountForm = new VarienForm('gift-coupon-form');
+discountForm.submit = function (isRemove) {
+    if (isRemove) {
+        $('gift_coupon_code').removeClassName('required-entry');
+        $('remove-coupone').value = "1";
+    } else {
+        $('gift_coupon_code').addClassName('required-entry');
+        $('remove-coupone').value = "0";
+    }
+    return VarienForm.prototype.submit.bind(discountForm)();
+}
+//]]>
+</script>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tele2_Feed>
+            <version>0.0.1</version>
+        </Tele2_Feed>
+    </modules>
+    <global>
+        <blocks>
+            <tele2_feed>
+                <class>Tele2_Feed_Block</class>
+            </tele2_feed>
+        </blocks>
+    </global>
+    <frontend>
+        <routers>
+            <tele2_feed>
+                <use>standard</use>
+                <args>
+                    <module>Tele2_Feed</module>
+                    <frontName>feed</frontName>
+                </args>
+            </tele2_feed>
+        </routers>
+        <layout>
+            <updates>
+                <tele2_feed>
+                    <file>tele2_feed.xml</file>
+                </tele2_feed>
+            </updates>
+        </layout>
+    </frontend>
+</config>

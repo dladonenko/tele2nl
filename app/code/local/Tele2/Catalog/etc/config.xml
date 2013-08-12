@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tele2_Catalog>
+            <version>0.0.3</version>
+        </Tele2_Catalog>
+    </modules>
+    <global>
+        <helpers>
+            <tele2_catalog>
+                <class>Tele2_Catalog_Helper</class>
+            </tele2_catalog>
+        </helpers>
+        <models>
+            <tele2_catalog>
+                <class>Tele2_Catalog_Model</class>
+                <resourceModel>tele2_catalog_resource</resourceModel>
+            </tele2_catalog>
+            <tele2_catalog_resource>
+                <class>Tele2_Catalog_Model_Resource</class>
+            </tele2_catalog_resource>
+        </models>
+        <resources>
+            <tele2_catalog_setup>
+                <setup>
+                    <module>Tele2_Catalog</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+            </tele2_catalog_setup>
+        </resources>
+        <events>
+            <catalog_controller_category_init_after>
+                <observers>
+                    <catalog_redirect_url>
+                        <class>tele2_catalog/observer</class>
+                        <method>catalogRedirect</method>
+                    </catalog_redirect_url>
+                </observers>
+            </catalog_controller_category_init_after>
+        </events>
+        
+    </global>
+</config>

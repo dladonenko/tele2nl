@@ -1,0 +1,34 @@
+<config>
+    <sections>
+        <tele4G>
+            <groups>
+                <allproducts translate="label" module="tele4G_sS4Integration">
+                    <label>All Products</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <prices_post translate="label">
+                            <label>Default monthly prices post</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </prices_post>
+                        <prices_pre translate="label">
+                            <label>Default monthly prices pre</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </prices_pre>
+                    </fields>
+                </allproducts>
+            </groups>
+        </tele4G>
+    </sections>
+</config>

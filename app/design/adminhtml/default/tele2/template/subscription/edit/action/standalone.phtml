@@ -1,0 +1,82 @@
+<?php
+/**
+ *
+ * @category    design
+ * @package     default_default
+ */
+?>
+<?php $subscriptProducts = $this->getAllSubscriptionProducts(); ?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo Mage::helper('tele2_subscription')->__('Stand alone') ?></h4>
+    </div>
+    <fieldset>
+
+        <legend><?php echo Mage::helper('tele2_subscription')->__('Stand alone') ?></legend>
+        <table cellspacing="0" class="form-list" id="table_subscription_standalone">
+        <tr>
+            <td class="label"><label for="standalone"><?php echo Mage::helper('tele2_subscription')->__('Stand alone') ?></label></td>
+            <td class="value"><select id="standalone" name="data[standalone]" class="select">
+                <option value="0"<?php if(!$this->getFakeProductId()):?> selected="selected"<?php endif; ?>><?php echo Mage::helper('tele2_subscription')->__('No') ?></option>
+                <option value="1"<?php if($this->getFakeProductId()):?> selected="selected"<?php endif; ?>><?php echo Mage::helper('tele2_subscription')->__('Yes') ?></option>
+            </select>
+            <input type="hidden" id="standalone_default" value="<?php echo $this->getDefaultConfigValue('standalone'); ?>" />
+        </tr>
+
+        <tr>
+            <td class="label"><label for="subscription_product"><?php echo Mage::helper('tele2_subscription')->__('Subscription Product') ?></label></td>
+            <td class="value">
+                <?php echo $this->getFakeProductTitle() ?>
+                <input type="hidden" id="fake_product_id" name="data[fake_product_id]" value="<?php echo $this->getFakeProductId() ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td class="label"><label for="subscription_fake_products"><?php echo Mage::helper('tele2_subscription')->__('Subscription Products') ?></label></td>
+            <td class="value">
+                <?php if(count($subscriptProducts) > 0): ?>
+                <select id="subscription_fake_products" name="data[subscription_fake_products]" class="select">
+                    <option value="0"><?php echo Mage::helper('tele2_subscription')->__('Please select product') ?></option>
+                    <?php foreach($subscriptProducts as $_product): ?><option value="<?php echo $_product->getId() ?>"<?php if ($this->getSubscription()->getFakeProductId() == $_product->getId()): ?> selected="selected"<?php endif; ?>><?php echo $_product->getName() ?></option><?php endforeach; ?>
+                </select><?php endif; ?>
+                <a href="<?php echo Mage::getUrl('adminhtml/catalog_subscription/new', array('set'=>$this->getSubscriptionAttributeSetId(), 'type'=>'simple')) ?>">Create new Subscription Product</a>
+            </td>
+        </tr>
+        </table>
+    </fieldset>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    function changeStandAloneOption()
+    {
+        var manageStock = $('standalone').value;
+
+        if (manageStock != '1') {
+            $('fake_product_id').value = '';
+        } else {
+            $('fake_product_id').value = $('subscription_fake_products').value;
+        }
+
+        $$('#table_subscription_standalone tr').each(function(el) {
+            if (el == $('standalone').up(1)) {
+                return;
+            }
+
+            el[manageStock == 1 ? 'show' : 'hide']();
+        });
+
+        return true;
+    }
+
+    function applyFakeProduct() {
+        $('fake_product_id').value = $('subscription_fake_products').value;
+    }
+
+    Event.observe(window, 'load', function() {
+        if ($('standalone')) {
+            Event.observe($('standalone'), 'change', changeStandAloneOption);
+            changeStandAloneOption();
+        }
+        Event.observe($('subscription_fake_products'), 'change', applyFakeProduct);
+    });
+//]]>
+</script>

@@ -1,0 +1,37 @@
+<form class="form-friend-phone form-search" id="form-friend-phone" style="padding-left: 20px;position:relative;">
+    <fieldset>
+        <label for="friend_phone"><?php echo $this->__('Tell a friend campaign') ?></label><br />
+        <span id="ajax_loader_friend_phone" style=""><img style="" src="<?php echo $this->getSkinUrl('images/ajax-loader.gif')?>"/></span>
+        <input type="text" class="input-large" id="friend_phone" name="friend_phone" value="" maxlength="15" placeholder="<?php echo $this->__('07XXXXXXXX') ?>" />
+        <button class="btn" id="btn-friend-phone" type="button"><?php echo $this->__('OK') ?></button>
+        <span class="help-block" style="display:none;"></span>
+    </fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+jQuery('#form-friend-phone #btn-friend-phone').click(function(){
+    var patternPhoneInvalid = /^000/;
+    var patternPhone = /^0[0-689]([\d]){3,13}$/;
+    var patternPhoneMob = /^07([\d]){8}$/;
+    var phone = jQuery('#form-friend-phone #friend_phone');
+    if (!patternPhoneInvalid.test(phone.val().replace(/[-\s]/g, '')) && (patternPhoneMob.test(phone.val().replace(/[-\s]/g, '')) || patternPhone.test(phone.val().replace(/[-\s]/g, '')))) {
+        phone.removeClass('error');
+        phone.siblings('.help-block').hide();
+        jQuery('#ajax_loader_friend_phone').show();
+        var user_data = jQuery('#form-friend-phone').serialize();
+        jQuery.post('<?php echo $this->getUrl('checkout/cart/saveFriendPhone') ?>', user_data, function(data) {
+            if (data == 'ok') {
+                jQuery('#ajax_loader_friend_phone').hide();
+            }
+        });
+    } else {
+        phone.addClass('error');
+        phone.siblings('.help-block').show().text('<?php echo $this->__('Felaktigt telefonnummer');?>');
+    }
+});
+jQuery('#form-friend-phone').submit(function(){
+    jQuery('#form-friend-phone #btn-friend-phone').click();
+    return false;
+});
+//]]>
+</script>

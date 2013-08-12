@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Tele2 FreeGift module
+ *
+ * @category    design
+ * @package     default_tele2
+ */
+-->
+
+<layout>
+ 
+    <adminhtml_freegift_index>
+        <reference name="content">
+            <block type="tele2_freeGift/adminhtml_container" name="tele2.freegift" template="widget/grid/container.phtml">
+                <block type="tele2_freeGift/adminhtml_index_grid" name="tele2.freegift.grid"/>
+                <action method="setHeaderText" translate="text">
+                    <text>Free Gifts List</text>
+                </action>
+            </block>
+        </reference>
+    </adminhtml_freegift_index>
+
+    <adminhtml_freegift_new>
+        <update handle="adminhtml_freegift_edit" />
+    </adminhtml_freegift_new>
+
+    <adminhtml_freegift_edit>
+        <reference name="content">
+            <block type="tele2_freeGift/adminhtml_freeGift_edit" name="freegift_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="tele2_freeGift/adminhtml_freeGift_edit_tabs" name="tele2_freegift_edit_tabs">
+                <block type="tele2_freeGift/adminhtml_freeGift_edit_tab_main" name="tele2_freeGift_edit_tab_main" />
+                <block type="tele2_freeGift/adminhtml_freeGift_edit_tab_conditions" name="tele2_freeGift_edit_tab_conditions" template="freegift/edit/action/conditions.phtml" />
+                <block type="tele2_freeGift/adminhtml_freeGift_edit_tab_actions" name="tele2_freeGift_edit_tab_actions" template="freegift/edit/action/actions.phtml" />
+                <action method="addTab"><name>main_section</name><block>tele2_freeGift_edit_tab_main</block></action>
+                <action method="addTab"><name>conditions_section</name><block>tele2_freeGift_edit_tab_conditions</block></action>
+                <action method="addTab"><name>actions_section</name><block>tele2_freeGift_edit_tab_actions</block></action>
+            </block>
+        </reference>
+    </adminhtml_freegift_edit>
+
+</layout>

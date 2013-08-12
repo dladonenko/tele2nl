@@ -1,0 +1,454 @@
+<?php
+$offerSubscription = $this->getRequest()->getParam('s');
+$offerBinding = $this->getRequest()->getParam('b');
+$optSelector = '';
+if ($offerSubscription !== null && $offerBinding !== null) {
+    if ($this->sourceSubscriptionType == 'pre') {
+        $optSelector = '[subid=' . $offerSubscription . '][bind_period=' . $offerBinding . ']';
+    } else {
+        $optSelector = '[subid=' . $offerSubscription . '][data-bt=' . $offerBinding . ']';
+    }
+}
+
+$_helper = $this->helper('catalog/output'); //$_helper = $this->helper('tele4G_catalog/output'); //???
+$_product = $this->getProduct();
+$tele4G_cart = Mage::getModel('tele4G_checkout/cart');
+$subscriptions = $this->getPrePostSubscription();
+$isDongle = $this->getIsDongle();
+$resellers = $this->getResellers();
+?>
+<?php echo $this->getChildHtml('device_js'); ?>
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/modules/productView.js')?>"></script>
+
+<div id="breadcrumbs" class="container">
+    <ul class="breadcrumb">
+        <li><a href="<?php echo Mage::getStoreConfig("tele4G/variables/tele4G_main_page")?>"><?php echo $this->__('Hem') ?></a><span class="divider">›</span></li>
+        <?php if ($isDongle): ?>
+            <li><a href="<?php echo Mage::getStoreConfig("tele4G/variables/tele4G_mbb_page")?>"><?php echo $this->__('Mobilt bredband') ?></a><span class="divider">›</span></li>
+        <?php else: ?>
+            <li><a href="<?php echo $this->getUrl('/') ?>"><?php echo $this->__('Mobiltelefoner') ?></a><span class="divider">›</span></li>
+        <?php endif; ?>
+        <?php if ($this->getBrandName()): ?>
+            <li><a href="<?php echo $this->brandUrl; ?>"><?php echo $this->brandName; ?></a><span class="divider">›</span></li>
+        <?php endif; ?>
+        <li class="active"><?php echo $_product->getName() ?></li>
+    </ul>
+</div>
+<div class="wrapper-grey after-breadcrumbs">
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+<div class="container article web-shop">
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="row-fluid">
+<div class="span4">
+    <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+    <div class="short-description">
+        <?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?>
+                    </div>
+                    <div class="usp">
+                        <?php echo $_helper->productAttribute($_product, nl2br($_product->getUsp()), 'usp'); ?>
+                    </div>
+                    <hr />
+                    <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+                    <div class="stock-status">
+                        <input type="hidden" name="expectedDeliveryTime" value="<?php echo $this->getExpectedDeliveryTimeShow(); ?>">
+                        <p>
+                            <strong><?php echo $this->__('Leveranstid:') ?></strong>
+                            <span class="stock-status-in-stock"></span>
+                            <span class="stock-expected"><?php echo $this->getExpectedDeliveryTimeShow(); ?></span>
+                        </p>
+                    </div>
+
+                <?php echo $this->getChildHtml('lanot.filemanager.files'); ?>
+                </div>
+                <div class="span4 sim-only product-images">
+                    <?php echo $this->getChildHtml('media') ?>
+                    <?php echo $this->getChildHtml('tele4G.product.page.banners') ?>
+                </div>
+                <div class="span4 sim-only">
+                    <div class="tabbable subscription-selector">
+                        <ul class="nav nav-tabs">
+                            <?php if (isset($subscriptions['post'])): ?>
+                                <li class="<?php echo ($this->sourceSubscriptionType == 'post')? 'active' : ''; ?>"><a href="#postpaid" data-toggle="tab"><?php echo $this->__("Abonnemang") ?></a></li>
+                            <?php endif; ?>
+                            <?php if (isset($subscriptions['pre']) && !$isDongle): ?>
+                                <li class="<?php echo ($this->sourceSubscriptionType == 'pre' || !isset($subscriptions['post']))? 'active' : ''; ?>"><a href="#prepaid" data-toggle="tab"><?php echo $this->__("Kontantkort") ?></a></li>
+                            <?php endif; ?>
+                        </ul>
+                        <div class="tab-content">
+                            <?php if (isset($subscriptions['post'])): ?>
+                            <div class="tab-pane <?php echo ($this->sourceSubscriptionType == 'post')? 'active' : ''; ?>" id="postpaid">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <h3 style="white-space: nowrap; margin-bottom: 0;">
+                                            <?php echo $this->__('Köp med abonnemang') ?><br />
+                                        </h3>
+                                        <p style="margin-bottom: 15px;"><small><?php echo $this->__('Fria SMS, MMS, samtal samt 3GB surf!'); ?></small></p>
+                                    </div>
+                                </div>
+                                <?php if (isset($subscriptions['post'])): ?>
+                                    <?php if( sizeof($subscriptions['post']) == 1 ): ?>
+                                        <div class="row-fluid">
+                                            <div class="span8">
+                                                <?php foreach($subscriptions['post'] as $post): ?>
+                                                    <label for="subscription_post_<?php echo $post['subscription_id']; ?>">
+                                                        <input type="radio" onchange="loadBindPeriodsPost()"
+                                                            name="subscription_post" id="subscription_post_<?php echo $post['subscription_id']; ?>"
+                                                            data-monthly-price="<?php echo $post['monthly_price']; ?>"
+                                                            value="<?php echo $post['subscription_id']; ?>"
+                                                            checked="checked" />
+                                                        <?php echo $post['name']; ?>
+                                                    </label>
+                                                <?php endforeach; ?>
+                                            </div>
+                                            <div class="span4">
+                                                <?php /* <a href="#" class="btn-link"><?php echo $this->__('Läs mer') ?></a> */ ?>
+                                            </div>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="row-fluid">
+                                            <div class="span8">
+                                                <select id="subscription_post" onChange="loadBindPeriodsPost()" class="select-normal">
+                                                    <?php foreach($subscriptions['post'] as $post): ?>
+                                                    <option data-monthly-price="<?php echo $post['monthly_price']; ?>" value="<?php echo $post['subscription_id']; ?>" <?php echo ($post['selected'])? 'selected="selected"' : ""; ?>><?php echo $post['name']; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="span4">
+                                                <?php /* <a href="#" class="btn-link"><?php echo $this->__('Läs mer') ?></a> */ ?>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <div class="row-fluid">
+                                    <div class="span12 price">
+                                        <div class="price-monthly"><span id="post-price-monthly">0</span> kr <small> <?php echo $this->__('/ mån') ?></small></div>
+                                        <div class="price-upfront"><?php echo $this->__('Betalas nu:') ?>
+                                            <?php echo $this->getPriceHtml($_product, false) ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5><?php echo $this->__('Bindningstid:') ?></h5>
+                                <div id="radioBindingPeriodPost" class="row-fluid binding-period"></div>
+                            </div>
+                            <?php endif; ?>
+
+                            <?php if (isset($subscriptions['pre'])): ?>
+                                <?php if ($isDongle && count($subscriptions['pre']) == 1) { ?>
+                                    <?php $firstSubscription = array_shift($subscriptions['pre']); ?>
+                                    <div class="tab-pane <?php echo ($this->sourceSubscriptionType == 'pre' || !isset($subscriptions['post']))? 'active' : ''; ?>" id="prepaid">
+                                        <div class="row-fluid">
+                                            <div class="span8">
+                                                <h3><?php echo $this->__($firstSubscription['name']) ?></h3>
+                                            </div>
+                                            <div class="span4">
+                                                <?php /* <a href="#" class="btn-link"><?php echo $this->__('Läs mer') ?></a> */ ?>
+                                            </div>
+                                        </div>
+                                        <div class="row-fluid">
+                                            <p><?php echo $this->getPriceHtml($_product, false, '_clone') ?></p>
+                                            <input type="hidden" value="<?php echo $firstSubscription['value_id']; ?>" name="options[<?php echo $subscriptions['option_id'];?>]">
+                                            <input type="hidden" name="radioActivationType" value="new" />
+                                        </div>
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="tab-pane  <?php echo ($this->sourceSubscriptionType == 'pre' || !isset($subscriptions['post']))? 'active' : ''; ?>" id="prepaid">
+                                        <div class="row-fluid">
+                                            <div class="span12" style="margin-bottom: 15px;">
+                                                <h3 style="white-space: nowrap; margin-bottom: 0;">
+                                                    <?php echo $this->__('Köp med kontantkort') ?><br />
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="row-fluid">
+                                            <?php if (isset($subscriptions['pre'])): ?>
+                                                <?php $subscriptionIndex = 0; ?>
+
+                                                <?php // Determine the highest binding time to preselect
+                                                    $highestBindingTime = 0;
+                                                    foreach($subscriptions['pre'] as $pre) {
+                                                        foreach($pre['least_total_cost'] as $_bindingPeriod => $_bindCost) {
+                                                            if ($_bindingPeriod > $highestBindingTime)
+                                                                $highestBindingTime = $_bindingPeriod;
+                                                        }
+                                                    }
+                                                ?>
+
+                                                <?php foreach($subscriptions['pre'] as $pre): ?>
+                                                    <?php foreach($pre['least_total_cost'] as $_bindingPeriod => $_bindCost): ?>
+                                                    <label for="options_<?php echo ($pre['option_id']) ?>_<?php echo $pre['value_ids'][$_bindingPeriod] ?>">
+                                                        <input type="radio" onclick="opConfig.reloadPrice(); reloadMtkPrice(<?php echo $pre['least_total_cost'][$_bindingPeriod]; ?>)"
+                                                               name="options[<?php echo ($pre['option_id']) ?>]"
+                                                               id="options_<?php echo ($pre['option_id']) ?>_<?php echo $pre['value_ids'][$_bindingPeriod] ?>"
+                                                               price="<?php echo $pre['least_total_cost'][$_bindingPeriod] ?>"
+                                                               value="<?php echo $pre['value_ids'][$_bindingPeriod] ?>"
+                                                               bind_period="<?php echo $_bindingPeriod; ?>"
+                                                               <?php if ($_bindingPeriod == $highestBindingTime): ?> checked="checked"<?php endif; ?>
+                                                               subid="<?php echo $pre['subscription_id']; ?>" 
+                                                               class="radio product-custom-option" />
+                                                        <?php echo $pre['name']; ?> <?php if($_bindingPeriod): echo $this->__('(%s mån)', $_bindingPeriod); endif; ?><br />
+                                                        <span class="phone-upfront-price"><?php echo $this->__('Betala nu:') ?> <?php echo $pre['least_total_cost'][$_bindingPeriod] ?> <?php echo $this->__("kr") ?></span>
+                                                    </label>
+                                                    <?php endforeach; ?>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            <?php endif; ?>
+
+                            <?php if (in_array(Mage::getModel('eav/entity_attribute_set')->load($_product->getAttributeSetId())->getAttributeSetName(), array(Tele4G_Common_Helper_Data::ATTR_SET_DEVICE))): ?>
+                            <div class="container-activation-type">
+                                <hr />
+                                <h5><?php echo $this->__('Nummer:') ?></h5>
+                                <div class="row-fluid activation-type">
+                                    <div class="row-fluid">
+                                        <div class="span4">
+                                            <label for="radioActivationTypeNew">
+                                                <input type="radio" id="radioActivationTypeNew" name="radioActivationType" class="validate-one-required-by-name" value="new" />
+                                                <?php echo $this->__('Nytt') ?>
+                                            </label>
+                                        </div>
+                                        <div class="span8">
+                                            <label for="radioActivationTypeExist">
+                                                <input type="radio" id="radioActivationTypeExist" checked="checked" name="radioActivationType" class="validate-one-required-by-name" value="exist" />
+                                                <?php echo $this->__('Behåll nuvarande') ?>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="ActivationTypeNew" class="row-fluid" style="display: none;">
+                                            <select name="newnumber" id="newnumber" class="select-normal required-entry"></select>
+                                            <span id="ajax_loader" style="margin-left: 10px; width: 20px;"><img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif')?>"/></span>
+                                    </div>
+                                    <div id="ActivationTypeExist" class="row-fluid">
+                                        <div class="control-group telephone-number">
+                                            <div class="span8">
+                                                <input type="text" name="number" id="numberfield" value="" placeholder="<?php echo $this->__('Nummer du vill behålla');?>" class="input-medium required-entry" maxlength="13" />
+                                                <div id="advice-validate-phonenumber-numberfield" class="validation-advice"></div>
+                                                <div class="row-fluid" id="validation-numberfield"><span class="help-block"></span></div>
+
+                                            </div>
+                                            <div class="span4">
+                                                <button type="button" class="btn-link" id="confirm_number" onclick="sendsms();"><?php echo $this->__('Bekräfta') ?></button>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group code-number" style="display: none;">
+                                            <div class="span8">
+                                                <input type="text" name="code" maxlength="4" id="codefield" value="" placeholder="<?php print $this->__('Fyll i SMS-koden du fick');?>" class="input-medium" />
+                                                <div class="row-fluid" id="validation-codefield">
+                                                    <span class="help-block"></span>
+                                                </div>
+                                            </div>
+                                            <div class="span4">
+                                                <button type="button" class="btn-link" onclick="validatecode();"><?php echo $this->__('Bekräfta') ?></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container-nano-sim-type" style="display:none;">
+                                    <hr />
+                                    <h5><?php echo $this->__('Vill du ha ett nytt SIM-kort?') ?></h5>
+                                    <div class="row-fluid activation-type">
+                                        <div class="row-fluid">
+                                            <div class="span">
+                                                <label for="radioSimNotNeed0">
+                                                    <input type="radio" name="radioSimNotNeed" id="radioSimNotNeed0" value="0" />
+                                                    <?php echo $this->__('Ja, skicka mig ett nytt SIM-kort') ?>
+                                                </label>
+                                            </div>
+                                            <div class="span" style="margin-left:0;">
+                                                <label for="radioSimNotNeed1">
+                                                    <input type="radio" checked="checked" name="radioSimNotNeed" id="radioSimNotNeed1" value="1" />
+                                                    <?php echo $this->__('Nej tack, jag har redan ett SIM-kort för detta abonnemang') ?>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+
+                            <?php if (Mage::getModel('eav/entity_attribute_set')->load($_product->getAttributeSetId())->getAttributeSetName() == Tele4G_Common_Helper_Data::ATTR_SET_SUBSCRIPTION): ?>
+                            <div class="container-activation-type">
+                                <hr />
+                                <h5><?php echo $this->__('SIM type:') ?></h5>
+                                <div class="row-fluid sim-type">
+                                    <div id="simTypeWrap" class="row-fluid" style="">
+                                        <?php $simTypes = Mage::getModel('eav/config')->getAttribute('catalog_product', 'sim_type'); ?>
+                                        <?php $simTypesOptions = $simTypes->getSource()->getAllOptions(true, true);?>
+                                        <?php if (is_array($simTypesOptions)) { ?>
+                                        <select name="sim_type" id="sim_type" class="select-normal">
+                                            <?php foreach ($simTypesOptions as $simTypesOption){ ?>
+                                            <option value="<?php echo $simTypesOption['label']; ?>"><?php echo $simTypesOption['label']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <?php } ?>
+                                        <label>keep the existing SIM-card</label>
+                                        <input type="checkbox" value="1" name="keep_exist_sim" class="input-hide">
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        </div>
+                        <div class="row-fluid" id="minTotalCostContainer">
+                            <?php if (!$isDongle) { ?>
+                                <small class="dirt"><?php echo $this->__('Minsta totala kostnad under din bindningstid är');?> <span class="mtk_price"><?php print round($_product->getPrice());?></span> kr</small>
+                            <?php } else { ?>&nbsp;<?php } ?>
+                        </div>
+
+                        
+                   <!-- <div class="row-fluid">
+                            <button type="button" id="addToCartButton" title="<?php echo $this->__('Beställ') ?>" <?php echo (($tele4G_cart->showAddToCartButton($_product) ? "" : 'disabled="disabled"')); ?>  class="btn btn-success btn-large pull-right" onclick="productAddToCartForm.submit(this)"><?php echo $this->__('Beställ') ?></button>
+                        </div>-->
+                        <?php if ($this->getIsFmcg()) : ?>
+                        <div class="row-fluid wrap-citiesToGo">
+
+                            <div class="control-group">
+                                <div class="controls">
+                                    <label class="checkbox ctm-checkbox" for="usetogo-check" style="font-size:14px;">
+                                        <input class="input-hide" type="checkbox" name="usetogo" value="accept" id="usetogo-check">
+                                        <?php print $this->__('<strong>Jag vill hämta mobilen idag</strong> på 7-Eleven eller Pressbyrån.'); ?>
+                                    </label>
+                                    <span class="help-block" style="display: none;"></span>
+                                </div>
+                            </div>
+
+                            <?php if ($citiesToGo = $this->getResellerCities()) : ?>
+                            <div class="info-wrap-select" style="padding-left:0;">
+                                <select id="citiesToGo" class="select-normal required-entry" name="citiesToGo">
+                                    <option value="0"><?php echo $this->__("Please, select your city"); ?></option>
+                                    <?php foreach ($citiesToGo as $cityToGo): ?>
+                                    <option value="<?php echo $cityToGo; ?>"><?php echo $cityToGo; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <?php endif; ?>
+
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wrap-citiesToGo" id="">
+                <div class="container" id="toGoResellres" style="background-color: white; padding: 0 5px 0 5px; display: none; margin-bottom: 10px;"></div>
+                <div class="form-actions">
+                    <span id="ajax_loader_resellers" style="display:none; width: 20px;"><img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif')?>"/></span>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <button type="button" id="addToCartButton" title="<?php echo $this->__('Beställ'); ?>" <?php echo (($tele4G_cart->showAddToCartButton($_product) ? "" : 'disabled="disabled"')); ?>  class="btn btn-success btn-large pull-right" style="display: no-ne;" onclick="productAddToCartForm.submit(this);"><?php echo $this->__('Beställ') ?></button>
+            </div>
+            
+            <button class="btn-link show-full-spec"><?php print $this->__('Full specifikation');?></button>
+
+            <?php if ($detailedInfoGroup = $this->getChildGroup('detailed_info', 'getChildHtml')):?>
+                <div class="row article-info" id="article-info">
+                    <div class="span12 tabbable">
+                        <!--<button class="close pull-right" data-close="article-info" data-close-effect="slide"></button>-->
+                        <ul class="nav nav-tabs">
+                            <?php foreach ($detailedInfoGroup as $alias => $html):?>
+                                <!-- href -->
+                                <li><a href="#product-tab-<?php echo $alias; ?>" data-toggle="tab"><?php echo $this->escapeHtml($this->getChildData($alias, 'title')) ?></a></li>
+                            <?php endforeach;?>
+                        </ul>
+
+                        <div class="tab-content">
+                            <?php foreach ($detailedInfoGroup as $alias => $html):?>
+                                <!-- id -->
+                                <div class="tab-pane" id="product-tab-<?php echo $alias; ?>"><?php echo $html ?></div>
+                            <?php endforeach;?>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    (function($){
+                        $('#article-info .nav-tabs li:first-child').addClass('active');
+                        $('#article-info .tab-pane:first-child').addClass('active');
+                    }(jQuery));
+                </script>
+            <?php endif; ?>
+        </div>
+    </form>
+</div>
+<?php echo $this->getChildHtml('add_device', false); ?>
+
+<script type="text/javascript">
+    jQuery('#radioBindingPeriodPost').on('click', ':radio', function(){
+        if (jQuery(this).data("bt") == '<?php echo Tele4G_Togo_Model_Togo::BIND_PERIOD_24; ?>') {
+            jQuery('.wrap-citiesToGo').show();
+        } else {
+            jQuery('.wrap-citiesToGo').hide();
+        }
+    });
+    
+    (function($){
+        tele4g.stockLevel.setOptions({
+            msgDays: "<?php echo $this->__('dagar') ?>",
+            msgWeeks: "<?php echo $this->__('veckor') ?>",
+            msgNotAvailable: "<?php echo $this->__('N/A') ?>",
+            expectedDays: 1
+        });
+
+        <?php if ($optSelector) { ?>
+        setTimeout(function(){
+            if (jQuery('#subscription_post').is('select')) {
+                if (jQuery('#subscription_post').val() && jQuery('#subscription_post').val() != '<?php echo $offerSubscription; ?>') {
+                    jQuery('#subscription_post').val(<?php echo $offerSubscription; ?>).trigger('change');
+                }
+            }
+            jQuery('<?php echo $optSelector; ?>').click();
+        }, 500);
+        <?php } ?>
+        jQuery('input[type=radio], input[type=checkbox]').ezMark();
+    })(jQuery);
+
+    initCheckedState('#usetogo-check');
+    jQuery('#usetogo-check').change(function(e){
+        if (this.checked == this.previousCheckedState) {
+            initCheckedState('#usetogo-check');
+        } else {
+            initCheckedState('#usetogo-check');
+            showCities(this);
+        }
+    });
+
+    function showCities(radio)
+    {
+        if (jQuery(radio).is(':checked')) {
+            jQuery('#citiesToGo').parents('.selectorized').show();
+            jQuery('#toGoResellres').show();
+        } else {
+            jQuery('#citiesToGo').parents('.selectorized').hide();
+            jQuery('#toGoResellres').hide();
+        }
+    }
+
+    if (jQuery('#citiesToGo').length) {
+        jQuery('#citiesToGo').selectorize({extraWidth:50});
+        jQuery('#citiesToGo').parents('.selectorized').hide();
+
+        jQuery('#citiesToGo').change(function(e){
+            var city = jQuery('#citiesToGo').val();
+
+            jQuery('#toGoResellres').html('');
+            jQuery('#ajax_loader_resellers').show();
+
+            var colorProductId = jQuery('.colors .color.active').data('prod-id');
+            if (colorProductId == '') {
+                colorProductId = '<?php echo $this->getProduct()->getId(); ?>';
+            }
+            jQuery.post('<?php echo $this->getUrl('togo/index/getResellersTogo') ?>', {'city' : city, 'product' : colorProductId}, function(data) {
+                jQuery('#toGoResellres').html(data).find('input[type=radio], input[type=checkbox]').ezMark();
+                jQuery('#ajax_loader_resellers').hide();
+                jQuery('#toGoResellres').show();
+                jQuery('#addToCartButton').show();
+            });
+        });
+    }
+</script>

@@ -1,0 +1,214 @@
+<div id="stepTwo" class="step">
+    <form id="checkout_step_two" method="POST" name="checkout_step_two">           
+        <div class="row-fluid margin">
+            <h1><?php echo $this->__('Enter your preferences') ?></h1>
+        </div>
+         <div class="container">            
+            <h2 class="sub-step-head clearfix"><span class="sub-step-nbr">1</span><span class="text"><?php echo $this->__('Which account would you pay for this subscription?') ?></span></h2>
+            <div class="row">
+                <div class="span3 control-group">
+                    <label for="bank" class="required"><em>*</em><?php echo $this->__('Bank Name') ?></label>
+                    <div class="input-box">
+                        <select id="bank" name="payment[bank]" title="<?php echo $this->__('Gender') ?>" class="select-normal required-entry">
+                                <option value="0"><?php echo $this->__('Please select bank') ?></option>
+                                <option value="1"><?php echo $this->__('bank 1') ?></option>
+                                <option value="2"><?php echo $this->__('Rabobank') ?></option>
+                        </select>
+                    </div>
+                </div>                                            
+            </div>
+
+           <div class="row"> 
+               <div class="span3 control-group">
+                    <label for="account" class="required"><em>*</em><?php echo $this->__('Account') ?></label>
+                    <div class="controls">
+                        <input type="text" placeholder="<?php echo $this->__('Account') ?>" id="account" class="input-vert-large span required-entry" name="payment[account]" />                            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">            
+            <h2 class="sub-step-head clearfix"><span class="sub-step-nbr">2</span><span class="text"><?php echo $this->__('That you can identify with delivery of your phone?') ?></span></h2>
+            <div class="row">
+                <div class="span3 control-group">
+                    <label for="identification" class="required"><em>*</em><?php echo $this->__('Species identification') ?></label>
+                    <div class="input-box">
+                        <select id="identification" name="payment[identification]" title="<?php echo $this->__('Species identification') ?>" class="select-normal required-entry">
+                                <option value="0"><?php echo $this->__('Make your choice') ?></option>
+                                <option value="1"><?php echo $this->__('paspoort') ?></option>
+                                <option value="2"><?php echo $this->__('passport 2') ?></option>
+                        </select>
+                    </div>
+                </div>                                            
+            </div>
+
+           <div class="row"> 
+               <div class="span3 control-group">
+                    <label for="docnumber" class="required"><em>*</em><?php echo $this->__('Document number') ?></label>
+                    <div class="controls">
+                        <input type="text" placeholder="<?php echo $this->__('Enter your document number') ?>" id="docnumber" class="input-vert-large span required-entry" name="payment[docnumber]" />                            
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">            
+            <h2 class="sub-step-head clearfix"><span class="sub-step-nbr">3</span><span class="text"><?php echo $this->__('Would you take your current 06 number to Tele2?') ?></span></h2>
+            <div class="row">
+                <div class="span3 control-group">
+                    <label for="keepnumber" class="required"><em>*</em><?php echo $this->__('Keep your number') ?></label>
+                    <div class="input-box">
+                        <select id="keepnumber" onchange="keep();" name="payment[keepnumber]" title="<?php echo $this->__('Keep your number') ?>" class="select-normal required-entry">
+                                <option value="0"><?php echo $this->__('No') ?></option>
+                                <option value="1"><?php echo $this->__('Yes') ?></option>
+                        </select>
+                    </div>
+                </div>                                            
+            </div>
+            <div id="current-number-container" style="display: none;">
+                <div class="row"> 
+                    <div class="span3 control-group">
+                         <label for="currentnumber" class="required"><em>*</em><?php echo $this->__('Current number 06') ?></label>
+                         <div class="controls">
+                             <input type="text" placeholder="<?php echo $this->__('Enter your huiding 06-number') ?>" id="currentnumber" class="input-vert-large span required-entry" name="payment[currentnumber]" />                            
+                         </div>
+                         <div class="controls">
+                             <select id="shape" name="payment[shape]" title="<?php echo $this->__('Choose your current bell shape') ?>" class="select-normal required-entry">
+                                     <option><?php echo $this->__('Choose your current bell shape') ?></option>
+                                     <option value="1"><?php echo $this->__('shape1') ?></option>
+                                     <option value="2"><?php echo $this->__('shape2') ?></option>
+                             </select>
+                         </div>
+                     </div>
+                 </div>
+
+                 <div class="row">
+                     <div class="span3 control-group">
+                         <label for="provider" class="required"><em>*</em><?php echo $this->__('Current provider') ?></label>
+                         <div class="input-box">
+                             <select id="keepnumber" name="payment[provider]" title="<?php echo $this->__('Keep your number') ?>" class="select-normal required-entry">
+                                     <option><?php echo $this->__('Choose your current provider') ?></option>    
+                                     <option value="0"><?php echo $this->__('No') ?></option>
+                                     <option value="1"><?php echo $this->__('Yes') ?></option>
+                             </select>
+                         </div>
+                     </div>                                            
+                 </div>
+
+
+                  <div class="row"> 
+                    <div class="span3 control-group">
+                         <label for="simnummer" class="required"><em>*</em><?php echo $this->__('SIM card number') ?></label>
+                         <div class="controls">
+                             <input type="text" placeholder="<?php echo $this->__('Enter your SIM card number') ?>" id="simnummer" class="input-vert-large span required-entry" name="payment[simnummer]" />                            
+                         </div>                   
+                     </div>
+                 </div>
+
+
+                 <div class="row"> 
+                    <div class="span3 control-group">
+                         <label for="transdate" class="required"><em>*</em><?php echo $this->__('Choose a transition date') ?></label>
+                         <div class="controls">
+                             <input type="text" placeholder="<?php echo $this->__('First choose your current bell shape') ?>" id="transdate" class="input-vert-large span required-entry" name="payment[transdate]" />                            
+                         </div>                   
+                     </div>
+                 </div>
+
+            </div>
+            
+        </div>
+        
+        
+        
+        <div class="container">            
+            <h2 class="sub-step-head clearfix"><span class="sub-step-nbr">4</span><span class="text"><?php echo $this->__('Standaard vermelden we je nummer niet in het telefoonboek, wel op andermans factuur en staan betaaldes SMS-diensten, 0909-, 0909- en 0900-nummers niet geblokkeerd. Wol je de standaard of de aangepaste instellingen?') ?></span></h2>
+            <div class="row">
+                <div class="span3 control-group">
+                    <label for="settings" class="required"><em>*</em><?php echo $this->__('Phone registration*') ?></label>
+                    <div class="input-box">
+                        <select id="identification" name="payment[settings]" title="<?php echo $this->__('Phone registration') ?>" class="select-normal required-entry">
+                                <option value="0"><?php echo $this->__('Custom settings') ?></option>
+                                <option value="1"><?php echo $this->__('setting 1') ?></option>
+                                <option value="2"><?php echo $this->__('setting 2') ?></option>
+                        </select>
+                    </div>
+                </div>  
+                
+                <div class="controls">
+                    <label class="checkbox ctm-checkbox" for="include">
+                        <input class="input-hide-remove" type="checkbox" name="payment[registration][include][]" value="cond-accept" id="include">
+                        <?php print $this->__('Including telephone number in gibsen, telephone directories and information');?>
+                    </label>                
+                    <span class="help-block" style="display: none;"></span>
+                </div>
+                
+                <div class="controls">
+                    <label class="checkbox ctm-checkbox" for="foreclosing">
+                        <input class="input-hide-remove" type="checkbox" name="payment[registration][foreclosing][]" value="cond-accept" id="foreclosing">
+                        <?php print $this->__("Number foreclosing on someone else's bill");?>
+                    </label>                
+                    <span class="help-block" style="display: none;"></span>
+                </div>
+                
+                <div class="controls">
+                    <label class="checkbox ctm-checkbox" for="block">
+                        <input class="input-hide-remove" type="checkbox" name="payment[registration][block][]" value="cond-accept" id="block">
+                        <?php print $this->__('Most 0906 -, 0909 - and 0900 number block');?>
+                    </label>                
+                    <span class="help-block" style="display: none;"></span>
+                </div>
+                
+                <div class="controls">
+                    <label class="checkbox ctm-checkbox" for="paid">
+                        <input class="input-hide-remove" type="checkbox" name="payment[registration][paid][]" value="cond-accept" id="paid">
+                        <?php print $this->__('Block paid SMS services');?>
+                    </label>                
+                    <span class="help-block" style="display: none;"></span>
+                </div>
+                
+                
+
+            </div>
+
+        </div>
+        
+        
+        <div class="form-actions">
+            <button onclick="step_two()" id="btn_step_two" type="button" class="btn btn-primary pull-right"><?php echo $this->__('Next Step') ?></button>
+            <span id="ajax_loader_stepTwo" style="display:none; width: 20px;"><img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif')?>"/></span>
+            <button onclick="step_two_prev()" type="button" class="btn btn-primary pull-right"><?php echo $this->__('Prev Step') ?></button>
+        </div>
+    </form>
+    <script type="text/javascript">
+
+            function step_two_prev(){
+               jQuery('#stepTwo').remove();
+               jQuery('#stepOne').show();
+           }
+           
+           function keep(){
+               if(jQuery('#keepnumber').val() == 0){
+                   jQuery('#current-number-container').hide();
+               } else {
+                   jQuery('#current-number-container').show();
+               }            
+           }
+           
+           function step_two(){
+               var checkout_step_two = new VarienForm('checkout_step_two', true);
+               if (checkout_step_two.validator && checkout_step_two.validator.validate()) {
+                   // _gaq.push(['_trackPageview','/nasta_steg']);                
+                   var user_data = jQuery('#checkout_step_two').serialize();
+                   jQuery('#ajax_loader_stepTwo').show();
+                   jQuery.post('<?php echo $this->getUrl('checkout/tele4G/stepTwo') ?>', user_data, function(data) {
+                       jQuery('#ajax_loader_stepTwo').hide();
+                       jQuery('#stepTwo').hide();
+                       jQuery('.step-counter .stepTwo').removeClass('active').addClass('done').next().addClass('active');
+                       jQuery('#checkoutSteps').append(data);
+                   });
+
+               }
+           }
+   </script>
+</div>

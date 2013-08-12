@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <telco_splash translate="label" module="tele2_catalog">
+            <label>Splashes</label>
+            <class>separator-top</class>
+            <tab>telco</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>20</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <splash translate="label">
+                    <label>Splashes</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>350</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <new_title translate="label">
+                            <label>New Product's splash title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </new_title>
+                        <new_image translate="label">
+                            <label>New Product image</label>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">catalog/product/splash</upload_dir>
+                            <base_url type="media" scope_info="1">catalog/product/splash</base_url>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                        </new_image>
+                        <hot_title translate="label">
+                            <label>Hot Product's splash title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </hot_title>
+                        <hot_image translate="label">
+                            <label>Hot Product image</label>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">catalog/product/splash</upload_dir>
+                            <base_url type="media" scope_info="1">catalog/product/splash</base_url>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                        </hot_image>
+                        <togo_title translate="label">
+                            <label>ToGo's splash title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </togo_title>
+                        <togo_image translate="label">
+                            <label>ToGo image</label>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">catalog/product/splash</upload_dir>
+                            <base_url type="media" scope_info="1">catalog/product/splash</base_url>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                        </togo_image>
+                        <splash1_title translate="label">
+                            <label>Splash #1 title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </splash1_title>
+                        <splash1_image translate="label">
+                            <label>Splash #1 image</label>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">catalog/product/splash</upload_dir>
+                            <base_url type="media" scope_info="1">catalog/product/splash</base_url>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                        </splash1_image>
+                        <splash2_title translate="label">
+                            <label>Splash #2 title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </splash2_title>
+                        <splash2_image translate="label">
+                            <label>Splash #2 image</label>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">catalog/product/splash</upload_dir>
+                            <base_url type="media" scope_info="1">catalog/product/splash</base_url>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                        </splash2_image>
+                        <splash3_title translate="label">
+                            <label>Splash #3 title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </splash3_title>
+                        <splash3_image translate="label">
+                            <label>Splash #3 image</label>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">catalog/product/splash</upload_dir>
+                            <base_url type="media" scope_info="1">catalog/product/splash</base_url>
+                            <sort_order>65</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                        </splash3_image>
+                    </fields>
+                </splash>
+            </groups>
+        </telco_splash>
+    </sections>
+</config>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+    <config>
+    <modules>
+      <Icommerce_Auriga>
+        <codePool>local</codePool>
+        <active>false</active>
+      </Icommerce_Auriga>
+    </modules>
+    </config>
+      

@@ -1,0 +1,196 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+
+<?php
+$_productCollection=$this->getLoadedProductCollection();
+$_helper = $this->helper('catalog/output');
+$_tele4G_catalog = $this->getLayout()->createBlock('tele4G_catalog/product_list');
+?>
+<?php if(!$_productCollection->count()): ?>
+	<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+	<?php if (!Mage::registry('current_category')) return ?>
+	<?php $_current_category = Mage::registry('current_category'); ?>
+	<?php $_parent_category = $_current_category->getParentCategory(); ?>
+	<?php $brand_category = Mage::getModel('catalog/category')->loadByAttribute('code', 'brands') ?>
+
+	<?php //echo $this->getToolbarHtml() ?>
+	<?php echo $this->getAdditionalHtml() ?>
+
+	<div class="row">
+		<div class="span12 tabbable tab-unboxed">
+			<?php if (!empty($brand_category)): ?>
+			    <select class="select-normal pull-right" onchange="setLocation(this.value)">
+					<?php foreach ($brand_category->getChildrenCategories() as $_category): ?>
+						<?php $_category = Mage::getModel('catalog/category')->load($_category->getId()) ?>
+				        <option value="<?php echo $_category->getUrl()?>" <?php echo ($_current_category->getCode() == $_category->getCode()? "selected" : "")?> ><?php echo $_category->getName(); ?></option>
+					<?php endforeach; ?>
+			    </select>
+			<?php endif; ?>
+		    <ul class="nav nav-tabs">
+		        <li class="active"><a href="#abonnemang" data-toggle="tab"><?php echo $this->__('Abonnemang') ?></a></li>
+		        <li><a href="#kontantkort" data-toggle="tab"><?php echo $this->__('Kontantkort') ?></a></li>
+		    </ul>
+		    <h3><?php echo $this->__('Tanka för ett fast belopp varje månad så ger vi dig en smartphone för') ?> 0 kr</h3>
+		    <div class="tab-content">
+		        <div class="tab-pane active" id="abonnemang">
+					<div class="row items-list-wrap">
+						<?php $_collectionSize = $_productCollection->count() ?>
+						<?php $_columnCount = $this->getColumnCount(); ?>
+						<?php $i=0; foreach ($_productCollection as $_product): ?>
+							<?php
+								$masterProduct = $_product;
+								if ($_product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE &&
+									Mage::helper('tele4G_catalog/data')->isDeviceOrDongle($_product)) {
+									$associatedProductsSorted = $this->getLayout()->createBlock('tele4G_catalog/product_view_type_configurable')->getSortedAssociatedProducts($_product);
+									foreach ($associatedProductsSorted as $associatedProductSorted) {
+										if ($associatedProductSorted['is_master']) {
+											$masterProduct = $associatedProductSorted['product'];
+										}
+									}
+								}
+							?>
+							<?php $_prepost = $_tele4G_catalog->getPrePostSubscriptionPrice($_product); ?>
+
+							<div class="span3 item-wrap">
+								<div class="img-wrap">
+									<span class="ver-align">&nbsp;</span>
+									<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" >
+										<img src="<?php echo $this->helper('catalog/image')->init($masterProduct, 'small_image')->resize(200, 225); ?>" width="200" height="225" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+									</a>
+								</div>
+								<p class="item-name">
+									<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a>
+								</p>
+								<p>
+									<?php echo $this->__('Kontantpris telefonen') ?>
+						            <?php if ($_prepost): ?>
+							            <?php if ($mode == 'post'): ?>
+							            	<?php echo ((isset($_prepost['post'])) ? $this->helper('checkout')->formatPrice($_prepost['post']['price']) : "-"); ?>
+							            <?php else: ?>
+							            	<?php echo ((isset($_prepost['pre'])) ?  $this->helper('checkout')->formatPrice($_prepost['pre']['price']) : "-"); ?>
+							            <?php endif; ?>
+						            <?php endif; ?>
+					            </p>
+								<p class="item-price"><strong>
+									Pre: <?php echo ((isset($_prepost['pre']))? $_prepost['pre']['monthly_price'] . " kr/man" : "-"); ?> <br />
+									Post: <?php echo ((isset($_prepost['post']))? $_prepost['post']['monthly_price'] . " kr/man" : "-"); ?>
+								</strong></p>
+								<div>
+									<a href="<?php echo $_product->getProductUrl() ?>" class="btn btn-large"><?php echo $this->__('Välj') ?></a>
+								</div>
+							</div>
+						<?php endforeach ?>
+					</div>
+		        </div>
+		        <div class="tab-pane" id="kontantkort">
+		    	</div>
+		    </div>
+		</div>
+	</div>
+<?php endif; ?>
+
+
+
+
+
+<?php /*
+        <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+            <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($masterProduct, 'small_image')->resize(135); ?>" width="135" height="135" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+            <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+			<?php if($_product->getRatingSummary()): ?>
+				<?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+			<?php endif; ?>
+
+			<?php if ($_parent_category->getCode() == "brands"): ?>
+			<?php
+			$_new_product = Mage::getModel('catalog/product')->load($_product->getId());
+			if ($_tele4G_catalog):
+				$_prepost = $_tele4G_catalog->getPrePostSubscriptionPrice($_new_product); ?>
+                <div class="price-box">
+	                        <span class="regular-price">
+	                        <?php if ($_prepost): ?>
+                                <div class="price">Pre: <?php echo ((isset($_prepost['pre']))? $_prepost['pre']['monthly_price'] . " kr/man" : "-"); ?></div>
+                                <div class="price">Post: <?php echo ((isset($_prepost['post']))? $_prepost['post']['monthly_price'] . " kr/man" : "-"); ?></div>
+		                        <?php endif; ?>
+	                        </span>
+                </div>
+				<?php endif; ?>
+			<?php endif; ?>
+
+
+
+			<?php
+			if ($_product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE &&
+				Mage::helper('tele4G_catalog/data')->isDeviceOrDongle($_product)) :
+				?>
+                <div class="product-variants" style="margin:0 0 5px 0;">
+					<?php foreach ($associatedProductsSorted as $associatedProductSorted): ?>
+                    <a href="<?php echo $_product->getProductUrl() . "#color=" . $associatedProductSorted['product']->getColor(); ?>" title="<?php echo $associatedProductSorted['expectedDays']; ?>"
+                            ><img src="<?php echo $this->helper('catalog/image')->init($associatedProductSorted['product'], 'thumbnail')->resize(33); ?>"></a>&nbsp;
+					<?php endforeach; ?>
+                </div>
+				<?php endif;?>
+
+
+
+            <div class="actions">
+
+
+                <p><?php echo $this->__('Kontantpris telefonen') ?>
+		            <?php if ($_prepost): ?>
+			            <?php if ($mode == 'post'){ ?>
+				            <?php echo ((isset($_prepost['post'])) ? $_prepost['post']['price'] . " kr/man" : "-"); ?>
+				            <?php }else{ ?>
+				            <?php echo ((isset($_prepost['pre'])) ? $_prepost['pre']['price'] . " kr/man" : "-"); ?>
+				            <?php } ?>
+			            <?php endif; ?>
+                </p>
+
+
+
+	            <?php if($_product->isSaleable()): ?>
+                <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+	            <?php else: ?>
+	            <?php if ($_product->getIsSalable()): ?>
+                    <p class="availability in-stock"><span><?php echo $this->__('In stock') ?></span></p>
+		            <?php else: ?>
+                    <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+		            <?php endif; ?>
+	            <?php endif; ?>
+
+
+            </div>
+        </li>
+*/ ?>

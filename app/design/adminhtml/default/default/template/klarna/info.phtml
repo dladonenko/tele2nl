@@ -1,0 +1,14 @@
+<img src="<?php echo $logo; ?>" style="margin-top: 5px; margin-bottom: 10px;" alt="Klarna" />
+<?php if (isset($showTransactionNumber)): ?>
+<p><b><?php echo $label; ?>:</b> <?php echo $transactionNumber; ?></p>
+<?php endif; ?>
+<?php if (isset($showInvoiceNumbers)): ?>
+<fieldset>
+    <ul>
+        <li><b><?php echo $invoiceLabel; ?></b></li>
+        <?php foreach($invoiceNumbers as $link): ?>
+        <li><?php echo $link; ?></li>
+        <?php endforeach; ?>
+    </ul>
+</fieldset>
+<?php endif; ?>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+
+    <default translate="label">
+        <label>Tele4G Catalog Category</label>
+    </default>
+    <!--
+    Tele4G Catalog layout
+    -->
+
+    <subscription_index_index translate="label">
+    </subscription_index_index>
+
+    <!--
+    AllProducts layout
+    -->
+
+    <subscription_allproducts_index translate="label">
+        <label>Tele4G Catalog Category</label>
+        <reference name="root" template="page/1column.phtml">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="tele4G_subscription/allProducts_view" name="allProducts.products" template="tele4G/allProducts/view.phtml">
+                <block type="tele4G_subscription/allProducts_product_list" name="allProducts.product_list" template="tele4G/allProducts/product/list.phtml" />
+            </block>
+        </reference>
+    </subscription_allproducts_index>
+    
+    <subscription_allproducts_downgrade translate="label">
+        <label>Tele4G Catalog Category</label>
+        <reference name="root" template="page/1column.phtml">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="tele4G_subscription/allProducts_downgrade_list" name="allProducts.downgrade.product_list" template="tele4G/allProducts/downgrade/list.phtml" />
+        </reference>
+    </subscription_allproducts_downgrade>
+
+</layout>

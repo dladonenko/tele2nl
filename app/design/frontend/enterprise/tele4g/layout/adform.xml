@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+<!--
+Default layout, loads most of the pages
+-->
+    <default>
+        <reference name="before_body_end">
+            <block type="tele4G_common/adform" name="adform" as="adform" template="tele4G/common/adform.phtml" />
+        </reference>
+    </default>
+<!--
+For receipt page only
+-->
+    <print>
+        <reference name="content">
+            <block type="tele4G_common/adform" name="adform" as="adform" template="tele4G/common/adform.phtml" />
+        </reference>
+    </print>
+</layout>

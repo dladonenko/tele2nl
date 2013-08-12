@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <telco_freegift>
+                                        <title>Telco - Free Gifts</title>
+                                    </telco_freegift>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    <menu>
+        <telco_freegift translate="title" module="tele2_install">
+            <title>Telco</title>
+            <sort_order>32</sort_order>
+            <children>
+                <example translate="title" module="tele2_freeGift">
+                    <title>Free Gifts</title>
+                    <sort_order>1</sort_order>
+                    <action>adminhtml/freeGift</action>
+                </example>
+            </children>
+        </telco_freegift>
+    </menu>
+    <translate>
+        <modules>
+            <Tele2_FreeGift>
+                <files>
+                    <default>Tele2_FreeGift.csv</default>
+                </files>
+            </Tele2_FreeGift>
+        </modules>
+    </translate>
+</config>

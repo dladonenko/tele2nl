@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    
+    <tele2_feed_products_deviceconf>
+        <block type="tele2_feed/deviceconf" output="toHtml" name="feed.deviceconf" />
+    </tele2_feed_products_deviceconf>
+    <tele2_feed_products_index>
+        <update handle="tele2_feed_products_deviceconf"/>
+    </tele2_feed_products_index>
+
+</layout>

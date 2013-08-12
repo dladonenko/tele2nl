@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tele4G_Adform>
+            <version>0.0.1</version>
+        </Tele4G_Adform>
+    </modules>
+    <global>
+        <helpers>
+            <tele4G_adform>
+                <class>Tele4G_Adform_Helper</class>
+            </tele4G_adform>
+        </helpers>          
+    </global>
+</config>

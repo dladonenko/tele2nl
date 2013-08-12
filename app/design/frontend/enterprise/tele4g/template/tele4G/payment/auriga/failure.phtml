@@ -1,0 +1,15 @@
+<?php $aurigamodel = $this->getAuriga(); ?>
+<html>
+    <head></head>
+<body>
+	<div style="text-align: center; height: 400px; vertical-align: middle; padding-top: 140px;">
+		<div style="font-family: Arial; font-size: 11px; margin-bottom: 20px;"><?php echo $this->__('Payment failure.') ?></div>
+		<img style="border: 0px;" src="<?php echo $this->getSkinUrl('images/auriga/loading.gif') ?>">
+        
+        <p><?php echo $aurigamodel->getFailuireMessage(); ?></p>
+  </div>
+  <script language="javascript">
+		// If payment aborted we redirect to failure page.
+  	this.parent.parent.window.location = '<?php echo $this->getAuriga()->getFinalFailureURL() ?>';
+  </script>
+</body></html>

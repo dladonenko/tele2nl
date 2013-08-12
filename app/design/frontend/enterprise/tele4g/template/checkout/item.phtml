@@ -1,0 +1,246 @@
+<?php
+/**
+ * Shopping cart template
+ *
+ * @see Tele4G_Checkout_Block_Item
+ */
+
+$offer = $this->getOffer();
+$compatibleAddons = $this->getCompatibleAddon();
+$isDongle = Mage::helper('tele2_catalog')->isDongle($offer);
+$isDevice = Mage::helper('tele2_catalog')->isDevice($offer);
+$accessoryIndex = 0;
+$insurancesIndex = 0;
+?>
+
+<?php if ($offer): ?>
+<div id="breadcrumbs" class="container">
+    <ul class="breadcrumb">
+        <li><a href="<?php echo Mage::getStoreConfig("tele4G/variables/tele4G_main_page")?>"><?php echo $this->__('Hem') ?></a><span class="divider">›</span></li>
+        <?php if ($isDongle): ?>
+            <li><a href="<?php echo Mage::getStoreConfig("tele4G/variables/tele4G_mbb_page")?>"><?php echo $this->__('Mobilt bredband') ?></a><span class="divider">›</span></li>
+        <?php elseif ($isDevice): ?>
+            <li><a href="<?php echo $this->getUrl('/') ?>"><?php echo $this->__('Mobiltelefoner') ?></a><span class="divider">›</span></li>
+        <?php endif; ?>
+        <li><a href="/<?php echo $offer->getUrlPath(); ?>"><?php echo $offer->getName() ?></a><span class="divider">›</span></li>
+        <li class="active"><?php echo $this->__('Lägg till pluspaket & tillbehör') ?></li>
+    </ul>
+</div>
+<script>
+    function groupLimit(current)
+    {
+        var group = jQuery(current).attr('group');
+        console.log(group);
+        var groupType = jQuery(current).attr('checked');
+        console.log(groupType);
+        if(groupType == 'checked'){
+            jQuery('[group="'+group+'"]').attr("disabled",true);
+            jQuery(current).attr('disabled',false)
+        } else {
+            jQuery('[group="'+group+'"]').attr("disabled",false);
+        }
+    }
+</script>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->getSkinUrl('css/additional.css')?>" media="all" />
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/widgets/popup.js')?>"></script>
+<div class="popup" id="popup-insurance" style="display:none;">
+    <button type="button" class="close">×</button>
+    <div class="popup-header clearfix">
+        <h3></h3>
+    </div>
+    <div class="popup-content clearfix">
+        <p></p>
+    </div>
+    <div class="popup-price clearfix">
+        <p></p>
+    </div>
+</div>
+
+<form action="<?php echo $this->getUrl('checkout/cart/addAddon') ?>" method="post" id="compatible-addons-accessories">
+    <div class="container web-shop">
+        <div class="clearfix">
+            <div class="buttons-title pull-right">
+                <button type="submit" class="btn btn-success btn-large"><?php echo $this->__('Hoppa över') ?></button>
+                <button type="submit" class="btn btn-success btn-large" style="display: none;"><?php echo $this->__('Gå vidare') ?></button>
+            </div>
+            <h1><?php echo $this->__('Lägg till extra tjänster eller tillbehör') ?></h1>
+        </div>
+        <hr />
+    </div>
+    <?php if ($this->isOfferDevice() || $this->isOfferSubscription() || $this->isOfferDongle()): ?>
+    
+        <?php if ($compatibleAddons && count($compatibleAddons) > 0): ?>    
+            <div class="container web-shop">
+                <h2><?php echo $this->__('Extra mobilsurf') ?></h2>
+            </div>
+            <div class="wrapper-grey border margin">
+                <div class="container web-shop">
+                    <table class="table table-cart">
+                        <colgroup>
+                            <col class="column-control" />
+                            <col class="column-image" />
+                            <col />
+                            <col class="column-price" />
+                        </colgroup>
+                        <tbody>
+                            <?php foreach ($compatibleAddons as $addon): ?>
+                            <?php if ($addon->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_ENABLED): ?>
+                                <?php $addon = Mage::getModel('catalog/product')->load($addon->getId());?>
+                                <?php $addonAttributeObjGroup = $addon->getResource()->getAttribute("addon_group"); ?>
+                                    <?php $addon_group_label = $addonAttributeObjGroup->getSource()->getOptionText($addon->getData('addon_group')); ?>
+                                    <?php $addon_group_label = strtolower( str_replace(' ', '_', $addon_group_label));?>
+                                    <tr>
+                                        <td>
+                                            <input onclick="groupLimit(this)" group="<?php print $addon_group_label;?>" id="addon_id-<?php echo $addon->getEntityId(); ?>" type="checkbox" class="input-hide" name="addon[<?php echo $addon->getAddonGroup() ?>]" value="<?php echo $addon->getEntityId(); ?>" />
+                                        </td>
+                                        <td><img width="84" height="84" src="<?php echo $this->helper('catalog/image')->init($addon, 'thumbnail')->backgroundColor(239,239,239)->resize(84) ?>" /></td>
+                                        <td>
+                                            <h4><?php echo $addon->getName() ?></h4>
+                                            <p><?php echo $addon->getShortDescription() ?></p>
+                                        </td>
+                                        <td class="column-price"><strong><?php echo $this->stripTags($this->helper('checkout')->formatPrice($addon->getMonthlyPrice())) . " / mån"; ?></strong></td>
+                                    </tr>
+                            <?php endif; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+    
+    <?php if ($this->isOfferDevice() || $this->isOfferDongle()): ?>
+        <?php $compatibleInsurances = $this->getCompatibleInsurances(); ?>
+        <?php if ($compatibleInsurances): ?>
+            <div class="container web-shop">
+                <h2><h2><?php echo $this->__('Insurances') ?></h2></h2>
+            </div>
+            <div class="wrapper-grey border margin">
+                <div class="container web-shop">
+                    <table class="table table-cart">
+                        <colgroup>
+                            <col class="column-control">
+                            <col class="column-image">
+                            <col>
+                            <col class="column-price">
+                        </colgroup>
+                        <tbody>
+                            <?php foreach ($compatibleInsurances as $_item): ?>
+                                <?php if ($_item->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_ENABLED): ?>
+                                    <?php if ($_item->getStockItem()->getIsInStock()): ?>
+                                        <tr class="<?php if ($insurancesIndex > 3) echo "insurances-hidden"; ?>" data-pid="<?php echo $_item->getId(); ?>">
+                                            <td><input onclick="groupLimit(this)" group="insurance" type="checkbox" class="input-hide" id="related-checkbox<?php echo $_item->getId() ?>" name="related_insurances[]" value="<?php echo $_item->getId() ?>" /></td>
+                                            <td><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->backgroundColor(239,239,239)->resize(84) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>" /></td>
+                                            <td>
+                                                <h4 class="data-title"><?php echo $this->htmlEscape($_item->getName()) ?></h4>
+                                                <div><?php echo $_item->getShortDescription() ?></div>
+                                                <div class="data-description" style="display:none;"><?php echo $_item->getDescription() ?></div>
+                                                <a href="#" class="readmore" data-id="<?php echo $_item->getId(); ?>"><?php echo $this->__("Read more"); ?></a>
+                                            </td>
+                                            <td class="column-price data-price"><strong><?php echo Mage::helper('checkout')->formatPrice($_item->getPrice(), true, true); ?></strong></td>
+                                        </tr>
+                                        <?php $insurancesIndex++; ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <?php if ($insurancesIndex > 4): ?>
+                <div class="container web-shop">
+                    <div class="row" id="moreInsurancesToggler">
+                        <a data-toggle-query=".insurances-hidden" data-destroy-after-query="#moreInsurancesToggler" class="pull-right toggle-button" href="#"><strong><?php echo $this->__('See more insurances') ?></strong></a>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+    
+        <?php $compatibleAccessories = $this->getCompatibleAccessories(); ?>
+            <?php if ($compatibleAccessories): ?>
+            <div class="container web-shop">
+                <h2><h2><?php echo $this->__('Tillbehör') ?></h2></h2>
+            </div>
+            <div class="wrapper-grey border margin">
+                <div class="container web-shop">
+                    <table class="table table-cart">
+                        <colgroup>
+                            <col class="column-control">
+                            <col class="column-image">
+                            <col>
+                            <col class="column-price">
+                        </colgroup>
+                        <tbody>
+                            <?php foreach ($compatibleAccessories as $_item): ?>
+                                <?php if ($_item->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_ENABLED): ?>
+                                    <?php if ($_item->getStockItem()->getIsInStock()): ?>
+                                        <tr class="<?php if ($accessoryIndex > 3) echo "accessory-hidden"; ?>">
+                                            <td><input type="checkbox" class="input-hide" id="related-checkbox<?php echo $_item->getId() ?>" name="related_products[]" value="<?php echo $_item->getId() ?>" /></td>
+                                            <td><img src="<?php echo $this->helper('catalog/image')->init($_item, 'thumbnail')->backgroundColor(239,239,239)->resize(84) ?>" alt="<?php echo $this->htmlEscape($_item->getName()) ?>" title="<?php echo $this->htmlEscape($_item->getName()) ?>" /></td>
+                                            <td>
+                                                <h4><?php echo $this->htmlEscape($_item->getName()) ?></h4>
+                                                <p><?php echo $_item->getShortDescription() ?></p>
+                                            </td>
+                                            <td class="column-price"><strong><?php echo Mage::helper('checkout')->formatPrice($_item->getPrice(), true, true); ?></strong></td>
+                                        </tr>
+                                        <?php $accessoryIndex++; ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <?php if ($accessoryIndex > 4): ?>
+                <div class="container web-shop">
+                    <div class="row" id="moreAccessoriesToggler">
+                        <a data-toggle-query=".accessory-hidden" data-destroy-after-query="#moreAccessoriesToggler" class="pull-right toggle-button" href="#"><strong><?php echo $this->__('Se fler tillbehör') ?></strong></a>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+
+    <?php endif; ?>
+    
+     <div class="container web-shop">
+        <div class="buttons-bar clearfix">
+            <button type="submit" class="btn btn-success btn-large pull-right"><?php echo $this->__('Hoppa över') ?></button>
+            <button type="submit" class="btn btn-success btn-large pull-right" style="display: none;"><?php echo $this->__('Gå vidare') ?></button>
+        </div>
+    </div>
+</form>
+<?php endif; ?>
+
+<script>
+    jQuery(function(){
+        jQuery('#compatible-addons-accessories').one('change', ':radio, :checkbox', function(){
+            jQuery('#compatible-addons-accessories button').toggle();
+        });
+        
+        jQuery('#popup-insurance').popup();
+        jQuery('.readmore').click(function(){
+            var pid = jQuery(this).data("id");
+            var title = jQuery('.data-title', '[data-pid="'+pid+'"]').text();
+            var price = jQuery('.data-price', '[data-pid="'+pid+'"]').text();
+            var description = jQuery('.data-description', '[data-pid="'+pid+'"]').html();
+            jQuery('#popup-insurance .popup-header h3').html(title);
+            jQuery('#popup-insurance .popup-content p').html(description);
+            jQuery('#popup-insurance .popup-price p').html(price);
+            jQuery('#popup-insurance').popup('show');
+            return false;
+        });
+        function closePopUp(id) {
+            jQuery(id).popup('hide');
+        }
+        jQuery('.popup .close').click(function(){
+            closePopUp('#popup-insurance');
+            return false;
+        });
+        jQuery(document).on('click', '.popup-overlay', function(){
+            closePopUp('#popup-insurance');
+        });
+
+        jQuery('input[type=radio], input[type=checkbox]').ezMark();
+    });
+</script>

@@ -1,0 +1,209 @@
+<?php
+/**
+ * AllProducts list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php
+/*
+    if ($currentCategory = Mage::registry('current_category'))
+    {
+        $_catID = $currentCategory->getId();
+    } else {
+        $_catID = Mage::getModel('catalog/category')->loadByAttribute('code', 'configurable_devices')->getId();
+    }
+*/
+    $_catID = $this->_getCatId();
+    $_helper = $this->helper('catalog/output');
+    if(!$mode = $this->getRequest()->getParam('subscriptionType')) {
+        $mode = 'post';
+    }
+    $_devicesBySubscriptionGroup = $this->getDevicesBySubscriptionGroup($_catID, $mode);
+    $_tele4G_catalog = $this->getLayout()->createBlock('tele4G_catalog/product_list');
+    $brand_category = Mage::getModel('catalog/category')->loadByAttribute('code', 'brands')
+?>
+
+<div class="container web-shop">
+    
+
+<div class="row">
+    <div class="span12 tabbable tab-unboxed">
+        <!-- Brand selector -->
+        <?php if (!empty($brand_category)): ?>
+        <select class="select-normal pull-right" onchange="if(this.value){setLocation(this.value)}">
+            <option value=""><?php echo $this->__('Visa varumärken') ?></option>
+            <?php foreach ($brand_category->getChildrenCategories() as $_category): ?>
+            <option <?php echo ($_catID == $_category->getId()) ? 'selected' : ''; ?> value="<?php echo $_category->getUrl();?>"><?php echo $_category->getName(); ?></option>
+            <?php endforeach; ?>
+        </select>
+        <?php endif; ?>
+        <!-- Post/Pre -->
+        <ul class="nav nav-tabs">
+            <?php if($mode == 'post'): ?>
+                <?php $smallPrice = 295; $mediumPrice = 335; $largePrice = 385; //customer required hardcode ?>
+                <?php $smallTitle = 'Enklare mobiler'; //customer required hardcode ?>
+                <?php $mediumTitle = 'Prisvärda mobiler'; //customer required hardcode ?>
+                <?php $largeTitle = 'Värstingmobiler'; //customer required hardcode ?>
+                <li class="active"><a href="#" onclick="return false;"><?php echo $this->__('Abonnemang') ?></a></li>
+                <li><a href="<?php echo Mage::getUrl('*/*/*', array('_current'=>true,'_use_rewrite'=>true,'_query'=>array('subscriptionType'=>'pre'))); ?>"><?php echo $this->__('Kontantkort') ?></a></li>
+            <?php else: ?>
+                <?php $smallPrice = 150; $mediumPrice = 250; $largePrice = 350; //customer required hardcode ?>
+                <?php $smallTitle = $mediumTitle = $largeTitle = 'Tanka för minst'; //customer required hardcode ?>
+                <li><a href="<?php echo Mage::getUrl('*/*/*', array('_current'=>true,'_use_rewrite'=>true,'_query'=>array('subscriptionType'=>'post'))); ?>"><?php echo $this->__('Abonnemang') ?></a></li>
+                <li class="active"><a href="#" onclick="return false;"><?php echo $this->__('Kontantkort') ?></a></li>
+            <?php endif ?>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active">
+                <div class="row">
+                    <div class="span12">
+                        <?php if($mode == 'pre'): ?>
+                            <h2><?php echo $this->__('Vi ger dig en mobil när du tankar för minst 150 kr/mån! Ring för hela beloppet.') ?></h2>
+                        <?php else:?>
+                            <h2><?php echo $this->__('Köp en mobiltelefon med abonnemanget Comviq Fastpris') ?></h2>
+                            <p class="checked-labels">
+                                <span class="checked-label"><?php echo $this->__('Fria samtal') ?></span>
+                                <span class="checked-label"><?php echo $this->__('Fria SMS') ?></span>
+                                <span class="checked-label"><?php echo $this->__('3GB surf ingår') ?></span>
+                                <span class="checked-label"><?php echo $this->__('Inga dolda avgifter') ?></span>
+                            </p>
+                        <?php endif;?>
+                    </div>
+                </div>
+
+                <?php if(!count($_devicesBySubscriptionGroup)): ?>
+                    <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+                <?php else: ?>
+                    <?php echo $this->getAdditionalHtml() ?>
+
+                    <div class="row" id="deviceList">
+                        <?php foreach ($_devicesBySubscriptionGroup as $_subscriptionGroupId => $_groupDevices): ?>
+                            <div class="span4" id="group_<?php echo $_subscriptionGroupId ?>">
+                                <div class="products-column center">
+                                    <div class="column-head clearfix">
+                                        <?php
+                                            if ($_subscriptionGroupId == 0) {
+                                                $columnTitle = $smallTitle;
+                                                $columnPrice = $smallPrice;
+                                            }
+                                            elseif ($_subscriptionGroupId == 1) {
+                                                $columnTitle = $mediumTitle;
+                                                $columnPrice = $mediumPrice;
+                                            }
+                                            elseif ($_subscriptionGroupId == 2) {
+                                                $columnTitle = $largeTitle;
+                                                $columnPrice = $largePrice;
+                                            }
+                                        ?>
+                                        <h3><?php echo $columnTitle; ?></h3>
+                                        <span class="price">
+                                            <small><?php if ($mode == 'post' && $_subscriptionGroupId == 2) echo $this->__('Från'); ?></small>
+                                            <?php echo $columnPrice; ?> kr<small>/mån</small>
+                                        </span>
+                                    </div>
+
+                                    <?php if ( count($_groupDevices) > 0 ): ?>
+                                        <?php $deviceIndex = 0; ?>
+                                        <?php foreach ($_groupDevices as $_item): ?>
+                                            <?php
+                                                $masterProduct = $_item;
+                                                $associatedProductsSorted = $this->getLayout()->createBlock('tele4G_catalog/product_view_type_configurable')
+                                                    ->getSortedAssociatedProducts($_item);
+                                                foreach ($associatedProductsSorted as $associatedProductSorted) {
+	                                                if(!$associatedProductSorted['inStock']){
+		                                                continue;
+	                                                }
+                                                    if ($associatedProductSorted['is_master']) {
+                                                        $masterProduct = $associatedProductSorted['product'];
+                                                    }
+                                                }
+
+                                            ?>
+                                            <?php $_new_product = Mage::getModel('catalog/product')->load($_item->getId()); ?>
+                                            <?php $_prepost = $_tele4G_catalog->getPrePostSubscriptionPrice($_new_product); ?>
+                                            <?php $productUrl = $_item->getProductUrl() . '?subscriptionType=' . $mode; ?>
+
+                                            <div class="product-item <?php echo ($deviceIndex > 3)? 'product-item-hidden' : ''; ?>">
+                                                <div class="inner">
+                                                    <a href="<?php echo $productUrl ?>" title="<?php echo $this->stripTags($this->getImageLabel($_item, 'small_image'), null, true) ?>">
+                                                        <img src="<?php echo $this->helper('catalog/image')->init($masterProduct, 'small_image')->keepFrame(false)->resize(250, 220); ?>"
+                                                            alt="<?php echo $this->stripTags($this->getImageLabel($_item, 'small_image'), null, true) ?>" />
+                                                    </a>
+                                                    <h3 class="h3-half">
+                                                        <a href="<?php echo $productUrl ?>"><?php echo $_helper->productAttribute($_item, $_item->getName() , 'name'); ?></a>
+                                                    </h3>
+
+                                                    <?php // Get correct subscription monthly price
+                                                        // [TODO] move it to separate method in List.php
+                                                        $subscriptions = $_tele4G_catalog->getPrePostSubscription($_new_product);
+                                                        $subscrPrice = 0;
+                                                        foreach ($subscriptions as $subscr) {
+                                                            if (is_array($subscr)) {
+                                                                foreach ($subscr as $s) {
+                                                                    if ($s['monthly_price'] > $subscrPrice) $subscrPrice = $s['monthly_price'];
+                                                                }
+                                                            }
+                                                        }
+                                                    ?>
+
+                                                    <p>
+                                                        <?php if ($_prepost): ?>
+                                                            <?php if ($mode == 'post'){ ?>
+                                                                <?php echo ($_subscriptionGroupId == 2) ? round($subscrPrice) : $columnPrice; ?>
+                                                                <?php echo $this->__('kr/mån'); ?><br />
+                                                                <?php echo $this->__('Betalas nu:') ?>
+                                                                <?php echo ((isset($_prepost['post'])) ? $_prepost['post']['price'] . $this->__(" kr") : "-"); ?>
+                                                            <?php }else{ ?>
+                                                                <?php echo $this->__('Tanka'); ?> <?php echo $columnPrice; ?> <?php echo $this->__('kr/mån'); ?><br />
+                                                                <?php echo $this->__('Betalas nu:') ?>
+                                                                <?php echo ((isset($_prepost['pre'])) ? $_prepost['pre']['price'] . $this->__(" kr") : "-"); ?>
+                                                            <?php } ?>
+                                                        <?php endif; ?>
+                                                    </p>
+                                                    <a class="btn btn-large" href="<?php echo $productUrl ?>"><?php echo $this->__('Välj');?></a>
+
+                                                    <div class="additional">
+                                                        <div class="color-chooser">
+                                                            <strong class="pull-left"><?php echo $this->__('Färger:') ?>&nbsp;</strong>
+                                                            <ul class="colors">
+                                                            <?php foreach ($associatedProductsSorted as $associatedProductSorted):
+	                                                            if(!$associatedProductSorted['inStock']){
+		                                                            continue;
+	                                                            }
+	                                                        ?>
+                                                                <li title="<?php echo $associatedProductSorted['product']->getAttributeText('color'); ?>" class="color color-<?php echo strtolower($associatedProductSorted['product']->getAttributeText('color')); ?>"><span style="background-color: <?php echo strtolower($associatedProductSorted['product']->getAttributeText('color')); ?>;"></span></li>
+                                                            <?php endforeach; ?>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php $deviceIndex++; ?>
+                                        <?php endforeach; ?>
+                                        <?php if ( count($_groupDevices) && count($_groupDevices) > 4 ): ?>
+                                            <a href="#" class="products-column-more"><?php echo $this->__('Visa fler mobiler'); ?></a>
+                                        <?php endif; ?>
+                                    <?php else:?>
+                                        <div class="product-item"><h3 class="h3-half">
+                                            <?php print $this->__('Ingen mobiltelefon tillgänglig i denna prisklass');?>
+                                        </h3></div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/modules/deviceList.js')?>"></script>
+<script>
+    (function(){
+        tele4G.deviceList.init('#deviceList');
+    })();
+</script>

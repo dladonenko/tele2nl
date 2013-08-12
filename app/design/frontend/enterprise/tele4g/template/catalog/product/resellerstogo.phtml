@@ -1,0 +1,47 @@
+<div class="row" style="margin-bottom: 10px; padding-left:10px;">
+<?php
+    $resellers = $this->getResellers();
+    if (is_array($resellers) && count($resellers) > 0) {
+        $togoHelper = Mage::helper("tele4G_togo");
+        foreach ($resellers as $reseller) {
+?>
+    <div class="span6" style="width:460px;">
+    <div class="ctm-frame clearfix" style="border:0;padding:10px 0 20px 0;">
+        <table class="var-tbl">
+            <tr>
+                <td>
+                    <div class="control">
+                        <label class="radio ctm-radio clearfix">
+                            <input name="resellerToGo" type="radio" value="<?php echo $reseller->distributingResellerNumber; ?>" id="" class="radio"/>
+                        </label>
+                    </div>
+                </td>
+                <td class="cell-img"><img class="var-img" style="max-width:none;" src="<?php echo $togoHelper->getResellerPic($reseller->chain); ?>" alt="" /></td>
+                <td style="width:100%;">
+                    <div class="control">
+                        <div>
+                            <span class="shop-name" style="font-weight:bold;font-size:16px;width:320px;"><?php echo $reseller->address; ?></span>
+                                    <!--<img class="" style="width:20px;height:20px;" src="<?php echo $this->getSkinUrl('images/blue-dot.png')?>" alt="" />-->
+                        </div>
+                        <span class="open-closed"><?php echo $this->__("Öppet idag");?> <?php echo $togoHelper->formatHours($reseller->openingTime);?> - <?php echo $togoHelper->formatHours($reseller->closingTime);?></span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+    <?php } ?>
+    <span id="ajax_loader_stepFourFive" style="display:none;width:20px;"><img style="margin:20px 0 20px 35px;" src="<?php echo $this->getSkinUrl('images/ajax-loader.gif')?>"/></span>
+<?php } else { ?>
+    <div style="margin:10px 0 0 30px;"><?php echo $this->__("No available resellers"); ?></style>
+<?php } ?>
+</div>
+<script>
+    var items = jQuery('#toGoResellres .span6');
+    if (items.length % 2 === 0) {
+        var last = items.slice(-2);
+    } else {
+        var last = items.slice(-1);
+    }
+    last.css('border-bottom',0);
+</script>

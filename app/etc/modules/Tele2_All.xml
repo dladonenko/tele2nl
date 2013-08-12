@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento Enterprise Edition
+ *
+ * @category    Tele2
+ * @package     Tele2_Core
+ */
+-->
+<config>
+    <modules>
+        <Tele2_Adminhtml>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Adminhtml/>
+            </depends>
+        </Tele2_Adminhtml>
+        <Tele2_Catalog>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tele2_Catalog>
+        <Tele2_CatalogInventory>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Catalog />
+            </depends>
+        </Tele2_CatalogInventory>
+        <Tele2_Install>
+            <active>true</active>
+            <codePool>local</codePool>
+            <version>0.1.0</version>
+        </Tele2_Install>
+        <Tele2_FreeGift>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tele2_FreeGift>
+        <Tele2_Feed>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tele2_Feed>
+        <Tele2_PageCache>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Enterprise_PageCache/>
+            </depends>
+        </Tele2_PageCache>
+        <Tele2_Subscription>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Adminhtml/>
+            </depends>
+        </Tele2_Subscription>
+        <Tele2_WebsiteRestriction>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Enterprise_WebsiteRestriction/>
+            </depends>
+        </Tele2_WebsiteRestriction>
+    </modules>
+</config>

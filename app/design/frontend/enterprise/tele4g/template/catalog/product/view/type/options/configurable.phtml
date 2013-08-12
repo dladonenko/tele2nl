@@ -1,0 +1,45 @@
+<?php
+$_product    = $this->getProduct();
+$_attributes = Mage::helper('core')->decorateArray($this->getAllowAttributes());
+
+$associatedProductsSorted = $this->getSortedAssociatedProducts($_product);
+?>
+<?php if ($_product->isSaleable() && count($_attributes)):?>
+    <?php foreach($_attributes as $_attribute): ?>
+        <?php if ($_attribute->getProductAttribute()->getAttributeCode() == "color"): ?>
+            <div class="color-chooser">
+                <strong class="pull-left"><?php echo $this->__('Välj färg:') ?>&nbsp;</strong>
+                <ul class="colors">
+                    <?php foreach ($associatedProductsSorted as $associatedProductSorted):
+                        if(!$associatedProductSorted['inStock']) { continue; }
+                    ?>
+                        <li class="color color-<?php echo strtolower($associatedProductSorted['product']->getAttributeText('color')); ?>"
+                            title="<?php echo $associatedProductSorted['product']->getAttributeText('color'); ?>"
+                            data-color-id="<?php echo $associatedProductSorted['product']->getColor(); ?>"
+                            data-prod-id="<?php echo $associatedProductSorted['product']->getId(); ?>"
+                            data-expected-days="<?php echo $associatedProductSorted['expectedDays']; ?>"
+                            data-expected-weeks="<?php echo $associatedProductSorted['expectedWeeks']; ?>"
+                            data-main-image-src="<?php echo $this->helper('catalog/image')->init($associatedProductSorted['product'], 'image')->resize(370); ?>"
+                            <?php if ($associatedProductSorted['product']->getVariantMaster()): echo " data-master-variant"; endif; ?>
+                            >
+                            <a href="#<?php echo strtolower($associatedProductSorted['product']->getAttributeText('color')); ?>" style="background-color: <?php echo strtolower($associatedProductSorted['product']->getAttributeText('color')); ?>;"></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+                <select style="display:none;" name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]" id="attribute<?php echo $_attribute->getAttributeId() ?>" class="required-entry super-attribute-select">
+                </select>
+            </div>
+        <?php endif; ?>
+    <?php endforeach; ?>
+
+    <script type="text/javascript">
+        (function($){
+            // Init variants
+            var spConfig = new Product.Config(<?php echo $this->getJsonConfig() ?>);
+
+            tele4g.variantSelector.setOptions({
+                optionsPrice: optionsPrice
+            });
+        })(jQuery);
+    </script>
+<?php endif;?>

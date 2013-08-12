@@ -1,0 +1,124 @@
+<?php
+/*
+    $oneMethod = false;
+    if (Mage::getModel('tele4G_sS4Integration/SS4Integration')->isPossibleToSendAsLetter($order = $this->getQuote()) && $this->getQuote()->getSubtotal() == 0) {
+        $oneMethod = "flatrate_flatrate";
+    }
+
+    $toGoMethod = $this->isToGoMethod();
+    $toGoMethodName = Mage::getModel("tele4G_togo/togo")->getShippingMethodName();
+    $cityToGoSelected = null;
+    $citiesToGo = $this->getResellerCities();
+    if ($citiesToGo) {
+        $cityToGoSelected = $this->getSelectedCityToGo();
+    } else {
+        $toGoMethod = false;
+    }
+    */
+
+
+    $_shippingRateGroups = $this->getShippingRates();
+?>
+
+<div id="stepThree" class="step">
+    <form id="checkout_step_three" method="POST" name="checkout_step_three">               
+        <div class="container">
+            <div class="row">
+                <?php echo Mage::getSingleton('core/layout')
+                                    ->createBlock('checkout/cart')
+                                    ->setTemplate('tele4G/checkout/cart.phtml')                            
+                                    ->toHtml();?>
+                <?php $checkout_cart = Mage::getModel('tele4G_checkout/cart'); ?>
+            </div>
+        </div>
+        
+        <div class="container">
+                <div class="row">
+                    <?php foreach ($_shippingRateGroups as $code => $_rates): ?>
+                        <?php foreach ($_rates as $_rate): ?>
+                                <?php $_code = $_rate->getCode(); ?>
+                                <?php if ((!$oneMethod) || ($oneMethod == $_code) || $toGoMethod): ?>
+                                    <?php if (!($this->getQuote()->getSubtotal() == 0 && $_code == 'freeshipping_freeshipping')): ?>
+                                    <?php if (($_code == $toGoMethodName && $toGoMethod) || ($_code != $toGoMethodName)): ?>
+                                    <?php
+                                        switch ($_rate->getCode()) {
+                                            case $toGoMethodName: 
+                                                $shipingico = $this->getSkinUrl('images/togoico.png');
+                                            break;
+                                            case "flatrate_flatrate": 
+                                            default:
+                                                $shipingico = $this->getSkinUrl('images/shipingico.png');
+                                            break;
+                                        }
+                                    ?>
+                                        <div class="span6">
+                                            <div class="ctm-frame clearfix">
+                                                <table class="var-tbl">
+                                                    <tr>
+                                                        <td class="cell-img"><img class="var-img" src="<?php echo $shipingico; ?>" alt="" /></td>
+                                                        <td>
+                                                            <div class="control minheight50">
+                                                                <label class="radio ctm-radio clearfix">
+                                                                    <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" class="radio"/>
+                                                                    <strong><?php echo $this->__($this->getCarrierName($code)); ?></strong>
+                                                                    <?php if ($desctiption = Mage::getStoreConfig('carriers/'.$_rate->getCarrier().'/description')): ?>
+                                                                        <span class="info-wrap-desciption">
+                                                                            <?php echo nl2br($this->__($desctiption)); ?>
+                                                                        </span>
+                                                                    <?php endif; ?>
+                                                                    </label>
+                                                                <?php if ($_rate->getCode() == $toGoMethodName): ?>
+                                                                    <div class="info-wrap-select">
+                                                                        <select id="citiesToGo" class="select-normal required-entry" name="citiesToGo">
+                                                                            <option value="0"><?php echo $this->__("Please, select your city"); ?></option>
+                                                                            <?php foreach ($citiesToGo as $cityToGo): ?>
+                                                                                <option value="<?php echo $cityToGo; ?>" <?php echo ($cityToGo == $cityToGoSelected)?" selected='selected'":""; ?>><?php echo $cityToGo; ?></option>
+                                                                            <?php endforeach; ?>
+                                                                        </select>
+                                                                    </div>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
+        
+                <div class="form-actions">
+                    <button onclick="step_three()" id="btn_step_three" type="button" class="btn btn-primary pull-right"><?php echo $this->__('Next Step') ?></button>
+                    <span id="ajax_loader_stepTwo" style="display:none; width: 20px;"><img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif')?>"/></span>
+                    <button onclick="step_three_prev()" type="button" class="btn btn-primary pull-right"><?php echo $this->__('Prev Step') ?></button>
+                </div>
+            </div>
+    </form>
+</div>
+<script type="text/javascript">
+        
+        function step_three_prev(){
+            jQuery('#stepThree').remove();
+            jQuery('#stepTwo').show();
+        }
+        
+        
+        function step_three(){
+            var checkout_step_three = new VarienForm('checkout_step_three', true);
+            if (checkout_step_three.validator && checkout_step_three.validator.validate()) {
+                // _gaq.push(['_trackPageview','/nasta_steg']);                
+                var user_data = jQuery('#checkout_step_three').serialize();
+                jQuery('#ajax_loader_stepThree').show();
+                jQuery.post('<?php echo $this->getUrl('checkout/tele4G/stepThree') ?>', user_data, function(data) {
+                    jQuery('#ajax_loader_stepThree').hide();
+                    jQuery('#stepThree').hide();
+                    jQuery('.step-counter .stepThree').removeClass('active').addClass('done').next().addClass('active');
+                    jQuery('#checkoutSteps').append(data);
+                });
+    
+            }
+        }
+</script>

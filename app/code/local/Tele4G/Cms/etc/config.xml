@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tele4G_Cms>
+            <version>0.0.1</version>
+        </Tele4G_Cms>
+    </modules>
+    <global>
+        <resources>
+            <tele4G_cms_setup>
+                <setup>
+                    <module>Tele4G_Cms</module>
+                </setup>
+            </tele4G_cms_setup>
+        </resources>
+    </global>
+    <default>
+        <tele4G>
+            <allproducts>
+                <prices_post>295, 335, 385</prices_post>
+                <prices_pre>150, 250, 350</prices_pre>
+            </allproducts>
+        </tele4G>
+    </default>
+</config>

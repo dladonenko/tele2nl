@@ -1,0 +1,77 @@
+<script type="text/javascript">
+    //<![CDATA[
+    var productAddToCartForm = new VarienForm('product_addtocart_form');
+    productAddToCartForm.submit = function(button, url) {
+        if (this.validator.validate()) {
+
+            var form = this.form;
+            var oldUrl = form.action;
+
+            if (url) {
+                form.action = url;
+            }
+            var e = null;
+            try {
+                this.form.submit();
+            } catch (e) {
+            }
+            this.form.action = oldUrl;
+            if (e) {
+                throw e;
+            }
+
+            if (button && button != 'undefined') {
+                button.disabled = true;
+            }
+            jQuery('#product_addtocart_form .validation-advice:visible').closest('.control-group').removeClass('error');
+        } else {
+            // move magento validation messages to appropriate place
+            var numberErrorMsg = '<?php echo $this->__('Du glömde att fylla i ditt mobilnummer!');?>';
+            var smsErrorMsg = '<?php echo $this->__('Du har glömt att skriva i SMS-koden!');?>';
+            if(!jQuery('*:contains(" ' + numberErrorMsg + '")').length){
+                jQuery('#numberfield + .validation-advice').appendTo('#validation-numberfield').addClass('help-block').html(numberErrorMsg);
+            } else{
+                jQuery('#numberfield + .validation-advice').remove();
+            }
+            if(!jQuery('*:contains(" ' + smsErrorMsg + '")').length){
+                jQuery('#codefield + .validation-advice').appendTo('#validation-codefield').addClass('help-block').html(smsErrorMsg);
+            } else {
+                jQuery('#codefield + .validation-advice').remove();
+            }
+            jQuery('#product_addtocart_form .validation-failed').closest('.control-group').addClass('error');
+        }
+    }.bind(productAddToCartForm);
+    //]]>
+</script>
+
+<script type="text/javascript">
+    //<![CDATA[
+    jQuery('input[name="radioActivationType"]').change(function(e){
+        if (jQuery(this).attr('id') == 'radioActivationTypeNew') {
+            if (!jQuery('a[data-toggle="tab"][href="#prepaid"]').parent().hasClass('active')) {
+                jQuery('#ActivationTypeNew').show();
+                jQuery('#newnumber').selectorize();
+            }
+            jQuery('#ActivationTypeExist').hide();
+        } else if (jQuery(this).attr('id') == 'radioActivationTypeExist') {
+            jQuery('#ActivationTypeExist').show();
+            jQuery('#ActivationTypeNew').hide();
+        }
+    });
+
+    //Init custom select UI on Prepaid tab when it shown
+    jQuery('a[data-toggle="tab"][href="#prepaid"]').on('shown', function() {
+        jQuery('#ActivationTypeNew').hide();
+        jQuery('#newnumber option:selected').removeAttr('selected');
+        jQuery('#newnumber option:first').attr('selected','selected');
+    });
+    jQuery('a[data-toggle="tab"][href="#postpaid"]').on('shown', function() {
+        loadBindPeriodsPost();
+        if (jQuery('#radioActivationTypeNew:checked').length) {
+            jQuery('#ActivationTypeNew').show();
+            var selectNumber = jQuery('#newnumber').parent('.selectorize').find('.select .selected').text();
+            jQuery('#newnumber option:contains('+selectNumber+')').attr('selected','selected');
+        }
+    });
+    //]]>
+</script>

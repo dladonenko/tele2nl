@@ -1,0 +1,57 @@
+<?php
+/**
+ * Shopping cart template
+ *
+ * @see Mage_Checkout_Block_Cart
+ */
+?>
+<?php $_tele4G_downgrade = Mage::getModel('tele4G_subscription/downgrade'); ?>
+<?php $session = Mage::getSingleton('checkout/session'); ?>    
+<?php /*
+<form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+*/?>
+
+<div class="wrapper-grey border-top" id="cart-list">
+    <div class="container web-shop">
+        <table class="table table-cart">
+            <colgroup>
+                <col class="column-image" />
+                <col />
+                <col class="column-price" />
+                <?php $mergedCells = ($this->helper('tax')->displayCartBothPrices() ? 2 : 1); ?>
+            </colgroup>
+
+            <tbody>
+                <?php foreach($this->getItems() as $_item): ?>
+                    <?php $aOfferIds[] = $_item->getOfferId(); ?>
+                <?php endforeach ?>
+                <?php
+                $aOfferIds = array_unique($aOfferIds);
+                foreach($aOfferIds as $offer_id): ?>
+                    <?php foreach($this->getItems() as $_item): ?>
+                        <?php if ($_item->getOfferId() == $offer_id): ?>
+                            <?php echo $this->getItemHtml($_item) ?>
+                        <?php endif; ?>
+                    <?php endforeach ?>
+                    <tr>
+                        <td colspan="3">
+                            <div class="cart-total">
+                                <p><small>
+                                    <?php $mtc = Mage::helper('tele4G_checkout')->getLeastTotalCostByOfferId($offer_id, $this->getItems()); ?>
+                                    <?php if ($mtc > 0): ?>
+                                        <?php $ltc = $this->helper('core')->currency($mtc); ?>
+                                        <?php echo $this->__('Minsta totalkostnad under bindningstiden är') ?>
+                                        <?php echo $ltc ?><br />
+                                    <?php endif; ?>
+                                </small></p>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>    
+</div>
+<?php /*
+</form>
+*/?>

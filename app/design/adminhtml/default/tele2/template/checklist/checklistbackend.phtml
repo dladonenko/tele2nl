@@ -1,0 +1,31 @@
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__("Checklist") ?></h4>
+    </div>
+    <fieldset id="depends_packages_fieldset" class="grid">
+        <legend><?php echo $this->__("Checklist") ?></legend>
+        <table class="data" cellspacing="0">
+            <thead>
+                <tr class="headings">
+                    <th><?php echo $this->__("Name") ?></th>
+                    <th><?php echo $this->__("Result") ?></th>                    
+                </tr>                
+            </thead>
+            <tbody id="depends_packages_container">
+            <?php 
+            foreach ($this->checkList() as $item): $method = 'check'.$item; ?>
+                <?php if (method_exists($this,$method)): ?>
+                <tr>
+                    <td><?php echo $item;?></td>
+                    <td><?php echo $this->$method();?></td>
+                </tr>
+                <?php endif;?>
+            <?php endforeach ?>
+            </tbody>
+            
+        </table>
+    </fieldset>
+
+    
+
+</div>

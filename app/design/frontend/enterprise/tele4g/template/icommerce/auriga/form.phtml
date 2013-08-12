@@ -1,0 +1,153 @@
+<?php $model = Mage::getModel('auriga/auriga'); ?>
+<fieldset class="form-list">
+    <?php $_code=$this->getMethodCode(); ?>
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none" > 
+        <li>
+            <?php echo $model->getPaymentText();?>
+	     <?php
+		
+            	if ($model->showTrustedList()) {
+				        ?>
+				        <br/><br/>
+				        <?php
+				        //
+				        // Show trusted logos
+				        //
+				        $logoArray = explode(',', $model->getConfigData('showlogos'));
+				        foreach($logoArray as $item) {
+				        	switch ($item) {
+				        		case 'auriga': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/aurigalogo.gif') ?>" border="0" title="auriga | Secure Payment Services (www.aurigapayment.com)" />&nbsp;&nbsp;<?php
+				        			break;
+				        		} 
+				        		case 'VISA_SECURE': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/verified_visa.gif') ?>" border="0" />&nbsp;&nbsp;<?php
+				        			break;
+				        		} 
+				        		case 'MC_SECURE': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/mc_securecode.gif') ?>" border="0" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'JCB_SECURE': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/jcbsecure.gif') ?>" border="0" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}  
+				        		case 'PCI': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/pci.gif') ?>" border="0" />&nbsp;&nbsp;<?php
+				        			break;
+				        		} 	
+				        	}
+				        }
+				      }
+				      
+				      if ($model->showCardsList()) {
+				        ?>
+			        	<br/><br/>
+				        <?php echo $this->__('You can pay with the following payment cards:') ?>
+				        <br/>
+				        <?php
+				        //
+				        // Show card logos
+				        //
+				        $logoArray = explode(',', $model->getConfigData('showlogos'));
+				        foreach($logoArray as $item) {
+				        	switch ($item) {
+				        		case 'AMEX': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/amex.gif') ?>" border="0" title="American Express" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'BAX': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/bax.gif') ?>" border="0" title="BankAxess" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'DIN': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/diners.gif') ?>" border="0" title="Diners Club" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'DK': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/dankort.gif') ?>" border="0" title="Dankort" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'FFK': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/forbrugforeningen.gif') ?>" border="0" title="Forbrugsforeningen Card" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}  
+				        		case 'JCB': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/jcb.gif') ?>" border="0" title="JCB (Japan Credit Bureau)" />&nbsp;&nbsp;<?php
+				        			break;
+				        		} 
+				        		case 'MC': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/mastercard.gif') ?>" border="0" title="MasterCard" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}  
+				        		case 'MTRO': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/maestro.gif') ?>" border="0" title="Maestro" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}  
+				        		case 'MOCA': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/mobilcash.gif') ?>" border="0" title="Mobilcash" />&nbsp;&nbsp;<?php
+				        			break;
+				        		} 
+				        		case 'VISA': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/visa.gif') ?>" border="0" title="Visa" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'ELEC': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/visaelectron.gif') ?>" border="0" title="Visa Electron" />&nbsp;&nbsp;<?php
+				        			break;
+				        		} 
+				        		case 'AKTIA': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/aktia.gif') ?>" border="0" title="Aktia Web Payment" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'DNB': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/danskenetbetaling.gif') ?>" border="0" title="Danske Netbetaling (Danske Bank)" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'EDK': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/edankort.gif') ?>" border="0" title="eDankort" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'ELV': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/bankeinzug.gif') ?>" border="0" title="Bank Einzug (eOLV)" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'EW': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/ewire.gif') ?>" border="0" title="eWire" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'FSB': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/swedbank.gif') ?>" border="0" title="Swedbank Direktbetalning" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'GIT': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/getitcard.gif') ?>" border="0" title="Getitcard" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'ING': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/ideal.gif') ?>" border="0" title="ING iDeal Payment" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'SEB': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/seb.gif') ?>" border="0" title="SEB Direktbetalning" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'SHB': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/shb.gif') ?>" border="0" title="SHB Direktbetalning" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'SOLO': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/nordea.gif') ?>" border="0" title="Nordea" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        		case 'VAL': {
+				        			?><img src="<?php echo $this->getSkinUrl('images/auriga/valus.gif') ?>" border="0" title="Valus" />&nbsp;&nbsp;<?php
+				        			break;
+				        		}
+				        	}
+				        }
+				      }
+				      ?>
+        </li>
+    </ul>
+</fieldset>

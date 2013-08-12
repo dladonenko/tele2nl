@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento Enterprise Edition
+ *
+ * @category    Tele2
+ * @package     Tele2_Core
+ */
+-->
+<config>
+    <modules>
+        <Tele4G_Adform>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tele4G_Adform>
+        <Tele4G_Catalog>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Enterprise_Enterprise />
+            </depends>
+        </Tele4G_Catalog>
+        <Tele4G_Checklist>
+            <active>true</active>
+            <codePool>local</codePool>
+            <version>0.1.0</version>
+        </Tele4G_Checklist>
+        <Tele4G_Checkout>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Checkout />
+            </depends>
+        </Tele4G_Checkout>
+        <Tele4G_Cms>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tele4G_Cms>
+        <Tele4G_Common>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Tele4G_Catalog />
+            </depends>
+        </Tele4G_Common>
+        <Tele4G_GoogleAnalytics>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_GoogleAnalytics />
+            </depends>
+        </Tele4G_GoogleAnalytics>
+        <Tele4G_Import>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tele4G_Import>
+        <Tele4G_Payment>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Payment />
+            </depends>
+        </Tele4G_Payment>
+        <Tele4G_Sales>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Sales />
+            </depends>
+        </Tele4G_Sales>
+        <Tele4G_Shipping>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Shipping/>
+            </depends>
+        </Tele4G_Shipping>
+        <Tele4G_SS4Integration>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tele4G_SS4Integration>
+        <Tele4G_Subscription>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Tele4G_Catalog />
+            </depends>
+        </Tele4G_Subscription>
+        <Tele4G_Togo>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tele4G_Togo>
+        <Tele4G_WidgetTest>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Cms />
+            </depends>
+        </Tele4G_WidgetTest>
+        <Tele4G_Page>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tele4G_Page>
+        <Tele4G_Localization>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Tele4G_Localization>
+        
+    </modules>
+</config>

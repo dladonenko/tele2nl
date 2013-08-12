@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tele2_Adminhtml />
+    </modules>
+    <global>
+        <blocks>
+            <tele2_adminhtml>
+                <class>Tele2_Adminhtml_Block</class>
+            </tele2_adminhtml>
+        </blocks>
+        <helpers>
+            <tele2_websiteRestriction>
+                <class>Tele2_Adminhtml_Helper</class>
+            </tele2_websiteRestriction>
+        </helpers>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <catalog_product_edit>Tele2_Adminhtml_Block_Catalog_Product_Edit</catalog_product_edit>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+    </global>
+    <frontend>
+        <routers>
+            <hardwarepreview>
+                <use>standard</use>
+                <args>
+                    <module>Tele2_Catalog</module>
+                    <frontName>hardwarepreview</frontName>
+                </args>
+            </hardwarepreview>
+        </routers>
+    </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Tele2_Adminhtml before="Mage_Adminhtml">Tele2_Adminhtml</Tele2_Adminhtml>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <events>
+            <core_block_abstract_prepare_layout_after>
+                <observers>
+                    <add_tab_to_dashboard>
+                        <class>tele2_adminhtml_model_observer</class>
+                        <method>addTabToDashboard</method>
+                    </add_tab_to_dashboard>
+                </observers>
+            </core_block_abstract_prepare_layout_after>
+        </events>
+        <menu>
+            <catalog translate="title" module="catalog">
+                <children>
+                    <devices translate="title" module="catalog">
+                        <title>Manage Devices</title>
+                        <action>adminhtml/catalog_device/</action>
+                        <sort_order>2</sort_order>
+                    </devices>
+                    <devicesconf translate="title" module="catalog">
+                        <title>Manage Devices (config)</title>
+                        <action>adminhtml/catalog_deviceconf/</action>
+                        <sort_order>3</sort_order>
+                    </devicesconf>
+                    <addons translate="title" module="catalog">
+                        <title>Manage Addons</title>
+                        <action>adminhtml/catalog_addon/</action>
+                        <sort_order>5</sort_order>
+                    </addons>
+                    <accessories translate="title" module="catalog">
+                        <title>Manage Accessories</title>
+                        <action>adminhtml/catalog_accessory/</action>
+                        <sort_order>6</sort_order>
+                    </accessories>
+                    <dongles translate="title" module="catalog">
+                        <title>Manage Dongles</title>
+                        <action>adminhtml/catalog_dongle/</action>
+                        <sort_order>7</sort_order>
+                    </dongles>
+                    <insurance translate="title" module="catalog">
+                        <title>Manage Insurances</title>
+                        <action>adminhtml/catalog_insurance/</action>
+                        <sort_order>8</sort_order>
+                    </insurance>
+                </children>
+            </catalog>
+        </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <catalog>
+                            <children>
+                                <tele2>
+                                    <title>Tele2</title>
+                                </tele2>
+                            </children>
+                        </catalog>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <tele2_adminhtml>
+                    <file>tele2/adminhtml.xml</file>
+                </tele2_adminhtml>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Tele2_Adminhtml>
+                    <files>
+                        <default>Tele2_Adminhtml.csv</default>
+                    </files>
+                </Tele2_Adminhtml>
+            </modules>
+        </translate>
+    </adminhtml>
+    <stores>
+        <admin>
+            <design>
+                <theme>
+                    <default>tele2</default>
+                </theme>
+            </design>
+        </admin>
+    </stores>
+</config>

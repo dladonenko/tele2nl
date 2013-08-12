@@ -1,0 +1,16 @@
+<?php $relatedOnlineDocuments = $this->getRelatedOnlineDocuments(); ?>
+
+<?php if (count($relatedOnlineDocuments)): ?>
+    <p>
+    <strong><?php echo $this->__('Related online Documents:') ?></strong>
+        <ul>
+            <?php foreach($relatedOnlineDocuments as $file): ?>
+                <span>
+                    <a href="<?php echo $file->getFileUrl(); ?>">
+                        <img src="<?php echo $this->getFileThumbUrl($file) ?>" alt="<?php echo $this->getFileName($file) ?>"/>
+                    </a>
+                </span>
+            <?php endforeach;?>
+        </ul>
+    </p>
+<?php endif;?>

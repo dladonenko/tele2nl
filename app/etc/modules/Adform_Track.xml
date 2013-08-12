@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Adform_Track>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Adform_Track>
+    </modules>
+</config>

@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Tele2 subscription module
+ *
+ * @category    design
+ * @package     default_default
+ */
+-->
+
+<layout>
+  
+    <adminhtml_subscription_mobile>
+        <reference name="content">
+            <block type="tele2_subscription/adminhtml_container" name="tele2.subscription" template="widget/grid/container.phtml">
+                <block type="tele2_subscription/adminhtml_mobile_grid" name="tele2.subscription.grid"/>
+                <action method="setHeaderText" translate="text">
+                    <text>Subscriptions List</text>
+                </action>
+            </block>
+        </reference>
+    </adminhtml_subscription_mobile>
+    
+    <adminhtml_groups_group>
+        <reference name="content">
+            <block type="tele2_subscription/adminhtml_group_container" name="tele2.subscription_group" template="widget/grid/container.phtml">
+                <block type="tele2_subscription/adminhtml_group_grid" name="tele2.subscription_group.grid"/>
+                <action method="setHeaderText" translate="text">
+                    <text>Manage Subscription Group</text>
+                </action>
+            </block>
+        </reference>
+    </adminhtml_groups_group>
+    
+    <adminhtml_groups_grid>
+        <block type="tele2_subscription/adminhtml_group_grid" name="root"/>
+    </adminhtml_groups_grid>
+
+    <adminhtml_subscription_mobilegrid>
+        <block type="tele2_subscription/adminhtml_mobile_grid" name="root"/>
+    </adminhtml_subscription_mobilegrid>
+
+    <adminhtml_subscription_new>
+        <update handle="adminhtml_subscription_edit" />
+    </adminhtml_subscription_new>
+
+    <adminhtml_subscription_mobileedit>
+        <reference name="content">
+            <block type="tele2_subscription/adminhtml_mobile_edit" name="mobile_subscription_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="tele2_subscription/adminhtml_mobile_edit_tabs" name="tele2_subscription_edit_tabs">
+                <block type="tele2_subscription/adminhtml_mobile_edit_tab_main" name="tele2_subscription_edit_tab_main" />
+                <block type="tele2_subscription/adminhtml_mobile_edit_tab_binding" name="tele2_subscription_edit_tab_binding" />
+                <block type="tele2_subscription/adminhtml_mobile_edit_tab_standalone" name="tele2_subscription_edit_tab_standalone" template="subscription/edit/action/standalone.phtml" />
+                <action method="addTab"><name>main_section</name><block>tele2_subscription_edit_tab_main</block></action>
+                <action method="addTab"><name>binding_section</name><block>tele2_subscription_edit_tab_binding</block></action>
+                <action method="addTab"><name>standalone_section</name><block>tele2_subscription_edit_tab_standalone</block></action>
+            </block>
+        </reference>
+    </adminhtml_subscription_mobileedit>
+    
+    <adminhtml_subscription_mobilerelated>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_subscription/adminhtml_mobile_edit_tab_related" name="adminhtml_mobile_edit_tab_related" />
+            <block type="adminhtml/widget_grid_serializer" name="related_grid_serializer">
+                <reference name="related_grid_serializer">
+                    <action method="initSerializerBlock">
+                        <grid_block_name>adminhtml_mobile_edit_tab_related</grid_block_name>
+                        <data_callback>getSelectedRelatedProducts</data_callback>
+                        <hidden_input_name>links[related]</hidden_input_name>
+                        <reload_param_name>products_related</reload_param_name>
+                    </action>
+                    <action method="addColumnInputName">
+                        <input_name>position</input_name>
+                    </action>
+                </reference>
+            </block>
+        </block>
+    </adminhtml_subscription_mobilerelated>
+
+    <adminhtml_subscription_mobilerelatedgrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_subscription/adminhtml_mobile_edit_tab_related" name="adminhtml_mobile_edit_tab_related" />
+        </block>
+    </adminhtml_subscription_mobilerelatedgrid>
+    
+    <adminhtml_subscription_mobileaddonsrelated>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_subscription/adminhtml_mobile_edit_tab_addons" name="adminhtml_mobile_edit_tab_addons" />
+            <block type="adminhtml/widget_grid_serializer" name="related_grid_serializer">
+                <reference name="related_grid_serializer">
+                    <action method="initSerializerBlock">
+                        <grid_block_name>adminhtml_mobile_edit_tab_addons</grid_block_name>
+                        <data_callback>getSelectedRelatedAddons</data_callback>
+                        <hidden_input_name>links[related_addons]</hidden_input_name>
+                        <reload_param_name>addons_related</reload_param_name>
+                    </action>
+                    <action method="addColumnInputName">
+                        <input_name>position</input_name>
+                    </action>
+                </reference>
+            </block>
+        </block>
+    </adminhtml_subscription_mobileaddonsrelated>
+
+    <adminhtml_subscription_mobileaddonsrelatedgrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_subscription/adminhtml_mobile_edit_tab_addons" name="adminhtml_mobile_edit_tab_addons" />
+        </block>
+    </adminhtml_subscription_mobileaddonsrelatedgrid>
+
+    <adminhtml_subscription_mobileconfigrelated>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_subscription/adminhtml_mobile_edit_tab_configs" name="adminhtml_mobile_edit_tab_configs" />
+            <block type="adminhtml/widget_grid_serializer" name="related_grid_serializer">
+                <reference name="related_grid_serializer">
+                    <action method="initSerializerBlock">
+                        <grid_block_name>adminhtml_mobile_edit_tab_configs</grid_block_name>
+                        <data_callback>getSelectedRelatedConfigs</data_callback>
+                        <hidden_input_name>links[related_configs]</hidden_input_name>
+                        <reload_param_name>related_configs</reload_param_name>
+                    </action>
+                    <action method="addColumnInputName">
+                        <input_name>position</input_name>
+                    </action>
+                </reference>
+            </block>
+        </block>
+    </adminhtml_subscription_mobileconfigrelated>
+
+    <adminhtml_subscription_mobileconfigaddonsrelatedgrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="tele2_subscription/adminhtml_mobile_edit_tab_configs" name="adminhtml_mobile_edit_tab_configs" />
+        </block>
+    </adminhtml_subscription_mobileconfigaddonsrelatedgrid>
+
+    <adminhtml_groups_edit>
+        <reference name="content">
+            <block type="tele2_subscription/adminhtml_group_edit" name="group_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="tele2_subscription/adminhtml_group_edit_tabs" name="tele2_subscription_edit_tabs">
+                <block type="tele2_subscription/adminhtml_group_edit_tab_main" name="tele2_group_edit_tab_main" />
+                <action method="addTab"><name>main_section</name><block>tele2_group_edit_tab_main</block></action>
+            </block>
+        </reference>
+    </adminhtml_groups_edit>
+
+    <adminhtml_subscription_config>
+        <reference name="content">
+            <block type="tele2_subscription/adminhtml_config_container" name="tele2.subscription_config" template="widget/grid/container.phtml">
+                <block type="tele2_subscription/adminhtml_config_grid" name="tele2.subscription_config.grid"/>
+                <action method="setHeaderText" translate="text">
+                    <text>Subscription Configs List</text>
+                </action>
+            </block>
+        </reference>
+    </adminhtml_subscription_config>
+
+    <adminhtml_subscription_configgrid>
+        <block type="tele2_subscription/adminhtml_config_grid" name="root"/>
+    </adminhtml_subscription_configgrid>
+
+    <adminhtml_subscription_configedit>
+        <reference name="content">
+            <block type="tele2_subscription/adminhtml_config_edit" name="config_edit"></block>
+        </reference>
+        <reference name="left">
+            <block type="tele2_subscription/adminhtml_config_edit_tabs" name="tele2_subscription_config_edit_tabs">
+                <block type="tele2_subscription/adminhtml_config_edit_tab_main" name="tele2_config_edit_tab_main" />
+                <action method="addTab"><name>main_section</name><block>tele2_config_edit_tab_main</block></action>
+            </block>
+        </reference>
+    </adminhtml_subscription_configedit>
+
+<!--
+    <adminhtml_catalog_deviceconf_new>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>Subscriptions</name>
+                <block>tele2_subscription/adminhtml_catalog_product_tab</block>
+            </action>
+        </reference>
+    </adminhtml_catalog_deviceconf_new>
+
+    <adminhtml_catalog_deviceconf_edit>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>Subscriptions</name>
+                <block>tele2_subscription/adminhtml_catalog_product_tab</block>
+            </action>
+        </reference>
+    </adminhtml_catalog_deviceconf_edit>
+-->
+</layout>

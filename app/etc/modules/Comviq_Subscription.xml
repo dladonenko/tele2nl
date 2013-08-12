@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Comviq_Subscription>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Comviq_Catalog />
+            </depends>
+        </Comviq_Subscription>
+    </modules>
+</config>

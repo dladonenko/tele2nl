@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tele4G_Import>
+            <version>0.0.3</version>
+        </Tele4G_Import>
+    </modules>
+    <global>
+        <models>
+            <tele4G_import>
+                <class>Tele4G_Import_Model</class>
+            </tele4G_import>
+        </models>
+        <resources>
+            <tele4G_import_setup>
+                <setup>
+                    <module>Tele4G_Import</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+            </tele4G_import_setup>
+        </resources>
+    </global>
+</config>

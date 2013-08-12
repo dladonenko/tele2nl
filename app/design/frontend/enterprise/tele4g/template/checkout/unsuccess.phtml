@@ -1,0 +1,25 @@
+<div id="breadcrumbs" class="container">
+    <ul class="breadcrumb">
+        <li><a href="/"><?php echo $this->__('Hem') ?></a><span class="divider">›</span></li>
+        <li class="active"><?php echo $this->__('Varukorg') ?></li>
+    </ul>
+</div>
+
+<div class="container web-shop">
+    <div class="row-fluid margin">
+        <h1><?php echo $this->__('Utcheckningen kunde inte genomföras') ?></h1>
+    </div>
+</div>
+<div class="container" id="error-messages"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+
+<script>
+    jQuery('.messages li > span').each(function(){
+        jQuery('<p></p>').html(jQuery(this).html()).appendTo('#error-messages');
+    });
+    jQuery('.messages').remove();
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        jQuery.post('<?php echo $this->getUrl('checkout/tele4G/check'); ?>');
+    })
+</script>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Tele4G_Shipping>
+            <version>0.0.1</version>
+        </Tele4G_Shipping>
+    </modules>
+</config>

@@ -1,0 +1,129 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+
+<?php /* @var $this Mage_Catalog_Block_Product_View_Options_Type_Select */ ?>
+<?php $_option = $this->getOption() ?>
+<dt><label<?php if ($_option->getIsRequire()) echo ' class="required"' ?>><?php if ($_option->getIsRequire()) echo '<em>*</em>' ?><?php echo  $this->__($this->htmlEscape($_option->getTitle())) ?></label></dt>
+<dd<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>>
+    <div class="input-box">
+
+<?php if ($_option->getTitle()=='subscriptions') { ?>
+<script>
+    function loadBindingPeriods() {
+        var subId = document.getElementById('subscriptions').getValue();
+        var binding = document.getElementById(bindingId);
+        binding.innerHTML = "<option value=''>Select binding time</option>";
+
+        for (var i in bindingTimes[subId]) {
+            bt = bindingTimes[subId][i];
+            if (typeof(bt) != 'number')
+                continue;
+            var option = document.createElement('option');
+            option.setAttribute('price', bindingPrices[subId][bt]);
+            option.setAttribute('value', bindingValueIds[subId][bt]);
+            option.innerHTML = bt + " months, " + bindingPrices[subId][bt];
+            binding.appendChild(option);
+        }
+		if (subId.empty()) binding.onchange();
+    }
+</script>
+
+<?php
+       echo "<script> var bindingId = 'select_" . $_option->getId() . "';\n</script>";
+       $values = $_option->getValues();
+       $subscriptionIds = array();
+       $bindingPeriods  = array();
+       $bindingPrices   = array();
+       $bindingValueIds = array();
+       foreach ($values as $value) {
+           $sku = $value->getSku();
+           if (preg_match('%subscr-(\d+)-(\d+)%', $sku, $m)) {
+               if (!in_array($m[1], $subscriptionIds))
+                   $subscriptionIds[] = $m[1];
+               $subId = $m[1];                      
+               $bt    = $m[2];
+               $bindingPeriods[$subId][] = $bt;
+               $bindingPrices[$subId][$bt] = $value->getPrice();
+               $bindingValueIds[$subId][$bt] = $value->getId();
+               
+           }
+       }
+       echo "<script>";
+       echo "var bindingTimes = Array();\n";
+       echo "var bindingPrices = Array();\n";
+       echo "var bindingValueIds = Array();\n";
+       
+       foreach ($bindingPeriods as $subId => $periods) {
+           echo "bindingTimes[" . $subId . "] = [" . implode(', ', $periods) . "];\n"; 
+       }
+
+       foreach ($bindingPrices as $subId => $prices) {
+           echo "bindingPrices[" . $subId . "] = Array();\n";
+           foreach ($prices as $bt=>$price) {
+               echo "bindingPrices[" . $subId . "][" . $bt . "] = " . $price . ";\n";
+           }
+       }
+
+       foreach ($bindingValueIds as $subId => $valueIds) {
+           echo "bindingValueIds[" . $subId . "] = Array();\n";
+           foreach ($valueIds as $bt=>$valueId) {
+               echo "bindingValueIds[" . $subId . "][" . $bt . "] = " . $valueId . ";\n";
+           }
+       }
+
+       echo "</script>";
+
+       $subscriptions = Mage::getModel('catalog/product')
+         ->getCollection()
+		 ->addAttributeToSelect('name')
+         ->addFieldToFilter('entity_id', array('in' => $subscriptionIds));
+
+       echo "<select onChange='loadBindingPeriods()' id='subscriptions' class='required-entry product-custom-option'>";
+       echo "<option value=''>Select subscription</option>";
+       foreach ($subscriptions as $subscription) {
+           echo "<option value='" . $subscription->getId() . "'>" . $subscription->getName() . "</option>";
+       }
+       echo "</select><br><br>";
+
+       echo "<select class='required-entry product-custom-option' id='select_" . $_option->getId() ."' name='options[" . $_option->getId() . "]' onChange='opConfig.reloadPrice()'>";
+       echo "<option value=''>Select binding time</option>";
+       echo "</select>";
+
+    } else {
+        echo $this->getValuesHtml();
+    }
+?>
+
+
+    <?php //echo $this->getValuesHtml() ?>
+        <?php if ($_option->getIsRequire()): ?>
+            <?php if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_RADIO || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX): ?>
+                <span id="options-<?php echo $_option->getId() ?>-container"></span>
+            <?php endif; ?>
+        <?php endif;?>
+    </div>
+</dd>

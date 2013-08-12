@@ -1,0 +1,216 @@
+<div id="stepOne" class="step">        
+    <form id="checkout_step_one" method="POST" name="checkout_step_one">           
+        <div class="container">
+            <div class="row-fluid margin">
+                <h1><?php echo $this->__('Enter your details') ?></h1>
+            </div>
+            <h2 class="sub-step-head clearfix"><span class="sub-step-nbr">1</span><span class="text"><?php echo $this->__('Personal Information') ?></span></h2>
+            <div class="row">
+
+                <div class="span3 control-group">
+                    <label for="gender" class="required"><em>*</em><?php echo $this->__('Gender') ?></label>
+                    <div class="input-box">
+                        <select id="gender" name="billing[gender]" title="<?php echo $this->__('Gender') ?>" class="select-normal required-entry">
+                                <option value="0"><?php echo $this->__('Please select gender') ?></option>
+                                <option value="1"><?php echo $this->__('Male') ?></option>
+                                <option value="2"><?php echo $this->__('Female') ?></option>
+                        </select>
+                    </div>
+                </div>                    
+
+                <div class="span3 control-group">
+                    <label for="firstname" class="required"><em>*</em><?php echo $this->__('Initials') ?></label>
+                    <div class="controls">
+                        <input type="text" placeholder="<?php echo $this->__('As stated on your ID') ?>" id="firstname" class="input-vert-large span required-entry" name="billing[firstname]" />                            
+                    </div>
+                </div>
+            </div>
+           <div class="row"> 
+                <div class="span3 control-group">
+                    <label for="lastname" class="required"><em>*</em><?php echo $this->__('Lastname') ?></label>
+                    <div class="controls">
+                        <input type="text" placeholder="<?php echo $this->__('Name as listed on your ID') ?>" id="lastname" class="input-vert-large span required-entry" name="billing[lastname]" />                            
+                    </div>
+                </div>
+
+            </div>   
+
+            <div class="row">
+                    <label for="month" class="required"><em>*</em><?php echo $this->__('Date of birth') ?></label>
+                    <div class="row customer-dob">
+
+                        <div class="span3 control-group dob-day">
+                            <select id="day" name="billing[day]" title="<?php echo $this->__('Day') ?>" class="select-normal required-entry">
+                                <option><?php print $this->__('Day');?></option>
+                                <?php for($i =1 ; $i <= 31; $i++):?>
+                                    <option value="<?php print $i;?>"><?php print $i;?></option>
+                                <?php endfor;?>
+                            </select>
+                         </div>
+
+                        <div class="span3 control-group dob-month">
+                            <select id="month" name="billing[month]" title="<?php echo $this->__('Month') ?>" class="select-normal required-entry">
+                                <option><?php print $this->__('Month');?></option>
+                                <?php for($i =1 ; $i <= 12; $i++):?>
+                                    <option value="<?php print $i;?>"><?php print $i;?></option>
+                                <?php endfor;?>
+                            </select>
+                        </div>
+
+                        <div class="span3 control-group dob-year">
+                            
+                            <select id="year" name="billing[year]" title="<?php echo $this->__('Year') ?>" class="select-normal required-entry">
+                                <option><?php print $this->__('Year');?></option>
+                                <?php for ($year = 1913; $year <= (date("Y") - 6); $year++):?>
+                                    <option value="<?php print $year;?>"><?php print $year;?></option>
+                                <?php endfor;?>
+                            </select>
+                        </div>
+
+                        <div class="dob-full" style="display:none;">
+                            <input type="hidden" id="billing:dob" name="billing:dob" />
+                        </div>
+
+                        <div class="validation-advice" style="display:none;"></div>
+                    </div>
+                    <script type="text/javascript">
+                    //<![CDATA[
+                        var customer_dob = new Varien.DOB('.customer-dob', true, '%m/%e/%Y');
+                    //]]>
+                    </script>
+
+
+            </div> 
+
+            <div class="row">
+                <div class="span3 control-group">
+                    <label for="billing:geboorteplaats" class="required"><em>*</em><?php echo $this->__('Birthplace') ?></label>
+                    <div class="controls">
+                        <input type="text" placeholder="<?php echo $this->__('Birthplace') ?>" id="billing:geboorteplaats" class="input-vert-large span required-entry" name="billing[geboorteplaats]" />                            
+                    </div>
+                </div>
+
+            </div> 
+
+            <div class="row">
+                <h5><?php echo $this->__('Have Tele2 Mobile?') ?></h5>
+                 <div class="span4">
+                     <label for="mobnumberYes">
+                         <div class="tele4g-radio"><input checked="checked" type="radio" value="yes" name="billing[mobnumber]" id="mobnumberYes"></div>
+                         <?php echo $this->__('Yes') ?>                                    
+                     </label>
+                 </div>
+                 <div class="span8">
+                     <label for="mobnumberNo">
+                         <div class="tele4g-radio selected"><input type="radio" value="no" name="billing[mobnumber]" id="mobnumberNo"></div>
+                         <?php echo $this->__('No') ?>
+                     </label>
+                 </div>
+             </div>
+
+            <div class="row">
+               <h5><?php echo $this->__('Business subscription') ?></h5>
+                <div class="span4">
+                    <label for="abonementYes">
+                        <div class="tele4g-radio"><input checked="checked" type="radio" value="yes" name="billing[abonement]" id="abonementYes"></div>
+                        <?php echo $this->__('Yes') ?>                                    
+                    </label>
+                </div>
+                <div class="span8">
+                    <label for="abonementNo">
+                        <div class="tele4g-radio selected"><input type="radio" value="no" name="billing[abonement]" id="abonementNo"></div>
+                        <?php echo $this->__('No') ?>
+                    </label>
+                </div>
+            </div>
+
+        </div>                
+        <div class="container">
+            <h2 class="sub-step-head clearfix"><span class="sub-step-nbr">2</span><span class="text"><?php echo $this->__('Address info') ?></span></h2>   
+            <div class="span3 control-group">
+                <label for="billing:postcode" class="required"><em>*</em><?php echo $this->__('Postcode') ?></label>
+                <div class="controls">
+                    <input type="text" placeholder="<?php echo $this->__('Enter your postcode') ?>" id="billing:postcode" class="input-vert-large span required-entry" name="billing[postcode]" />
+                </div>
+            </div>
+
+            <div class="span3 control-group">
+                <label for="house" class="required"><em>*</em><?php echo $this->__('Housenumber') ?></label>
+                <div class="controls">
+                    <input type="text" placeholder="<?php echo $this->__('Enter your house number') ?>" id="house" class="input-vert-large span required-entry" name="billing[house]" />
+                </div>
+            </div>
+
+            <div class="span3 control-group">
+                <label for="suffix" class="required"><em>*</em><?php echo $this->__('Suffix') ?></label>
+                <div class="controls">
+                    <input type="text" placeholder="<?php echo $this->__('Enter your suffix in') ?>" id="suffix" class="input-vert-large span required-entry" name="billing[suffix]" />
+                </div>
+            </div>
+
+
+            <div class="span3 control-group">
+                <label for="street" class="required"><em>*</em><?php echo $this->__('Street') ?></label>
+                <div class="controls">
+                    <input type="text" placeholder="<?php echo $this->__('Enter your street name in') ?>" id="street" class="input-vert-large span required-entry" name="billing[street][]" />
+                </div>
+            </div>
+
+            <div class="span3 control-group">
+                <label for="city" class="required"><em>*</em><?php echo $this->__('Place') ?></label>
+                <div class="controls">
+                    <input type="text" placeholder="<?php echo $this->__('Enter your place in') ?>" id="city" class="input-vert-large span required-entry" name="billing[city]" />
+                </div>
+            </div>
+
+
+            <div class="span3 control-group">
+                <label for="telephone" class="required"><em>*</em><?php echo $this->__('Phone number') ?></label>
+                <div class="controls">
+                    <input type="text" placeholder="<?php echo $this->__('Enter your telefoonnnmummer in') ?>" id="telephone" class="input-vert-large span required-entry" name="billing[telephone]" />
+                </div>
+            </div>
+
+
+
+
+            <div class="span3 control-group">
+                <label for="e-mail"><em>*</em><?php echo $this->__('E-mail') ?></label>
+                <div class="controls">
+                    <input type="text" placeholder="<?php echo $this->__('Enter your E-mail') ?>" id="e-mail" class="input-vert-large span validate-email required-entry" name="billing[email]" />
+                    <span class="help-block" style="display: none;"></span>
+                </div>
+            </div>
+            <div class="span3 control-group">
+                <label for="repeat-email"><em>*</em><?php echo $this->__('Repeat your email') ?></label>
+                <div class="controls">
+                    <input type="text" placeholder="<?php echo $this->__('Please enter your email again') ?>" id="repeat-email" class="input-vert-large span validate-email required-entry" name="billing[email_ver]" />
+                    <span class="help-block" style="display: none;"></span>
+                </div>
+            </div>
+
+
+            <div class="form-actions">
+                <button id="btn_step_one" onclick="step_one()" type="button" class="btn btn-primary pull-right"><?php echo $this->__('Next Step') ?></button>
+                <span id="ajax_loader_stepOne" style="display:none; width: 20px;"><img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif')?>"/></span>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+            function step_one(){
+                var checkout_step_one = new VarienForm('checkout_step_one', true);
+                if (checkout_step_one.validator && checkout_step_one.validator.validate()) {
+                    // _gaq.push(['_trackPageview','/nasta_steg']);                
+                    var user_data = jQuery('#checkout_step_one').serialize();
+                    jQuery('#ajax_loader_stepOne').show();
+                    jQuery.post('<?php echo $this->getUrl('checkout/tele4G/stepOne') ?>', user_data, function(data) {
+                        jQuery('#ajax_loader_stepOne').hide();
+                        jQuery('#stepOne').hide();
+                        jQuery('.step-counter .stepOne').removeClass('active').addClass('done').next().addClass('active');
+                        jQuery('#checkoutSteps').append(data);
+                    });
+
+                }
+            }
+    </script>
+</div>

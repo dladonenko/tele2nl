@@ -1,0 +1,121 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+
+/**
+ * Product media data template
+ *
+ * @see Mage_Catalog_Block_Product_View_Media
+ */
+?>
+<?php
+    $_product = $this->getProduct();
+    $_helper = $this->helper('catalog/output');
+    $_nativeZoom = false;
+?>
+
+
+<?php if ($_product->getImage() != 'no_selection' && $_product->getImage()): ?>
+
+<?php
+    $imgNewHotClass = '';
+    if ($_product->getNewProduct()) {
+        $imgNewHotClass = 'new';
+    }
+    if($_product->getHotProduct()){
+        $imgNewHotClass = 'hot';
+    }
+    if($_product->getTogoProduct()){
+        $imgNewHotClass = 'togo';
+    }
+?>
+
+<div class="product-image-wrapper">
+        <?php echo ($imgNewHotClass ? '<div class="' . $imgNewHotClass . '"></div>' : ''); ?>
+        <a class="product-image" id="main-image" href="#">
+            <?php
+                $_img = '<img src="'.$this->helper('catalog/image')->init($_product, 'image')->backgroundColor(239,239,239)->resize(270, 350).'" alt="'.$this->htmlEscape($_product->getImageLabel()).'" title="'.$this->htmlEscape($_product->getImageLabel()).'" />';
+                echo $_helper->productAttribute($_product, $_img, 'image');
+            ?>
+        </a>
+        <a href="#" class="product-image-nav-left"></a>
+        <a href="#" class="product-image-nav-right"></a>
+    </div>
+<?php else: ?>
+    <!-- remove? -->
+
+    <p class="product-image">
+        <?php
+            $_img = '<img src="'.$this->helper('catalog/image')->init($_product, 'image')->backgroundColor(239,239,239)->resize(270, 350).'" alt="'.$this->htmlEscape($_product->getImageLabel()).'" title="'.$this->htmlEscape($_product->getImageLabel()).'" />';
+            echo $_helper->productAttribute($_product, $_img, 'image');
+        ?>
+    </p>
+<?php endif; ?>
+
+<?php if (count($this->getGalleryImages()) > 0): ?>
+<div class="more-views pagination">
+    <ul>
+    <?php foreach ($this->getGalleryImages() as $_image):?>
+        <li class="variant-<?php echo $_image->getEntityId(); ?>"
+            data-src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->backgroundColor(239,239,239)->resize(270, 350); ?>"
+            data-label="<?php echo $this->htmlEscape($_image->getLabel()) ?>"
+        >
+            <a href="#">&nbsp;</a>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+</div>
+
+<script>
+    (function($){
+        $('.more-views li > a').click(function(e){
+            e.preventDefault();
+            var item = $(this).parent();
+            item.addClass('active').siblings().removeClass('active');
+            $('#main-image img').attr({
+                'src': item.data('src'),
+                'alt': item.data('label'),
+                'title': item.data('label')
+            });
+        });
+        $('.product-image-nav-left').click(function(e){
+            e.preventDefault();
+            var prev = $('.more-views li.active').prev('li:visible');
+            if (!prev.length) {
+                prev = $('.more-views li:visible:last');
+            }
+            prev.find('> a').trigger('click');
+        });
+        $('.product-image-nav-right').click(function(e){
+            e.preventDefault();
+            var next = $('.more-views li.active').next('li:visible');
+            if (!next.length) {
+                next = $('.more-views li:visible:first');
+            }
+            next.find('> a').trigger('click');
+        });
+    })(jQuery);
+</script>
+<?php endif; ?>

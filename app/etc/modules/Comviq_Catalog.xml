@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Comviq_Catalog>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Enterprise_Enterprise />
+            </depends>
+        </Comviq_Catalog>
+    </modules>
+</config>

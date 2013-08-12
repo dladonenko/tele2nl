@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Tele4G_Localization>
+      <version>0.1.0</version>
+    </Tele4G_Localization>
+  </modules>
+  <global>
+    <helpers>
+      <localization>
+        <class>Tele4G_Localization_Helper</class>
+      </localization>
+    </helpers>
+	<resources>
+	  <localization_setup>
+		<setup>
+		  <module>Tele4G_Localization</module>
+		</setup>
+		<connection>
+		  <use>core_setup</use>
+		</connection>
+	  </localization_setup>
+	  <localization_write>
+		<connection>
+		  <use>core_write</use>
+		</connection>
+	  </localization_write>
+	  <localization_read>
+		<connection>
+		  <use>core_read</use>
+		</connection>
+	  </localization_read>
+	</resources>
+  </global>
+</config> 
